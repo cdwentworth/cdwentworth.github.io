@@ -446,8 +446,13 @@ Figure&nbsp;4: Two-dimensional lattice gas.
 <p>An important property that can be studied with this model is the tracer diffusion coefficient, <em>D*</em>. Tracer diffusion refers to diffusion of a single particle that can be tracked over time. The tracer diffusion coefficient can be defined in terms of the mean square displacement of the tracer particle. For the square lattice, this definition is</p>
 <p><span id="eq-Equation12_TracerDiffusionCoef"><span class="math display">\[D^* = \frac{〈\left|\overrightarrow{r}\left(t\right)- \overrightarrow{r}\left(0\right)\right|^2〉}{4t} \tag{9}\]</span></span></p>
 <p>where <span class="math inline">\(\overrightarrow{r}\left(t\right)\)</span> is the position of the tracer at time <em>t</em> and the averaging, indicated by the angle brackets, is over all the diffusing particles in the lattice, since each one can be considered as a tracer.</p>
-<p>We want to implement a Monte Carlo simulation of this model. The time <em>t</em> in a simulation will be considered as one pass through all the diffusing particles, attempting to allow each one to hop. The long-term time behavior of the mean square tracer displacement should be linear, giving a time-independent tracer diffusion coefficient. We can use the simulation to calculate <em>D*</em> as a function of particle concentration in the lattice. <span class="quarto-unresolved-ref">?tbl-Table12.1</span> defines the most important data structures or variables that might be used in the simulation code.</p>
-<div id="tbl-Table12.1" class="anchored">
+<p>We want to implement a Monte Carlo simulation of this model. The time <em>t</em> in a simulation will be considered as one pass through all the diffusing particles, attempting to allow each one to hop. The long-term time behavior of the mean square tracer displacement should be linear, giving a time-independent tracer diffusion coefficient. We can use the simulation to calculate <em>D*</em> as a function of particle concentration in the lattice. <a href="#tbl-Table12p1" class="quarto-xref">Table&nbsp;<span>1</span></a> defines the most important data structures or variables that might be used in the simulation code.</p>
+<div id="tbl-Table12p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table12p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Data structures used in the Monte Carlo simulation of diffusion.
+</figcaption>
+<div aria-describedby="tbl-Table12p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
 <table class="caption-top table">
 <colgroup>
 <col style="width: 16%">
@@ -509,6 +514,8 @@ Figure&nbsp;4: Two-dimensional lattice gas.
 </tr>
 </tbody>
 </table>
+</div>
+</figure>
 </div>
 </section>
 <section id="creating-animations-with-python:sec" class="level2">

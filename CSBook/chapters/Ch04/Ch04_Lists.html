@@ -1,0 +1,2014 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Lists – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" rel="next">
+<link href="../../chapters/Ch03/Ch03_ControlStructures.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch04/Ch04_Lists.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-identifying-patterns-in-global-surface-temperature-data" id="toc-motivating-problem-identifying-patterns-in-global-surface-temperature-data" class="nav-link active" data-scroll-target="#motivating-problem-identifying-patterns-in-global-surface-temperature-data">Motivating Problem: Identifying Patterns in Global Surface Temperature Data</a></li>
+  <li><a href="#general-properties-of-lists" id="toc-general-properties-of-lists" class="nav-link" data-scroll-target="#general-properties-of-lists">General Properties of Lists</a></li>
+  <li><a href="#python-lists" id="toc-python-lists" class="nav-link" data-scroll-target="#python-lists">Python Lists</a></li>
+  <li><a href="#python-tuples" id="toc-python-tuples" class="nav-link" data-scroll-target="#python-tuples">Python tuples</a></li>
+  <li><a href="#numpy-arrays" id="toc-numpy-arrays" class="nav-link" data-scroll-target="#numpy-arrays">NumPy Arrays</a></li>
+  <li><a href="#basic-input-and-output-with-files" id="toc-basic-input-and-output-with-files" class="nav-link" data-scroll-target="#basic-input-and-output-with-files">Basic Input and Output with Files</a></li>
+  <li><a href="#introduction-to-scientific-visualization-with-matplotlib" id="toc-introduction-to-scientific-visualization-with-matplotlib" class="nav-link" data-scroll-target="#introduction-to-scientific-visualization-with-matplotlib">Introduction to Scientific Visualization with Matplotlib</a></li>
+  <li><a href="#computational-problem-solution-identifying-patterns-in-global-surface-temperature-data" id="toc-computational-problem-solution-identifying-patterns-in-global-surface-temperature-data" class="nav-link" data-scroll-target="#computational-problem-solution-identifying-patterns-in-global-surface-temperature-data">Computational Problem Solution: Identifying Patterns in Global Surface Temperature Data</a>
+  <ul class="collapse">
+  <li><a href="#global-surface-temp-analysis:sec" id="toc-global-surface-temp-analysis:sec" class="nav-link" data-scroll-target="#global-surface-temp-analysis\:sec">Analysis</a></li>
+  <li><a href="#global-surface-temp-design" id="toc-global-surface-temp-design" class="nav-link" data-scroll-target="#global-surface-temp-design">Design</a></li>
+  <li><a href="#global-surface-temp-implementation" id="toc-global-surface-temp-implementation" class="nav-link" data-scroll-target="#global-surface-temp-implementation">Implementation</a></li>
+  <li><a href="#global-surface-temp-testing" id="toc-global-surface-temp-testing" class="nav-link" data-scroll-target="#global-surface-temp-testing">Testing</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#program-modification-problems" id="toc-program-modification-problems" class="nav-link" data-scroll-target="#program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#ch04-program-development-problems" id="toc-ch04-program-development-problems" class="nav-link" data-scroll-target="#ch04-program-development-problems">Program Development Problems</a></li>
+  <li><a href="#ch04-references" id="toc-ch04-references" class="nav-link" data-scroll-target="#ch04-references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="lists:cha" class="quarto-section-identifier">Lists</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivating-problem-identifying-patterns-in-global-surface-temperature-data" class="level2">
+<h2 class="anchored" data-anchor-id="motivating-problem-identifying-patterns-in-global-surface-temperature-data">Motivating Problem: Identifying Patterns in Global Surface Temperature Data</h2>
+<p>Climate science generates large amounts of data, including temperature and solar irradiance at specific locations on the earth’s surface over many years and time series of greenhouse gas concentrations in the atmosphere. Identifying patterns in the data is one of the important challenges for climate scientists. In this chapter, we will develop some of the computational science skills that will help with this challenge.</p>
+<p>Consider one crucial climate observation: the average surface temperature of the earth. <a href="#tbl-Table4p1" class="quarto-xref">Table&nbsp;<span>1</span></a> shows some of the surface temperature data produced by the NASA Goddard Institute for Space Studies Surface Temperature Analysis group <span class="citation" data-cites="GISTEMPTeam_DataGISSGISSSurface_2022">(<a href="../../bibliography.html#ref-GISTEMPTeam_DataGISSGISSSurface_2022" role="doc-biblioref">GISTEMP Team, 2022a</a>)</span>. The complete data set covers the years 1880-2021.</p>
+<div id="tbl-Table4p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table4p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: GLOBAL Land-Ocean Temperature Index. The numbers are the surface temperature anomaly multiplied by 100 degrees Celsius using 1951-1980 as the base period. The full dataset goes through 2022.
+</figcaption>
+<div aria-describedby="tbl-Table4p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 7%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 4%">
+<col style="width: 5%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Year</th>
+<th>Jan</th>
+<th>Feb</th>
+<th>Mar</th>
+<th>Apr</th>
+<th>May</th>
+<th>Jun</th>
+<th>Jul</th>
+<th>Aug</th>
+<th>Sep</th>
+<th>Oct</th>
+<th>Nov</th>
+<th>Dec</th>
+<th>Ann J-D</th>
+<th>Ann D-N</th>
+<th>DJF</th>
+<th>MAM</th>
+<th>JJA</th>
+<th>SON</th>
+<th>Year</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>1880</td>
+<td>-18</td>
+<td>-24</td>
+<td>-9</td>
+<td>-16</td>
+<td>-10</td>
+<td>-21</td>
+<td>-18</td>
+<td>-10</td>
+<td>-14</td>
+<td>-24</td>
+<td>-22</td>
+<td>-18</td>
+<td>-17</td>
+<td>***</td>
+<td>****</td>
+<td>-12</td>
+<td>-16</td>
+<td>-20</td>
+<td>1880</td>
+</tr>
+<tr class="even">
+<td>1881</td>
+<td>-20</td>
+<td>-14</td>
+<td>3</td>
+<td>5</td>
+<td>6</td>
+<td>-19</td>
+<td>0</td>
+<td>-3</td>
+<td>-15</td>
+<td>-22</td>
+<td>-18</td>
+<td>-7</td>
+<td>-9</td>
+<td>-10</td>
+<td>-17</td>
+<td>5</td>
+<td>-7</td>
+<td>-18</td>
+<td>1881</td>
+</tr>
+<tr class="odd">
+<td>1882</td>
+<td>16</td>
+<td>14</td>
+<td>4</td>
+<td>-16</td>
+<td>-14</td>
+<td>-22</td>
+<td>-16</td>
+<td>-8</td>
+<td>-15</td>
+<td>-23</td>
+<td>-17</td>
+<td>-36</td>
+<td>-11</td>
+<td>-9</td>
+<td>8</td>
+<td>-8</td>
+<td>-15</td>
+<td>-18</td>
+<td>1882</td>
+</tr>
+<tr class="even">
+<td>1883</td>
+<td>-29</td>
+<td>-37</td>
+<td>-12</td>
+<td>-19</td>
+<td>-18</td>
+<td>-7</td>
+<td>-7</td>
+<td>-14</td>
+<td>-22</td>
+<td>-11</td>
+<td>-24</td>
+<td>-11</td>
+<td>-18</td>
+<td>-20</td>
+<td>-34</td>
+<td>-16</td>
+<td>-9</td>
+<td>-19</td>
+<td>1883</td>
+</tr>
+<tr class="odd">
+<td>1884</td>
+<td>-13</td>
+<td>-8</td>
+<td>-36</td>
+<td>-40</td>
+<td>-33</td>
+<td>-35</td>
+<td>-33</td>
+<td>-28</td>
+<td>-27</td>
+<td>-25</td>
+<td>-33</td>
+<td>-31</td>
+<td>-28</td>
+<td>-27</td>
+<td>-11</td>
+<td>-37</td>
+<td>-32</td>
+<td>-28</td>
+<td>1884</td>
+</tr>
+<tr class="even">
+<td>1885</td>
+<td>-58</td>
+<td>-33</td>
+<td>-26</td>
+<td>-42</td>
+<td>-45</td>
+<td>-43</td>
+<td>-33</td>
+<td>-31</td>
+<td>-29</td>
+<td>-23</td>
+<td>-24</td>
+<td>-10</td>
+<td>-33</td>
+<td>-35</td>
+<td>-41</td>
+<td>-38</td>
+<td>-36</td>
+<td>-25</td>
+<td>1885</td>
+</tr>
+<tr class="odd">
+<td>1886</td>
+<td>-44</td>
+<td>-51</td>
+<td>-43</td>
+<td>-28</td>
+<td>-24</td>
+<td>-35</td>
+<td>-18</td>
+<td>-31</td>
+<td>-24</td>
+<td>-28</td>
+<td>-27</td>
+<td>-25</td>
+<td>-31</td>
+<td>-30</td>
+<td>-35</td>
+<td>-32</td>
+<td>-28</td>
+<td>-26</td>
+<td>1886</td>
+</tr>
+<tr class="even">
+<td>1887</td>
+<td>-72</td>
+<td>-57</td>
+<td>-35</td>
+<td>-35</td>
+<td>-30</td>
+<td>-25</td>
+<td>-26</td>
+<td>-35</td>
+<td>-26</td>
+<td>-35</td>
+<td>-26</td>
+<td>-33</td>
+<td>-36</td>
+<td>-36</td>
+<td>-51</td>
+<td>-33</td>
+<td>-29</td>
+<td>-29</td>
+<td>1887</td>
+</tr>
+<tr class="odd">
+<td>1888</td>
+<td>-34</td>
+<td>-36</td>
+<td>-41</td>
+<td>-20</td>
+<td>-22</td>
+<td>-17</td>
+<td>-10</td>
+<td>-16</td>
+<td>-12</td>
+<td>2</td>
+<td>3</td>
+<td>-4</td>
+<td>-17</td>
+<td>-20</td>
+<td>-34</td>
+<td>-28</td>
+<td>-14</td>
+<td>-2</td>
+<td>1888</td>
+</tr>
+<tr class="even">
+<td>1889</td>
+<td>-9</td>
+<td>17</td>
+<td>6</td>
+<td>10</td>
+<td>-1</td>
+<td>-10</td>
+<td>-8</td>
+<td>-20</td>
+<td>-24</td>
+<td>-25</td>
+<td>-33</td>
+<td>-29</td>
+<td>-10</td>
+<td>-8</td>
+<td>1</td>
+<td>5</td>
+<td>-13</td>
+<td>-27</td>
+<td>1889</td>
+</tr>
+<tr class="odd">
+<td>1890</td>
+<td>-42</td>
+<td>-44</td>
+<td>-40</td>
+<td>-30</td>
+<td>-39</td>
+<td>-24</td>
+<td>-28</td>
+<td>-39</td>
+<td>-36</td>
+<td>-25</td>
+<td>-43</td>
+<td>-31</td>
+<td>-35</td>
+<td>-35</td>
+<td>-38</td>
+<td>-36</td>
+<td>-30</td>
+<td>-35</td>
+<td>1890</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>If you look at the entire 1800-2021 data table and try to identify patterns, you will likely be challenged, but a simple scatter graph of the annual mean quickly shows an interesting pattern, as seen in <a href="#fig-Figure4.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
+<div id="fig-Figure4.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Global mean temperature anomaly <span class="citation" data-cites="GISTEMPTeam_GISSSurfaceTemperature_2022">(<a href="../../bibliography.html#ref-GISTEMPTeam_GISSSurfaceTemperature_2022" role="doc-biblioref">GISTEMP Team, 2022b</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>With the help of concepts developed in this chapter, the problem we must solve is how to create a graph, as shown in Figure 4.1, using tables of numerical data such as that in Table 4.1. Solving this problem will require understanding the sequence data type, reading data from a text file, and the basic use of a plotting library. We will learn about the specific examples of sequences in Python, including lists and numpy arrays. We will briefly introduce the Matplotlib plotting library used extensively for Python-based scientific visualizations.</p>
+</section>
+<section id="general-properties-of-lists" class="level2">
+<h2 class="anchored" data-anchor-id="general-properties-of-lists">General Properties of Lists</h2>
+<p>Lists are found frequently in everyday life: grocery lists, to-do lists, and life goals for the year. Science and engineering work also requires the use of lists. The yearly global surface temperature data introduced in <a href="#tbl-Table4p1" class="quarto-xref">Table&nbsp;<span>1</span></a> can be represented as a list. Work in genetics often requires knowing the sequence of nucleotides in a molecule of DNA, and such a sequence can be thought of as a list.</p>
+<p>Work with lists computationally will be expedited by having an appropriate data structure representing the list structure. Python uses several such data structures. We will discuss these structures by first introducing the sequence idea, which can be considered a general definition of a list. A <strong>sequence</strong> is a linearly ordered set of values, each of which can be accessed using an index number. <a href="#tbl-Table4p2" class="quarto-xref">Table&nbsp;<span>2</span></a> gives an example of a sequence. The first value, -33, is indexed by 0 since Python uses a <strong>zero-based indexing</strong> method. Some programming languages would start indexing with the numeral 1, but not Python. This is a crucial point to keep in mind as you work with sequence data structures in Python.</p>
+<div id="tbl-Table4p2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table4p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Example of a sequence.
+</figcaption>
+<div aria-describedby="tbl-Table4p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>index</strong></th>
+<th style="text-align: left;"><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0</td>
+<td style="text-align: left;">-33</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1</td>
+<td style="text-align: left;">-12</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2</td>
+<td style="text-align: left;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3</td>
+<td style="text-align: left;">-37</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4</td>
+<td style="text-align: left;">-19</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Several operations can be performed on most sequence data structures. These operations include retrieving, updating, inserting, removing, and appending an element in the sequence. <a href="#fig-Figure4.2" class="quarto-xref">Figure&nbsp;<span>2</span></a> illustrates the retrieve operation. The original sequence remains unchanged.</p>
+<div id="fig-Figure4.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.2.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Retrieve sequence operation.
+</figcaption>
+</figure>
+</div>
+<p><strong>Updating</strong> a sequence value changes the value stored at a particular location. The original value is lost, and the sequence keeps the same length. <a href="#fig-Figure4.3" class="quarto-xref">Figure&nbsp;<span>3</span></a> illustrates this operation.</p>
+<div id="fig-Figure4.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.3.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Update sequence operation.
+</figcaption>
+</figure>
+</div>
+<p>The <strong>insert</strong> operation places a new value at a particular position specified by the index but shifts all other values down. No values are lost, but the sequence increases in length. <a href="#fig-Figure4.4" class="quarto-xref">Figure&nbsp;<span>4</span></a> illustrates this effect.</p>
+<div id="fig-Figure4.4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.4.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Insert sequence operation.
+</figcaption>
+</figure>
+</div>
+<p>The <strong>remove</strong> operation takes out the value at a specific index and then shifts all the following up in the sequence, as shown in <a href="#fig-Figure4.5" class="quarto-xref">Figure&nbsp;<span>5</span></a>.</p>
+<div id="fig-Figure4.5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.5.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Remove sequence operation.
+</figcaption>
+</figure>
+</div>
+<p>The append operation attaches a new value to the end of the sequence, as shown in <a href="#fig-Figure4.6" class="quarto-xref">Figure&nbsp;<span>6</span></a>.</p>
+<div id="fig-Figure4.6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.6.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Append sequence operation.
+</figcaption>
+</figure>
+</div>
+<p>Sequences can be categorized as mutable, meaning that they can be changed, or immutable, meaning that the sequence cannot be changed after being defined. An immutable sequence can only have the retrieve operation applied to it. The built-in Python sequence data types include Python lists, tuples, and strings.</p>
+</section>
+<section id="python-lists" class="level2">
+<h2 class="anchored" data-anchor-id="python-lists">Python Lists</h2>
+<p>Python features a built-in sequence data structure called a list. A Python list is a mutable sequence, and the elements can have mixed data types. A Python list does not need to be all floats or all strings. It can contain a combination of floats, strings, and any other valid Python data type, including a Python list. A Python list is denoted using square brackets with elements separated by commas. Here are some examples of Python lists:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>[<span class="fl">50.5</span>, <span class="fl">12.4</span>, <span class="fl">72.5</span>]     [<span class="dv">2</span>, <span class="dv">4</span>, <span class="st">'two'</span>, <span class="st">'four'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>An empty list is indicated using an empty pair of square brackets:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>[]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A Python variable name can be assigned to a list to facilitate working with it.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>list_example <span class="op">=</span> [<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">40</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The syntax for accessing individual elements of a list (and other sequence types) is to use the index operator [] (not the same as the empty list) with an expression representing an index number inside the brackets.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_index_operator.png" class="img-fluid"></p>
+<p>Remember that Python uses zero-based indexing, so the first element of a sequence is referenced with 0. Negative index values reference elements from the right or bottom of the list rather than from the beginning.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_negative_index.png" class="img-fluid"></p>
+<p><a href="#tbl-Table4p3" class="quarto-xref">Table&nbsp;<span>3</span></a> illustrates how to perform sequence operations on a Python list.</p>
+<div id="tbl-Table4p3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table4p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Python list operations. list_example = [10, 20, 30, 40]
+</figcaption>
+<div aria-describedby="tbl-Table4p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: left;"><strong>Example</strong></th>
+<th style="text-align: left;"><strong>Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">retrieving</td>
+<td style="text-align: left;">list_example[2]</td>
+<td style="text-align: left;">30</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">updating</td>
+<td style="text-align: left;">list_example[1] = 50</td>
+<td style="text-align: left;">[10, 50, 30, 40]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">inserting</td>
+<td style="text-align: left;">list_example.insert(2,50)</td>
+<td style="text-align: left;">[10, 20, 50, 30, 40]</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">removing</td>
+<td style="text-align: left;">del list_example[1]</td>
+<td style="text-align: left;">[10,30,40]</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">appending</td>
+<td style="text-align: left;">list_example.append(50)</td>
+<td style="text-align: left;">[10, 20, 30, 40, 50]</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The dot notation used in the list insert and list append operations is an example of object-oriented programming and will be explained more fully in Chapter 11. For now, think of the name to the right of the dot, called a method in object-oriented programming, as a function that applies to the object to the left of the dot.</p>
+<p>The slice operation allows us to extract multiple list elements with one simple expression. The general form is a variation of the bracket notation, [m:n], which returns elements starting with the one indexed by m and extending up to, but not including, the element indexed by n. The second through the third elements of list_example could be extracted with list_example[1:3]. If the first index number, m, is omitted, then the slice begins with the first element of the list. If the last index number, n, is omitted, then the slice includes all elements through the last one. <a href="#fig-Figure4.7" class="quarto-xref">Figure&nbsp;<span>7</span></a> illustrates the use of the slice operation.</p>
+<div id="fig-Figure4.7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.7.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Examples of the slicing operation.
+</figcaption>
+</figure>
+</div>
+<p>One more common operation frequently performed on a sequence, including Python lists, is traversal. Traversing a sequence involves accessing each element in order. A simple way to do this is with a for loop. For example, printing out each element of a list on a separate line we can be done as follows:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> list_example:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(e)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="python-tuples" class="level2">
+<h2 class="anchored" data-anchor-id="python-tuples">Python tuples</h2>
+<p>A <strong>tuple</strong> is an immutable Python sequence data type. Tuples are defined using parentheses ().</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>(<span class="dv">10</span>, <span class="dv">20</span>, <span class="dv">30</span>)    (<span class="st">'apple'</span> , <span class="st">'banana'</span> , <span class="st">'cherry'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>To avoid ambiguity, a tuple with a single element must contain the final comma.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>tuple_example <span class="op">=</span> (<span class="dv">10</span>,)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this example, if tuple_example did not contain the final comma, then the Python interpreter would assume it is an integer. This is shown in the Colab notebook segment below.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_OneElementTuple.png" class="img-fluid" style="width:90.0%"></p>
+<p>The index syntax applies to tuples, just as it did for lists.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_tupleIndexSyntax.png" class="img-fluid"></p>
+<p>Remember that a tuple is immutable, meaning it cannot be changed after it is defined. Attempting to change a tuple element will result in an error, as shown in the notebook output below.</p>
+<div id="fig-Figure4.8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.8.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Error resulting from an attempt to assign to a tuple.
+</figcaption>
+</figure>
+</div>
+<p>Python strings are an immutable sequence type, similar to tuples in behavior. The characters in a string are sequence elements, so they can be accessed using the bracket syntax.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_StringBracketSyntax.png" class="img-fluid"></p>
+<p>Being immutable, any attempt to reassign a character in a string will result in an error.</p>
+</section>
+<section id="numpy-arrays" class="level2">
+<h2 class="anchored" data-anchor-id="numpy-arrays">NumPy Arrays</h2>
+<p>The NumPy library is a crucial building block for developing Python applications for scientific and engineering computing <span class="citation" data-cites="Numpy_NumPy_2022">(<a href="../../bibliography.html#ref-Numpy_NumPy_2022" role="doc-biblioref">Numpy, 2022</a>)</span>. This library introduces an enhanced data structure for representing multidimensional arrays, methods of operating on these arrays, and many functions that can manipulate or extract information from these arrays. The NumPy library will be used in much of the code developed in the remainder of this book. <a href="#fig-Figure4.9" class="quarto-xref">Figure&nbsp;<span>9</span></a> illustrates the structure of arrays. A one-dimensional array is a type of sequence that behaves similarly to vectors in linear algebra. Two-dimensional arrays can be considered as matrices, and higher-dimensional arrays can be considered tensors, as understood in certain areas of mathematics, such as differential geometry, engineering, and physics.</p>
+<div id="fig-Figure4.9" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.9.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Structure of 1, 2, and 3-dimensional arrays.
+</figcaption>
+</figure>
+</div>
+<p>The array data structure or array object introduced by NumPy is called a ndarray, which stands for an n-dimensional array. The elements of a ndarray must all be of the same data type, called the dtype, such as integer or float. Two significant properties are associated with a specific ndarray: the array elements shape and the data type (dtype). The shape of a ndarray is a tuple that specifies the size of the array along each dimension.</p>
+<p>We will start with one-dimensional arrays to develop our understanding of NumPy arrays and operations on them. One way to create a NumPy array is to use the array routine in NumPy.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> np.array([<span class="fl">10.</span>, <span class="fl">20.</span>, <span class="dv">30</span>, <span class="fl">40.</span>], dtype<span class="op">=</span><span class="st">'float64'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Before using NumPy arrays and operations on them, we must first import the NumPy package. Renaming the package ‘np,’ while unnecessary, has become traditional in data science applications. The first argument of the array routine is a Python list. The second argument specifies the data type of the elements in the array. The shape and data type of a NumPy array can be obtained as follows.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_NumpyExample.png" class="img-fluid"></p>
+<p>Note that the shape is given as a tuple and shows that a is a one-dimensional array with four elements. The individual values in a NumPy array can be retrieved using the square bracket notation.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_NumpyBracketSyntax.png" class="img-fluid"></p>
+<p>Now let us move on to a two-dimensional NumPy array.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure_Numpy2DExample.png" class="img-fluid" style="width:100.0%"></p>
+<p>The shape of a2d indicates that there are two dimensions. The first value in the shape tuple gives the number of rows, and the second value gives the number of columns. We can retrieve the value of individual elements in the array using square bracket notation. For example, the element in the second row and fourth column can be accessed as follows.</p>
+<p><img src="../..\chapters/Ch04/Figures/Figure4_Numpy2DElementAccess.png" class="img-fluid" style="width:60.0%"></p>
+<p>The first index number gives the row, and the second index number provides the column. Recall that Python uses a zero-based indexing system.</p>
+<p>One advantage of using NumPy arrays instead of Python lists is that numerical calculations can be coded more succinctly. Suppose we have an array of numbers, and we need to add a constant value to each array member. This can be done with one line of code if the array is represented in a NumPy array.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>a1d <span class="op">=</span> np.array({[}<span class="fl">10.</span>, <span class="fl">20.</span>, <span class="fl">30.</span>{]})</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>b1d <span class="op">=</span> a1d <span class="op">+</span> <span class="fl">5.0</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>If a1d were a Python list, then the arithmetic expression would yield an error. We would need to set up a loop to add the constant to each element explicitly.</p>
+</section>
+<section id="basic-input-and-output-with-files" class="level2">
+<h2 class="anchored" data-anchor-id="basic-input-and-output-with-files">Basic Input and Output with Files</h2>
+<p>A basic operation that any data-oriented computational scientist must perform is reading columns of numerical data from a file into a program for processing and then writing out columns of numerical data to a file for use at a later time. In this section, we will learn about one method of performing these operations that uses a function in the NumPy module, one that will take care of many of the tedious processes that arise in performing reading and writing numerical data.</p>
+<p>Let’s work with a specific example. The file GLB.Ts+dSST.txt is a plain text file that contains the global mean temperature anomaly data compiled by NASA’s Goddard Institute for Space Studies Surface Temperature Analysis project, shown in <a href="#tbl-Table4p1" class="quarto-xref">Table&nbsp;<span>1</span></a>. <a href="#fig-Figure4.10" class="quarto-xref">Figure&nbsp;<span>10</span></a> shows a screenshot of this file viewed with a plain text editor. We see that the file has eight lines of comments that describe the dataset, one line that specifies column headings, and then 20 columns of numbers. Spaces separate the numbers in each row, so we call this space-delimited data.</p>
+<div id="fig-Figure4.10" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.10.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Screenshot of the text file containing NASA temperature.
+</figcaption>
+</figure>
+</div>
+<p>The NumPy package provides a function for importing numerical data from a text or CSV file as long as the data is in the form of columns of numbers. Since this is a common situation in scientific and engineering applications, we will use this technique here. The NumPy function we will use is loadtxt. While loadtxt can skip rows of non-numerical data at the beginning of the file, only numerical data must be present in the imported columns. The file shown in <a href="#fig-Figure4.10" class="quarto-xref">Figure&nbsp;<span>10</span></a> has missing numbers, indicated by ***, and the presence of these characters will cause an error. To use loadtxt, we must do some initial cleanup of the data file. One way to accomplish this cleanup is to open the file in a plain text editor and delete the rows that have missing numbers. The revised file is called GLB.Ts+dSST_clean.txt. Keeping the original file unchanged is a good practice in case problems arise in the data processing workflow.</p>
+<p>The code that will read in the data and separate the year column and the annual mean temperature anomaly column is shown below.</p>
+<div id="fig-Figure4.11" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure4.11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure4.11-1"><a href="#fig-Figure4.11-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure4.11-2"><a href="#fig-Figure4.11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure4.11-3"><a href="#fig-Figure4.11-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data and extract columns</span></span>
+<span id="fig-Figure4.11-4"><a href="#fig-Figure4.11-4" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> np.loadtxt(<span class="st">'GLB.Ts+dSST_clean.txt'</span>, skiprows<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="fig-Figure4.11-5"><a href="#fig-Figure4.11-5" aria-hidden="true" tabindex="-1"></a>year <span class="op">=</span> cols[:, <span class="dv">0</span>]</span>
+<span id="fig-Figure4.11-6"><a href="#fig-Figure4.11-6" aria-hidden="true" tabindex="-1"></a>annual_temp_anomaly <span class="op">=</span> cols[:, <span class="dv">13</span>]</span>
+<span id="fig-Figure4.11-7"><a href="#fig-Figure4.11-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure4.11-8"><a href="#fig-Figure4.11-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Calculate the actual annual temperature anomaly</span></span>
+<span id="fig-Figure4.11-9"><a href="#fig-Figure4.11-9" aria-hidden="true" tabindex="-1"></a>annual_temp_anomaly <span class="op">=</span> annual_temp_anomaly<span class="op">/</span><span class="fl">100.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Code for reading in columns of numerical data.
+</figcaption>
+</figure>
+</div>
+<p>If you are using Google Colab notebooks as your development environment, you will need to upload the data file to your Google Drive. You will then need to mount the Google Drive and change the working directory to wherever you placed your file, typically in the same folder as the Colab notebook file. This can be accomplished by adding the following code at the beginning of the Colab notebook.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> google.colab <span class="im">import</span> drive</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>drive.mount(<span class="st">'/content/drive'</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="op">%</span>cd <span class="op">/</span>content<span class="op">/</span>drive<span class="op">/</span>MyDrive<span class="op">/</span>yourWorkingDirectory</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>You should replace ‘yourWorkingDirectory’ with the path to the folder where your data file is located on your Google Drive.</p>
+<p>The function savetxt from the NumPy module can be used to write columns of numerical data to a text file. The first argument gives the file name to which data is written. The second argument provides the 2d numpy array containing the data columns. A delimiter can be specified with the delimiter keyword. Figure 4.13 shows the output file. By default, the format of the numbers will be scientific notation with the full precision for floats. The following code snippet, <a href="#fig-Figure4.12" class="quarto-xref">Figure&nbsp;<span>12</span></a>, shows how to construct a 2d NumPy array from columns of data and then write out the data to a text file, a portion of which is shown in <a href="#fig-Figure4.13" class="quarto-xref">Figure&nbsp;<span>13</span></a>.</p>
+<div id="fig-Figure4.12" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure4.12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure4.12-1"><a href="#fig-Figure4.12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create 2d array from year and temperature 1d arrays</span></span>
+<span id="fig-Figure4.12-2"><a href="#fig-Figure4.12-2" aria-hidden="true" tabindex="-1"></a>outArray <span class="op">=</span> np.column_stack((year, annual_temp_anomaly))</span>
+<span id="fig-Figure4.12-3"><a href="#fig-Figure4.12-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure4.12-4"><a href="#fig-Figure4.12-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to text file</span></span>
+<span id="fig-Figure4.12-5"><a href="#fig-Figure4.12-5" aria-hidden="true" tabindex="-1"></a>np.savetxt(<span class="st">'annual_temp_anomaly.txt'</span>, outArray, delimiter<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Code for saving columns of numerical data to a text file.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Figure4.13" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.13.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Part of the text output using the savetxt function.
+</figcaption>
+</figure>
+</div>
+<p>We can specify the format for the numbers written out using the fmt parameter. This parameter is a string with the following form:</p>
+<p>%[flag]width[.precision]specifier</p>
+<p>where each part is described below:</p>
+<ul>
+<li><p>flags (optional):</p>
+<p>- : left justify</p>
+<p>+ : Forces to precede result with + or -.</p>
+<p>0 : Left pad the number with zeros instead of space (see width).</p></li>
+<li><p>width: The minimum number of characters to be printed. The value is not truncated if it has more characters.</p></li>
+<li><p>precision (optional):</p>
+<pre><code>For integer specifiers (e.g., d, i,o,x), the minimum number of
+digits.
+
+For e, E, and f specifiers, the number of digits to print after
+the decimal point.
+
+For g and G, the maximum number of significant digits.
+
+For s, the maximum number of characters.</code></pre></li>
+<li><p>specifiers:</p>
+<pre><code>c: character
+
+d or i: a signed decimal integer
+
+e or E: scientific notation with e or E.
+
+f: decimal floating point
+
+g, G: use the shorter of e, E or f
+
+o: signed octal
+
+s: a string of characters
+
+u: an unsigned decimal integer
+
+x, X: unsigned hexadecimal integer</code></pre></li>
+</ul>
+<p>The fmt parameter can be a single format specifier, which will be applied to all the columns of numbers, or it can be a list of format specifiers, one for each column. Since the first column of the output is supposed to be a year, it would be more natural to format that number as an integer. This can be accomplished with the following statement.</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Save to text file</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>header_string <span class="op">=</span> <span class="st">'year</span><span class="ch">\t</span><span class="st"> temp anomaly'</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>np.savetxt(<span class="st">'annual_temp_anomaly.txt'</span>, outArray, fmt<span class="op">=</span>[<span class="st">'</span><span class="sc">%6i</span><span class="st">'</span>,<span class="st">'</span><span class="sc">%10.2e</span><span class="st">'</span>], </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>           delimiter<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, header<span class="op">=</span>header_string)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A header that gives column labels is provided with the header keyword argument. A portion of the output file is shown in <a href="#fig-Figure4.14" class="quarto-xref">Figure&nbsp;<span>14</span></a>.</p>
+<div id="fig-Figure4.14" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.14.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: A portion of savetxt output with formatted numbers.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="introduction-to-scientific-visualization-with-matplotlib" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-scientific-visualization-with-matplotlib">Introduction to Scientific Visualization with Matplotlib</h2>
+<p>We are ready to create our first scientific visualization: a two-dimensional scatter graph showing the relationship between the mean global temperature anomaly and year. There are several standard plotting packages available in Python, but we will focus on Matplotlib since it is widely used and forms the basis for other visualization packages <span class="citation" data-cites="TheMatplotlibDevelopmentteam_MatplotlibVisualizationPython_2021">(<a href="../../bibliography.html#ref-TheMatplotlibDevelopmentteam_MatplotlibVisualizationPython_2021" role="doc-biblioref">The Matplotlib Development team, 2021</a>)</span> . We will discuss scientific visualizations in greater detail in Chapter 5. Here, we want to touch on the basics of using the Matplotlib package to create a 2d scatter graph.</p>
+<p>Let us assume that the mean global surface temperature anomaly values and corresponding year are in the data file annual_temp_anomaly.txt. The following code produces a simple scatter graph of this data.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> np.loadtxt(<span class="st">'annual_temp_anomaly.txt'</span>,skiprows<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>year_data <span class="op">=</span> cols[:,<span class="dv">0</span>]</span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>temp_anomaly_data <span class="op">=</span> cols[:,<span class="dv">1</span>]</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot data</span></span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a>plt.plot(year_data, temp_anomaly_data, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'d'</span>, markersize<span class="op">=</span><span class="fl">5.0</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'year'</span>)</span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Temperature Anomaly'</span>)</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'tempAnomalyVsYear.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The pyplot sub-package of the Matplotlib package is imported and renamed plt. This is traditional in data science applications. The entire Matplotlib package is not needed to create most of the plots we use. The plot is created with the Matplotlib plot function. The first argument is the 1d array containing the x-axis values. The second argument is the 1d array with the y-axis values. The other keyword arguments are set, so only data points are graphed with a diamond data marker. The markersize is always adjusted to achieve a good visualization. Axis labels are added with the xlabel and ylabel functions.</p>
+<p>Finally, the plot is saved as a graphics file with the savefig function. The graphics file format is determined from the extension on the chosen file name, given as the first argument. The dpi keyword sets the resolution. The show function is not needed if the code is executed in a Jupyter notebook but will be required if it is executed in other programming environments. The plot is shown in <a href="#fig-Figure4.15" class="quarto-xref">Figure&nbsp;<span>15</span></a>.</p>
+<div id="fig-Figure4.15" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.15.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Temperature anomaly as a function of year produced by Matplotlib.
+</figcaption>
+</figure>
+</div>
+<p>We will discuss additional methods of customizing plots in later chapters.</p>
+</section>
+<section id="computational-problem-solution-identifying-patterns-in-global-surface-temperature-data" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solution-identifying-patterns-in-global-surface-temperature-data">Computational Problem Solution: Identifying Patterns in Global Surface Temperature Data</h2>
+<p>We will now return to the problem introduced at the beginning of the chapter: how to use data visualization to help identify temperature anomaly trends over time.</p>
+<section id="global-surface-temp-analysis:sec" class="level3">
+<h3 class="anchored" data-anchor-id="global-surface-temp-analysis:sec">Analysis</h3>
+<p>We start with a precise description of the problem and some features of the solution that will allow us to recognize a successful solution. The problem is to start with the data file given by NASA, GLB.Ts+dSST.txt <span class="citation" data-cites="GISTEMPTeam_GISSSurfaceTemperature_2022">(<a href="../../bibliography.html#ref-GISTEMPTeam_GISSSurfaceTemperature_2022" role="doc-biblioref">GISTEMP Team, 2022b</a>)</span>, and produce a graph, similar to Figure 4.1, that performs some kind of smoothing of the widely fluctuating temperature anomaly values. We can recognize a solution when the graph has a smoothing curve displayed that shows fewer yearly fluctuations compared to the annual raw data.</p>
+<p>Some quite sophisticated statistical methods exist for smoothing random fluctuating time series data, including the LOWESS smoothing shown in <a href="#fig-Figure4.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>. Using such techniques requires considerably more mathematical sophistication than we want to use here. Therefore, we will use a simple moving average method that is conceptually simple and relatively easy to implement computationally.</p>
+<p>Consider a subset of the annual mean temperature anomaly data from <a href="#fig-Figure4.14" class="quarto-xref">Figure&nbsp;<span>14</span></a>, shown in <a href="#tbl-Table4p4" class="quarto-xref">Table&nbsp;<span>4</span></a>.</p>
+<div id="tbl-Table4p4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table4p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: A subset of temperature anomaly data.
+</figcaption>
+<div aria-describedby="tbl-Table4p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>year</strong></th>
+<th style="text-align: center;"><strong>temperature anomaly [C]</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1883</td>
+<td style="text-align: center;">-0.18</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1884</td>
+<td style="text-align: center;">-0.28</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1885</td>
+<td style="text-align: center;">-0.33</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1886</td>
+<td style="text-align: center;">-0.31</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1887</td>
+<td style="text-align: center;">-0.36</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The 5-year moving average for the 1885 temperature anomaly is calculated from</p>
+<p><span id="eq-Equation4.1"><span class="math display">\[T_m\left(1885\right) = \frac{\left(- 0.18- 0.28- 0.33- 0.31- 0.36\right)}{5.0}\left[\text{C}\right] = - 0.29\left[\text{C}\right] \tag{1}\]</span></span></p>
+<p>We would replace the 1885 temperature anomaly in the data set with this new value. The moving average for each year is calculated similarly. We move the 5-year window, two years before the chosen year, two years after the selected year, plus the chosen year, to each year in turn. If <span class="math inline">\(T\left(y\right)\)</span> represents the mean temperature anomaly for year <em>y,</em> then the general formula for the 5-year moving average is</p>
+<p><span id="eq-Equation4.2"><span class="math display">\[T_m\left(y\right) = \frac{T\left(y- 2\right) + T\left(y- 1\right) + T\left(y\right) + T\left(y + 1\right) + T\left(y + 2\right)}{5} \tag{2}\]</span></span></p>
+<p>We could try different window sizes, 7-year, 9-year, and so on, to find one that clarifies a trend, but we will stick with the 5-year window for this solution.</p>
+</section>
+<section id="global-surface-temp-design" class="level3">
+<h3 class="anchored" data-anchor-id="global-surface-temp-design">Design</h3>
+<p>The workflow for our problem solution is</p>
+<ol type="1">
+<li><p>Clean up the raw NASA data file GLB.Ts+dSST.txt so that it does not contain non-numerical data, except for the header comments.</p></li>
+<li><p>Note the first year for which a 5-year moving average can be calculated (defines first_year).</p></li>
+<li><p>Note the last year for which a 5-year moving average can be calculated (defines last_year).</p></li>
+<li><p>Write code to import the year and annual mean columns from the clean data file.</p></li>
+<li><p>Convert the annual mean column numbers to Celsius by dividing them by 100.</p></li>
+<li><p>Write code that can calculate the 5-year moving average temperature anomaly for a general specified year, named current_year.</p></li>
+</ol>
+<p>Step 1 is performed with a basic text editor application, and we assume that the cleaned-up data file is GLB.Ts+dSST_clean.txt.</p>
+<p>For the NASA data set we are using here, the first year for which a 5-year moving average can be calculated is 1883, and the last year is 2019.</p>
+<p>Steps 4 and 5 were discussed in section 4.5. These steps define the year_data and annual_temp_anomaly arrays.</p>
+<p>Step 6 requires some thought. Assume that year_index is the index number giving the year currently being considered. To expedite using the Matplotlib plot function, we will also define two new 1d NumPy arrays: moving_year_data will contain all the years for which we calculate a moving average, and moving_annual_temp_anomaly will contain the corresponding calculated moving averages. A pseudocode snippet of this process is shown below.</p>
+<div style="background-color:rgb(241, 242, 243)">
+<pre><code>Extract the subset of temperature anomalies from annual_temp_anomaly 
+  (this defines anomaly_subset)
+Calculate the mean of the numbers in anomaly_subset (defines 
+   temp_anomaly_mean)
+Add the temp_anomaly_mean to moving_annual_temp_anomaly</code></pre>
+</div>
+<p>All of the variables required for the problem solution are listed in <a href="#tbl-Table4p5" class="quarto-xref">Table&nbsp;<span>5</span></a>.</p>
+<div id="tbl-Table4p5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table4p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: List of data structures required for the problem solution.
+</figcaption>
+<div aria-describedby="tbl-Table4p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 22%">
+<col style="width: 14%">
+<col style="width: 63%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Data Structure</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">first_year</td>
+<td style="text-align: center;">float variable</td>
+<td style="text-align: center;">first year for the 5-year moving average calculation</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">last_year</td>
+<td style="text-align: center;">float variable</td>
+<td style="text-align: center;">last year for the 5-year moving average calculation</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">year_data</td>
+<td style="text-align: center;">1-d numpy array</td>
+<td style="text-align: center;">contains the column of year values in the NASA data set</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">annual_temp_anomaly</td>
+<td style="text-align: center;">1-d numpy array</td>
+<td style="text-align: center;">contains the column of annual temperature anomaly values in the NASA data set</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">year_index</td>
+<td style="text-align: center;">integer variable</td>
+<td style="text-align: center;">specifies the year currently being calculated</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">anomaly_subset</td>
+<td style="text-align: center;">1-d numpy array</td>
+<td style="text-align: center;">contains the five temperature anomalies that will be averaged</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">moving_year_data</td>
+<td style="text-align: center;">1-d numpy array</td>
+<td style="text-align: center;">contains the year values for which a moving average is calculated</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">moving_annual_temp_anomaly</td>
+<td style="text-align: center;">1-d numpy array</td>
+<td style="text-align: center;">contains the moving average value for each year in moving_year_data</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="global-surface-temp-implementation" class="level3">
+<h3 class="anchored" data-anchor-id="global-surface-temp-implementation">Implementation</h3>
+<p>We can collect together pieces of code from sections 4.5 and 4.6 to create code for our problem solution. Since NumPy arrays do not allow for the append operation, as can be done with a Python list, we must create new NumPy arrays with the correct length before using them. An empty array is created using the NumPy empty function, as shown below in lines 29 and 30.</p>
+<p>The subset of the temperature anomaly values to be averaged is obtained from an array slicing operation in line 36. The average of the subset values is obtained using the NumPy mean function in line 37.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a><span class="co">"""</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a><span class="co">Title: 5-year Moving Average Plot</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a><span class="co">Version: 6.29.2022.1</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a><span class="co">Summary: This program will read in annual temperature anomaly data </span></span>
+<span id="cb15-6"><a href="#cb15-6"></a><span class="co">         provided by NASA, calculate a 5-year</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a><span class="co">         moving average, then plot both the raw data and moving average.</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a><span class="co">Revision History:</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a><span class="co">    6.29.2022.1: base</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a></span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">"""</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb15-14"><a href="#cb15-14"></a></span>
+<span id="cb15-15"><a href="#cb15-15"></a>cols <span class="op">=</span> np.loadtxt(<span class="st">'GLB.Ts+dSST_clean.txt'</span>, skiprows<span class="op">=</span><span class="dv">9</span>)</span>
+<span id="cb15-16"><a href="#cb15-16"></a>year_data <span class="op">=</span> cols[:, <span class="dv">0</span>]</span>
+<span id="cb15-17"><a href="#cb15-17"></a>annual_temp_anomaly <span class="op">=</span> cols[:, <span class="dv">13</span>]</span>
+<span id="cb15-18"><a href="#cb15-18"></a></span>
+<span id="cb15-19"><a href="#cb15-19"></a><span class="co"># Calculate the actual annual temperature anomaly</span></span>
+<span id="cb15-20"><a href="#cb15-20"></a>annual_temp_anomaly <span class="op">=</span> annual_temp_anomaly<span class="op">/</span><span class="fl">100.</span></span>
+<span id="cb15-21"><a href="#cb15-21"></a></span>
+<span id="cb15-22"><a href="#cb15-22"></a><span class="co"># Define the year range</span></span>
+<span id="cb15-23"><a href="#cb15-23"></a>first_year <span class="op">=</span> <span class="fl">1883.</span></span>
+<span id="cb15-24"><a href="#cb15-24"></a>last_year <span class="op">=</span> <span class="fl">2019.</span></span>
+<span id="cb15-25"><a href="#cb15-25"></a>first_year_index <span class="op">=</span> np.where(year_data <span class="op">==</span> first_year)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb15-26"><a href="#cb15-26"></a>last_year_index <span class="op">=</span> np.where(year_data <span class="op">==</span> last_year)[<span class="dv">0</span>][<span class="dv">0</span>]</span>
+<span id="cb15-27"><a href="#cb15-27"></a></span>
+<span id="cb15-28"><a href="#cb15-28"></a><span class="co"># Create empty numpy arrays for plot</span></span>
+<span id="cb15-29"><a href="#cb15-29"></a>moving_year_data <span class="op">=</span> np.empty(<span class="bu">len</span>(year_data)<span class="op">-</span><span class="dv">4</span>)</span>
+<span id="cb15-30"><a href="#cb15-30"></a>moving_annual_temp_anomaly <span class="op">=</span> np.empty(<span class="bu">len</span>(moving_year_data))</span>
+<span id="cb15-31"><a href="#cb15-31"></a></span>
+<span id="cb15-32"><a href="#cb15-32"></a><span class="co"># Calculate the moving average</span></span>
+<span id="cb15-33"><a href="#cb15-33"></a>moving_year_index <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb15-34"><a href="#cb15-34"></a><span class="cf">for</span> year_index <span class="kw">in</span> <span class="bu">range</span>(first_year_index, last_year_index <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="cb15-35"><a href="#cb15-35"></a>    <span class="co"># obtain temperature anomaly subset</span></span>
+<span id="cb15-36"><a href="#cb15-36"></a>    anomaly_subset <span class="op">=</span> annual_temp_anomaly[year_index <span class="op">-</span> <span class="dv">2</span>:year_index <span class="op">+</span> <span class="dv">2</span>]</span>
+<span id="cb15-37"><a href="#cb15-37"></a>    temp_anomaly_mean <span class="op">=</span> np.mean(anomaly_subset)</span>
+<span id="cb15-38"><a href="#cb15-38"></a>    moving_year_data[moving_year_index] <span class="op">=</span> year_data[year_index]</span>
+<span id="cb15-39"><a href="#cb15-39"></a>    moving_annual_temp_anomaly[moving_year_index] <span class="op">=</span> temp_anomaly_mean</span>
+<span id="cb15-40"><a href="#cb15-40"></a>    moving_year_index <span class="op">=</span> moving_year_index <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The code block that creates the plot is shown below. The linestyle keyword argument is used to choose whether a line is solid, dotted, or dashed. The empty string, , indicates no line is drawn, which is often used when plotting data points. The linestyle value - indicates a solid line. The label keyword argument specifies a string that is used when a legend is shown. The legend is produced with default placement by</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will discuss keyword arguments used in the plot function in greater detail in the next chapter. Generally, a review of examples from the Matplotlib documentation or tutorials can help figure out good choices for the keyword argument values <span class="citation" data-cites="TheMatplotlibDevelopmentTeam_TutorialsMatplotlib352_2022">(<a href="../../bibliography.html#ref-TheMatplotlibDevelopmentTeam_TutorialsMatplotlib352_2022" role="doc-biblioref">The Matplotlib Development Team, 2022</a>)</span> .</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot the raw data and moving average</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>plt.plot(year_data, annual_temp_anomaly, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'d'</span>,</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>         markersize<span class="op">=</span><span class="fl">5.0</span>, label<span class="op">=</span><span class="st">'Annual Mean'</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>plt.plot(moving_year_data, moving_annual_temp_anomaly, linestyle<span class="op">=</span><span class="st">'-'</span>,</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>         linewidth<span class="op">=</span><span class="dv">2</span>, label<span class="op">=</span><span class="st">'5 year Moving Average'</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'year'</span>)</span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Temperature Anomaly'</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'tempAnomalyVsYearMovingAvg.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The complete listing is contained in the chapter program file 5_year_moving_average_plot.py.</p>
+</section>
+<section id="global-surface-temp-testing" class="level3">
+<h3 class="anchored" data-anchor-id="global-surface-temp-testing">Testing</h3>
+<p>When the 5-year Moving Average Plot program is executed, we get the graph shown in <a href="#fig-Figure4.16" class="quarto-xref">Figure&nbsp;<span>16</span></a>. This plot does resemble the one produced by NASA scientists, shown in <a href="#fig-Figure4.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>. This provides evidence that the problem solution is correct. The five year moving average line shows more fluctuations than the LOWESS smoothing line in <a href="#fig-Figure4.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>. This is likely due to the five year moving window being smaller than that used in the LOWESS smoothing algorithm. It would be interesting to compare a seven year moving average with the five year moving average.</p>
+<div id="fig-Figure4.16" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure4.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch04/Figures/Figure4.16.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure4.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Plot output from the 5-year Moving Average Plot program.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>1. (Fill-in-the-blank): A <strong>sequence</strong> is a ________ ordered set of values, each of which can be accessed using an _____ number</p>
+<ol start="2" type="1">
+<li>Which of the following Python data structures are mutable? Choose all that apply.</li>
+</ol>
+<ol type="a">
+<li>lists</li>
+<li>strings</li>
+<li>tuples</li>
+<li>NumPy arrays</li>
+</ol>
+<p>3. What is the resulting list when the value at index three is removed?</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>index</strong></th>
+<th style="text-align: center;"><strong>value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">25</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">2</td>
+<td style="text-align: center;">-5</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">3</td>
+<td style="text-align: center;">50</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">4</td>
+<td style="text-align: center;">75</td>
+</tr>
+</tbody>
+</table>
+<table class="caption-top table" data-quarto-postprocess="true" width="60% border=" data-1"="">
+<colgroup>
+<col style="width: 50%">
+<col style="width: 50%">
+</colgroup>
+<tbody>
+<tr class="odd">
+<td>a.
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th"><span style="font-weight:normal"><strong>index</strong></span></th>
+<th data-quarto-table-cell-role="th"><span style="font-weight:normal"><strong>value</strong></span></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="font-weight:normal">0</span></td>
+<td><span style="font-weight:normal">25</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">1</span></td>
+<td><span style="font-weight:normal">15</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">2</span></td>
+<td><span style="font-weight:normal">-5</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">3</span></td>
+<td><span style="font-weight:normal">0</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">4</span></td>
+<td><span style="font-weight:normal">75</span></td>
+</tr>
+</tbody>
+</table></td>
+<td>b.
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="font-weight:normal">0</span></td>
+<td><span style="font-weight:normal">25</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">1</span></td>
+<td><span style="font-weight:normal">15</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">2</span></td>
+<td><span style="font-weight:normal">-5</span></td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+<tr class="even">
+<td>c.
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="font-weight:normal">0</span></td>
+<td><span style="font-weight:normal">25</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">1</span></td>
+<td><span style="font-weight:normal">15</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">2</span></td>
+<td><span style="font-weight:normal">-5</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">4</span></td>
+<td><span style="font-weight:normal">75</span></td>
+</tr>
+</tbody>
+</table></td>
+<td>d.
+<table class="caption-top table" data-quarto-postprocess="true">
+<thead>
+<tr class="header">
+<th data-quarto-table-cell-role="th">index</th>
+<th data-quarto-table-cell-role="th">value</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><span style="font-weight:normal">0</span></td>
+<td><span style="font-weight:normal">25</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">1</span></td>
+<td><span style="font-weight:normal">15</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">2</span></td>
+<td><span style="font-weight:normal">-5</span></td>
+</tr>
+<tr class="even">
+<td><span style="font-weight:normal">3</span></td>
+<td><span style="font-weight:normal">0</span></td>
+</tr>
+<tr class="odd">
+<td><span style="font-weight:normal">4</span></td>
+<td><span style="font-weight:normal">0</span></td>
+</tr>
+</tbody>
+</table></td>
+</tr>
+</tbody>
+</table>
+<p>4. What are the index values for a tuple with 4 elements?</p>
+<ol type="a">
+<li>0-4</li>
+<li>0-3</li>
+<li>1-4</li>
+</ol>
+<p>5. How would you define a tuple with the one element 12?</p>
+<ol type="a">
+<li>[12]</li>
+<li>[12,]</li>
+<li><ol start="12" type="1">
+<li></li>
+</ol></li>
+<li>(12,)</li>
+</ol>
+<p>6. What would be the list resulting from the [1:3] slice in</p>
+<p>[80, 70, 75, 50, 65]</p>
+<ol type="a">
+<li>[80, 70, 75]</li>
+<li>[70, 75, 50]</li>
+<li>[70, 75]</li>
+</ol>
+<p>7. Select all true statements about Python sequence data types.</p>
+<ol type="a">
+<li>All items in a Python list must be the same data type (all integers, all strings, etc.).</li>
+<li>An attempt to assign a new value to a tuple element will result in an error.</li>
+<li>Python lists, tuples, and strings all use zero-based indexing.</li>
+</ol>
+<ol start="8" type="1">
+<li>Write a Python expression that prints out the third element of list1 defined below.</li>
+</ol>
+<p>list1 = [125, -75, 25, 50, 15]</p>
+</section>
+<section id="program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-modification-problems">Program Modification Problems</h2>
+<p>1. In this exercise, you are given a program, shown below, that generates a list of random numbers and then counts the number of odd numbers in the list. You need to modify the program so that it creates two lists of random numbers, adds up the odd numbers in one list, adds up the even numbers in the second list, and then adds the two sums together.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Count Odds</span></span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 2.5.2020.1</span></span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program creates a list of random numbers and</span></span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="co">         counts how many odd numbers are in the list.</span></span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="co">         </span></span>
+<span id="cb18-8"><a href="#cb18-8" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb18-9"><a href="#cb18-9" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="cb18-10"><a href="#cb18-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-11"><a href="#cb18-11" aria-hidden="true" tabindex="-1"></a><span class="co"># make a list of random numbers</span></span>
+<span id="cb18-12"><a href="#cb18-12" aria-hidden="true" tabindex="-1"></a>lst <span class="op">=</span> []</span>
+<span id="cb18-13"><a href="#cb18-13" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">10</span>):</span>
+<span id="cb18-14"><a href="#cb18-14" aria-hidden="true" tabindex="-1"></a>    lst.append(rn.randint(<span class="dv">0</span>, <span class="dv">1000</span>))</span>
+<span id="cb18-15"><a href="#cb18-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb18-16"><a href="#cb18-16" aria-hidden="true" tabindex="-1"></a><span class="co"># count the number of odd numbers in the list</span></span>
+<span id="cb18-17"><a href="#cb18-17" aria-hidden="true" tabindex="-1"></a>odd <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb18-18"><a href="#cb18-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> e <span class="kw">in</span> lst:</span>
+<span id="cb18-19"><a href="#cb18-19" aria-hidden="true" tabindex="-1"></a>   <span class="cf">if</span> e <span class="op">%</span> <span class="dv">2</span> <span class="op">!=</span> <span class="dv">0</span>:</span>
+<span id="cb18-20"><a href="#cb18-20" aria-hidden="true" tabindex="-1"></a>       odd <span class="op">=</span> odd <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb18-21"><a href="#cb18-21" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'The number of odd numbers in the list is: '</span>,odd)</span>
+<span id="cb18-22"><a href="#cb18-22" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>2. The program below will create a tan(t) graph. Modify it to create a plot of the following function</p>
+<p><span class="math display">\[f\left(t\right) = 5.0 \ast \sin \left(t\right)\]</span></p>
+<p>for <span class="math inline">\(- 3.14 \leq t \leq 3.14\)</span>.</p>
+<p>The plot should have</p>
+<ul>
+<li><p>a dashed red line with a thickness of 5.</p></li>
+<li><p>The x-axis title should be ‘t.’</p></li>
+<li><p>The y-axis title should be ‘f(t).’</p></li>
+<li><p>The y-axis scale should be adjusted to <span class="math inline">\(- 6 \leq t \leq 6\)</span></p></li>
+<li><p>The chart title should be ‘5*sin(t) versus t’. The font size should be 20. The font color should be green.</p></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Plot Function</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: </span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 1.25.2020.1</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This script creates a basic plot of a function with</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">         user chosen features including the line style and </span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">         line width.</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="op">-</span><span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">100</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> np.tan(x)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y,color<span class="op">=</span><span class="st">'g'</span>,linestyle<span class="op">=</span><span class="st">'-'</span>,linewidth<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>,fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>,fontsize<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'tan(x) vs x'</span>,fontsize<span class="op">=</span><span class="dv">24</span>, color<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>plt.grid(<span class="va">True</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a>plt.axis(ymin<span class="op">=-</span><span class="dv">10</span>,ymax<span class="op">=</span><span class="dv">10</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>plt.show()    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>3. Write a program that creates a plot of <span class="math inline">\(\cos \left(t\right)\)</span> and <span class="math inline">\(\sin \left(t\right)\)</span> for <span class="math inline">\(0 \leq t \leq 2\pi\)</span> with both plots on the same graph. You can start with the Chapter 4 Program Modification Problem 2 code. Your final graph should</p>
+<ul>
+<li><p>show sin as a solid red curve</p></li>
+<li><p>show cos as a solid blue curve</p></li>
+<li><p>have a legend</p></li>
+<li><p>show the title ‘Comparison of cos and sin’ in green.</p></li>
+<li><p>use <span class="math inline">\(- 1.5 \leq y \leq 1.5\)</span> for the y-axis scale</p></li>
+</ul>
+</section>
+<section id="ch04-program-development-problems" class="level2">
+<h2 class="anchored" data-anchor-id="ch04-program-development-problems">Program Development Problems</h2>
+<p>1. Write a program that will create a moving average plot of the NASA global temperature anomaly data for a user specified moving average window. The user will specify a window size that should be an odd number of years. The program should calculate the required moving average for as many years in the data as possible and then create a plot of the annual data, shown with data symbols, and the moving average, shown as a solid line.</p>
+</section>
+<section id="ch04-references" class="level2">
+<h2 class="anchored" data-anchor-id="ch04-references">References</h2>
+<div class="flushleft">
+<p>GISTEMP Team. (2022a). <em>Data.GISS: GISS Surface Temperature Analysis (v4): Analysis Graphs and Plots</em>. https://data.giss.nasa.gov/gistemp/graphs/</p>
+<p>GISTEMP Team. (2022b). <em>GISS Surface Temperature Analysis (GISTEMP), version 4.</em> [Database]. NASA Goddard Institute for Space Studies. https://data.giss.nasa.gov/gistemp/</p>
+<p><em>NumPy</em>. (2022). https://numpy.org/</p>
+<p>The Matplotlib Development team. (2021). <em>Matplotlib—Visualization with Python</em>. https://matplotlib.org/</p>
+<p>The Matplotlib Development Team. (2022). <em>Tutorials—Matplotlib 3.5.2 documentation</em>. https://matplotlib.org/stable/tutorials/index.html</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-GISTEMPTeam_DataGISSGISSSurface_2022" class="csl-entry" role="listitem">
+GISTEMP Team. (2022a). <em>Data.<span>GISS</span>: <span>GISS Surface Temperature Analysis</span> (v4): <span>Analysis Graphs</span> and <span>Plots</span></em>. <a href="https://data.giss.nasa.gov/gistemp/graphs/">https://data.giss.nasa.gov/gistemp/graphs/</a>
+</div>
+<div id="ref-GISTEMPTeam_GISSSurfaceTemperature_2022" class="csl-entry" role="listitem">
+GISTEMP Team. (2022b). <em><span>GISS Surface Temperature Analysis</span> (<span>GISTEMP</span>), version 4.</em> [Database]. NASA Goddard Institute for Space Studies. <a href="https://data.giss.nasa.gov/gistemp/">https://data.giss.nasa.gov/gistemp/</a>
+</div>
+<div id="ref-Numpy_NumPy_2022" class="csl-entry" role="listitem">
+Numpy. (2022). <em><span>NumPy</span></em>. <a href="https://numpy.org/">https://numpy.org/</a>
+</div>
+<div id="ref-TheMatplotlibDevelopmentteam_MatplotlibVisualizationPython_2021" class="csl-entry" role="listitem">
+The Matplotlib Development team. (2021). <em>Matplotlib — <span>Visualization</span> with <span>Python</span></em>. <a href="https://matplotlib.org/">https://matplotlib.org/</a>
+</div>
+<div id="ref-TheMatplotlibDevelopmentTeam_TutorialsMatplotlib352_2022" class="csl-entry" role="listitem">
+The Matplotlib Development Team. (2022). <em>Tutorials — <span>Matplotlib</span> 3.5.2 documentation</em>. <a href="https://matplotlib.org/stable/tutorials/index.html">https://matplotlib.org/stable/tutorials/index.html</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="pagination-link" aria-label="Control Structures">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="pagination-link" aria-label="Principles of Scientific Visualization">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

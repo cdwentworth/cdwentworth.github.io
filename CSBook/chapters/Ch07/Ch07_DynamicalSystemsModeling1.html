@@ -1,0 +1,1424 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Dynamical Systems Modeling I – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" rel="next">
+<link href="../../chapters/Ch06/Ch06_Functions.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-mathematical-model-for-bacterial-growth" id="toc-motivating-problem-mathematical-model-for-bacterial-growth" class="nav-link active" data-scroll-target="#motivating-problem-mathematical-model-for-bacterial-growth">Motivating Problem: Mathematical Model for Bacterial Growth</a></li>
+  <li><a href="#calculus-concepts" id="toc-calculus-concepts" class="nav-link" data-scroll-target="#calculus-concepts">Calculus Concepts</a>
+  <ul class="collapse">
+  <li><a href="#derivatives" id="toc-derivatives" class="nav-link" data-scroll-target="#derivatives">Derivatives</a></li>
+  <li><a href="#integrals" id="toc-integrals" class="nav-link" data-scroll-target="#integrals">Integrals</a></li>
+  <li><a href="#numerical-calculation-of-derivatives-and-integrals" id="toc-numerical-calculation-of-derivatives-and-integrals" class="nav-link" data-scroll-target="#numerical-calculation-of-derivatives-and-integrals">Numerical Calculation of Derivatives and Integrals</a></li>
+  </ul></li>
+  <li><a href="#definition-of-a-dynamical-system:sec" id="toc-definition-of-a-dynamical-system:sec" class="nav-link" data-scroll-target="#definition-of-a-dynamical-system\:sec">Definition of A Dynamical System</a></li>
+  <li><a href="#numerical-solution-of-a-dynamical-systems-model:sec" id="toc-numerical-solution-of-a-dynamical-systems-model:sec" class="nav-link" data-scroll-target="#numerical-solution-of-a-dynamical-systems-model\:sec">Numerical Solution of a Dynamical Systems Model</a></li>
+  <li><a href="#computational-problem-solving-mathematical-model-for-the-growth-of-pseudomonas-aeruginosa" id="toc-computational-problem-solving-mathematical-model-for-the-growth-of-pseudomonas-aeruginosa" class="nav-link" data-scroll-target="#computational-problem-solving-mathematical-model-for-the-growth-of-pseudomonas-aeruginosa">Computational Problem Solving: Mathematical Model for the Growth of <em>Pseudomonas aeruginosa</em></a></li>
+  <li><a href="#ch07-exercises:sec" id="toc-ch07-exercises:sec" class="nav-link" data-scroll-target="#ch07-exercises\:sec">Exercises</a></li>
+  <li><a href="#ch07-program-modification-problems:sec" id="toc-ch07-program-modification-problems:sec" class="nav-link" data-scroll-target="#ch07-program-modification-problems\:sec">Program Modification Problems</a></li>
+  <li><a href="#ch07-program-development-problems:sec" id="toc-ch07-program-development-problems:sec" class="nav-link" data-scroll-target="#ch07-program-development-problems\:sec">Program Development Problems</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Dynamical Systems Modeling I</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>A dynamical systems model will allow a researcher to make quantitative predictions about a system, particularly with respect to the time development of important system properties. Such models are based on fundamental principles, not just empirical data, so they contribute to our basic understanding of the system being investigated. With a dynamical systems model we can make more reliable predictions about the course of a disease in a population, the metabolism of a drug in the human body, how the concentration of CO<sub>2</sub> in the atmosphere changes over time, the motion of a space vehicle on its way to Mars, and even the motion of planets in our solar system over thousands of years.</p>
+<p>This chapter will introduce you to some basic concepts of calculus that will make dynamical systems models easier to understand and some computational methods of solving the models to obtain predictions without having to know a lot of sophisticated mathematics.</p>
+<section id="motivating-problem-mathematical-model-for-bacterial-growth" class="level2">
+<h2 class="anchored" data-anchor-id="motivating-problem-mathematical-model-for-bacterial-growth">Motivating Problem: Mathematical Model for Bacterial Growth</h2>
+<p><em>Pseudomonas aeruginosa</em> is a common species of bacteria found in soil, water reservoirs polluted by animals and humans, the human gastrointestinal tract, and on human skin <span class="citation" data-cites="DiggleWhiteley_MicrobeProfilePseudomonas_2020">(<a href="../../bibliography.html#ref-DiggleWhiteley_MicrobeProfilePseudomonas_2020" role="doc-biblioref">Diggle &amp; Whiteley, 2020</a>)</span>. It is involved in opportunistic infections of people, often in hospital settings, which makes it an important microbe to study and understand. If a container of liquid growth medium is inoculated with a small sample of the microbe, then growth data such as that shown in <a href="#fig-Figure7.1" class="quarto-xref">Figure&nbsp;<span>1</span></a> will be obtained.</p>
+<div id="fig-Figure7.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/PA01_SuspCell_0p25PerCentGlucose_5-3-2017.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Growth data for PA01 in 0.25% glucose medium.
+</figcaption>
+</figure>
+</div>
+<p>Our understanding of any microbial organism, such as <em>Pseudomonas aeruginosa</em>, will be aided by having an accurate mathematical model for the growth. The concepts developed in this chapter will help us to develop such a model and to simulate the model through numerical calculations done by computer.</p>
+</section>
+<section id="calculus-concepts" class="level2">
+<h2 class="anchored" data-anchor-id="calculus-concepts">Calculus Concepts</h2>
+<p>Your understanding of mathematical models will be aided by knowing just a couple of ideas from calculus, namely, the basic idea of a derivative of a function and the integral of a function. The goal here is not to become proficient at doing all the operations of taking derivatives or calculating integrals but to just have a basic conceptual understanding of what these mathematical things represent.</p>
+<section id="derivatives" class="level3">
+<h3 class="anchored" data-anchor-id="derivatives">Derivatives</h3>
+<p>We will start with the derivative of a function. Consider the simple physics experiment of dropping a ball from some height and recording its position as a function of time. <a href="#tbl-Table7p1" class="quarto-xref">Table&nbsp;<span>1</span></a> gives some actual data taken from a video of such a ball drop. @#fig-Figure7.2 shows a graph of the data.</p>
+<div id="tbl-Table7p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table7p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Height as a function of time for a dropped ball.
+</figcaption>
+<div aria-describedby="tbl-Table7p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>t [s]</th>
+<th>y [m]</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0.06673</td>
+<td>2.693</td>
+</tr>
+<tr class="even">
+<td>0.1001</td>
+<td>2.682</td>
+</tr>
+<tr class="odd">
+<td>0.1335</td>
+<td>2.67</td>
+</tr>
+<tr class="even">
+<td>0.1668</td>
+<td>2.611</td>
+</tr>
+<tr class="odd">
+<td>0.2002</td>
+<td>2.576</td>
+</tr>
+<tr class="even">
+<td>0.2336</td>
+<td>2.505</td>
+</tr>
+<tr class="odd">
+<td>0.2669</td>
+<td>2.446</td>
+</tr>
+<tr class="even">
+<td>0.3003</td>
+<td>2.341</td>
+</tr>
+<tr class="odd">
+<td>0.3337</td>
+<td>2.235</td>
+</tr>
+<tr class="even">
+<td>0.367</td>
+<td>2.141</td>
+</tr>
+<tr class="odd">
+<td>0.4004</td>
+<td>1.999</td>
+</tr>
+<tr class="even">
+<td>0.4338</td>
+<td>1.882</td>
+</tr>
+<tr class="odd">
+<td>0.4671</td>
+<td>1.729</td>
+</tr>
+<tr class="even">
+<td>0.5005</td>
+<td>1.588</td>
+</tr>
+<tr class="odd">
+<td>0.5339</td>
+<td>1.411</td>
+</tr>
+<tr class="even">
+<td>0.5672</td>
+<td>1.247</td>
+</tr>
+<tr class="odd">
+<td>0.6006</td>
+<td>1.047</td>
+</tr>
+<tr class="even">
+<td>0.634</td>
+<td>0.8586</td>
+</tr>
+<tr class="odd">
+<td>0.6673</td>
+<td>0.6586</td>
+</tr>
+<tr class="even">
+<td>0.7007</td>
+<td>0.4705</td>
+</tr>
+<tr class="odd">
+<td>0.7341</td>
+<td>0.2588</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="fig-Figure7.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7.2.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Ball height as a function of time. Data is from <a href="#tbl-Table7p1" class="quarto-xref">Table&nbsp;<span>1</span></a>.
+</figcaption>
+</figure>
+</div>
+<p>You can probably tell from the graph that the ball is speeding up over time, as it drops. The data points are at equal time intervals and the change in y clearly gets bigger as time increases. We will describe the y-coordinate by the function <span class="math inline">\(y\left(t\right)\)</span>. We define the average rate of change of <span class="math inline">\(y\left(t\right)\)</span> by</p>
+<p><span id="eq-Equation7.1"><span class="math display">\[\overline{v}_y = \frac{y\left(t_2\right)- y\left(t_1\right)}{t_2- t_1} = \frac{\Delta y}{\Delta t} \tag{1}\]</span></span></p>
+<p>We choose to symbolize this number by <span class="math inline">\(\overline{v}_y\)</span> because in this case it turns out to be the average velocity of the ball, hence the <em>v</em>. We can easily estimate the average rate of change of <span class="math inline">\(y\left(t\right)\)</span> by using the data in the table. For the average rate of change between 0.2002 and 0.2669 [s] we have</p>
+<p><span id="eq-Equation7.2"><span class="math display">\[\overline{v}_y = \frac{y\left(0.2669\right)- y\left(0.2002\right)}{0.2669- 0.2002} = \frac{(2.446- 2.576)\left[m\right]}{0.0667\left[s\right]} = - 1.95\left[m/ s\right] \tag{2}\]</span></span></p>
+<p>The main conceptual idea of a derivative of a function such as <span class="math inline">\(y\left(t\right)\)</span> is to calculate the average rate of change of <span class="math inline">\(y\left(t\right)\)</span> as the time interval gets infinitesimally small. The mathematical process of doing this is taking a limit, although you do not need to worry about the details of actually doing this. We call this value the instantaneous rate of change of <span class="math inline">\(y\left(t\right)\)</span> at a particular value of <em>t</em>. The symbol for the instantaneous rate of change of with <span class="math inline">\(y\left(t\right)\)</span> respect to <em>t</em> at <em>t = a</em> is</p>
+<p><span id="eq-Equation7.3"><span class="math display">\[\left.\frac{dy\left(t\right)}{dt}\right|_{t = a} \tag{3}\]</span></span></p>
+<p>and this quantity is called the derivative of <span class="math inline">\(y\left(t\right)\)</span> at <em>t=a</em>. Formally, we define</p>
+<p><span id="eq-Equation7.4"><span class="math display">\[\left.\frac{dy\left(t\right)}{dt}\right|_{t = a} = \mathop{\text{lim}}\limits_{\Delta t\rightarrow 0}\frac{y\left(a + \Delta t\right)- y\left(a\right)}{\Delta t} \tag{4}\]</span></span></p>
+<p>If you take a calculus course, you will learn a variety of techniques for performing the limit procedure. For our purposes, we can interpret the derivative geometrically. The derivative of <span class="math inline">\(y\left(t\right)\)</span> at <em>t = a</em> is the slope of the tangent line to <span class="math inline">\(y\left(t\right)\)</span> drawn at <em>t = a</em>. For example, <a href="#fig-Figure7_derivativeGeometrical" class="quarto-xref">Figure&nbsp;<span>3</span></a> shows a model calculation for the ball height <span class="math inline">\(y\left(t\right)\)</span> with an estimate of the derivative of <span class="math inline">\(y\left(t\right)\)</span> at t = 0.20 [s]. A straight line is drawn tangent to the curve at t = 0.20 [s], and the slope of the straight line is estimated from the rise and run. We get</p>
+<p><span id="eq-Equation7.5"><span class="math display">\[\left.\frac{dy\left(t\right)}{dt}\right|_{t = 0.20} = \text{slope of tangent line} = \frac{- 1.69\left[m\right]}{0.80\left[s\right]} = - 2.1\left[m/ s\right] \tag{5}\]</span></span></p>
+<div id="fig-Figure7_derivativeGeometrical" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7_derivativeGeometrical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7_derivativeGeometrical.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7_derivativeGeometrical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Illustration of finding the derivative of a function at t = 0.2 [s] by estimating the slope of the tangent line.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="integrals" class="level3">
+<h3 class="anchored" data-anchor-id="integrals">Integrals</h3>
+<p>The second calculus concept we need is the integral of a function. The geometrical meaning of the definite integral of a function <em>v(t)</em> between <em>t<sub>1</sub></em> and <em>t<sub>2</sub></em> is the area under the curve between <em>t=t<sub>1</sub></em> and <em>t=t<sub>2</sub></em></p>
+<div id="fig-Figure7_integralGeometrical" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7_integralGeometrical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7_integralGeometrical.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7_integralGeometrical-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The shaded area represents the integral of v(t) between t1 and t2 .
+</figcaption>
+</figure>
+</div>
+<p>In <a href="#fig-Figure7_integralGeometrical" class="quarto-xref">Figure&nbsp;<span>4</span></a> , the shaded area represents the integral of <em>v(t)</em> between <em>t<sub>1</sub></em> and <em>t<sub>2</sub></em> .</p>
+<p>Mathematicians use a special symbol to represent the integral of a function, as shown in the following equation.</p>
+<p><span id="eq-Equation7.6"><span class="math display">\[\int\limits_{t_1}^{t_2}v\left(t\right)dt = \text{area under v-t graph from }t_1\text{ to }t_2 \tag{6}\]</span></span></p>
+<p>As an example, consider <a href="#fig-Figure7_v-t_Graph" class="quarto-xref">Figure&nbsp;<span>5</span></a>. Let’s calculate the integral of <em>v(t)</em> from t = 0 to t = 2 [s].</p>
+<p><span id="eq-Equation7.7"><span class="math display">\[\int\limits_0^2v\left(t\right)dt = \text{area under v-t graph }\text{from }\text{0[s] }\text{to }\text{2[s]}\text{=}\frac{1}{2}\text{base} \times \text{height} = \frac{1}{2} \times 2 \times 20 = 20\left[m\right] \tag{7}\]</span></span></p>
+<div id="fig-Figure7_v-t_Graph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7_v-t_Graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7_v-t_Graph.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7_v-t_Graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Velocity as a function of time for a particle with constant acceleration.
+</figcaption>
+</figure>
+</div>
+<p>The integral of a function is essentially the opposite of the derivative. In fact, if you integrate the derivative of a function you end up with the function itself. We can express this as</p>
+<p><span id="eq-Equation7.8"><span class="math display">\[\int\limits_{t_1}^{t_2}\frac{dy}{dt}dt = y\left(t_2\right)- y\left(t_1\right) \tag{8}\]</span></span></p>
+</section>
+<section id="numerical-calculation-of-derivatives-and-integrals" class="level3">
+<h3 class="anchored" data-anchor-id="numerical-calculation-of-derivatives-and-integrals">Numerical Calculation of Derivatives and Integrals</h3>
+<p>Both the derivative of a function and the integral of a function can be calculated numerically with standard Python library functions. The derivative function is in the scipy sublibrary named misc <span class="citation" data-cites="TheSciPycommunity_ScipymiscderivativeSciPyV190_2022">(<a href="../../bibliography.html#ref-TheSciPycommunity_ScipymiscderivativeSciPyV190_2022" role="doc-biblioref">The SciPy community, 2022b</a>)</span>. A template for using the derivative function is shown below.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.misc <span class="im">as</span> spm</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(x):</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x<span class="op">**</span><span class="dv">3</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>dfx <span class="op">=</span> spm.derivative(f,<span class="dv">2</span>,dx<span class="op">=</span><span class="fl">1e-6</span>,n<span class="op">=</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The scipy library scipy.integrate has several functions for performing numerical integration. They differ by the algorithm used. The best first choice is the quad function <span class="citation" data-cites="TheSciPycommunity_ScipyintegratequadSciPyV190_2022">(<a href="../../bibliography.html#ref-TheSciPycommunity_ScipyintegratequadSciPyV190_2022" role="doc-biblioref">The SciPy community, 2022a</a>)</span>. Here is the basic syntax for using the quad function.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>scipy.integrate.quad(f,a,b,args<span class="op">=</span>())</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>f : a Python function</p>
+<p>a: float that is the lower limit of integral</p>
+<p>b: float that is the upper limit of integral</p>
+<p>args: a tuple that contains any parameters required by f</p>
+<p>The quad function returns a tuple: (value of integral, error estimate). A template for using the quad function to perform integration is shown below.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t):</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> (<span class="fl">30.</span> <span class="op">-</span> <span class="fl">1.8</span><span class="op">*</span>t <span class="op">-</span> <span class="fl">0.040</span><span class="op">*</span>t<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>intFunc <span class="op">=</span> si.quad(f,<span class="dv">0</span>,<span class="dv">5</span>)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>integral_value <span class="op">=</span> intFunc[<span class="dv">0</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="definition-of-a-dynamical-system:sec" class="level2">
+<h2 class="anchored" data-anchor-id="definition-of-a-dynamical-system:sec">Definition of A Dynamical System</h2>
+<p>A dynamical system is one that changes with time. Mathematically, it is a set of variables that describe the system of interest, and these variables will all depend on time. The state of the system is described by the value of the variables at a particular time. The present state of the system will depend on the system state in the past. The mathematical model defining the dynamical system is typically described by the state variable definitions and equations describing the rate of change for these variables.</p>
+<p>Examples:</p>
+<ul>
+<li><p>Population of an organism</p></li>
+<li><p>electrical behavior of a network of neurons</p></li>
+<li><p>Planetary positions in a stellar system</p></li>
+<li><p>the motion of molecules in a fluid</p></li>
+<li><p>drug concentration in a body part</p></li>
+<li><p>many, many more biological, physical, and social systems</p></li>
+</ul>
+<p>In the simplest case, the state of the system will be described by the value of one variable, which will be a function of time. Let us represent the state by the variable <span class="math inline">\(y\left(t\right)\)</span>, which is shown explicitly to be a function of time. <em>y</em> might be concentration of bacteria in a container, for example. For this one-variable system, the model is specified by the time-rate-of-change of <em>y</em>, which is just the derivative of <em>y</em> with respect to <em>t</em>.</p>
+<p><span id="eq-Equation7.9"><span class="math display">\[\frac{dy}{dt} = f\left(t,y,\mathbf p\right) \tag{9}\]</span></span></p>
+<p>The function <em>f</em> is assumed to be known. We see that it can depend on the current time <em>t</em>, the current value of the state variable <em>y</em>, and on model parameters contained in the vector <strong>p</strong>. If the value of <em>y</em> is known at one time, often <span class="math inline">\(t=0\)</span>, then Equation will determine the behavior of <em>y</em> for all subsequent <em>t</em>. The general term for this kind of mathematical problem is the Initial Value Problem (IVP).</p>
+<p>Of course, many biological, physical, and social systems require more than one variable to define a state. Even a simple pendulum represented by a ball of mass m attached to a massless, rigid rod with a pivot point so that the ball moves in a plane requires two variables to describe the state of the system, the angle <span class="math inline">\(\theta\)</span> measured with respect to the vertical and the angular velocity <span class="math inline">\(\omega\)</span>. <a href="#fig-Figure7.6" class="quarto-xref">Figure&nbsp;<span>6</span></a> shows the geometry.</p>
+<div id="fig-Figure7.6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7.6.png" class="img-fluid figure-img" style="width:30.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Pendulum geometry.
+</figcaption>
+</figure>
+</div>
+<p>The more general dynamical system can be described by N state variables, <span class="math inline">\(y_0,\dddot ,y_{N- 1}\)</span>, and N rate equations, one for each state variable.</p>
+<p><span id="eq-Equation7.10"><span class="math display">\[\begin{array}{l} \frac{dy_0}{dt} = f_1\left(t,y_0,\cdots, y_{N- 1},\mathbf p_0\right) \\ \vdots  \\ \frac{dy_{N- 1}}{dt} = f_{N- 1}\left(t,y_0,\cdots, y_{N- 1},\mathbf p_{N- 1}\right) \\  \end{array} \tag{10}\]</span></span></p>
+<p>Again, we assume that the functions <span class="math inline">\(f_0,\ldotp \ldotp \ldotp ,f_{N- 1}\)</span> are known. If the state variables are known at a particular time, <span class="math inline">\(t=0\)</span>, for example, then the differential equations can be solved to give the state variables at subsequent times.</p>
+</section>
+<section id="numerical-solution-of-a-dynamical-systems-model:sec" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-solution-of-a-dynamical-systems-model:sec">Numerical Solution of a Dynamical Systems Model</h2>
+<p>Solving a dynamical system model so that state variables can be predicted for some range of <em>t</em> values requires solving an ordinary differential equation, <a href="#eq-Equation7.9" class="quarto-xref">Equation&nbsp;<span>9</span></a>, or a system of such equations, <a href="#eq-Equation7.10" class="quarto-xref">Equation&nbsp;<span>10</span></a>. For some choices of the function <em>f</em>, or series of functions <em>f<sub>0</sub></em>, …, <em>f<sub>N-1</sub></em>, techniques from the theory of ordinary differential equations can be used to obtain explicit solutions for <em>y</em> or <span class="math inline">\(y_0,\ldots ,y_{N - 1}\)</span>. For example, consider the rate equation that leads to exponential growth.</p>
+<p><span id="eq-Equation7_ExpGrowthModel"><span class="math display">\[\frac{dy}{dt} = ry\left(t\right)
+    \label{eq:EquationExpGrowthModel} \tag{11}\]</span></span></p>
+<p>Using elementary methods from calculus, this differential equation can be integrated to obtain</p>
+<p><span id="eq-Equation7_ExpGrowthSolution"><span class="math display">\[y\left(t\right) = y\left(0\right)e^{rt} \tag{12}\]</span></span></p>
+<p>where <em>y(0)</em> is the value of <em>y</em> at <span class="math inline">\(t=0\)</span>.</p>
+<p>We will often encounter dynamical systems models for which an explicit solution for the state variables cannot be obtained, at least not by the scientist or engineer who needs to use the solution. For such models, a numerical solution can be obtained through a numerical integration of the differential equation. We will not discuss here the mathematics behind developing such techniques but will present one method for using these techniques. The mathematics behind the numerical methods we will use is discussed by Iserles <span class="citation" data-cites="Iserles_FirstCourseNumerical_2009">(<a href="../../bibliography.html#ref-Iserles_FirstCourseNumerical_2009" role="doc-biblioref">Iserles, 2009</a>)</span>. A powerful method for doing the numerical solution is to use the solveivp function from the scipy.integrate library <span class="citation" data-cites="TheSciPyCommunity_Scipyintegratesolve_ivpSciPyV190_2022">(<a href="../../bibliography.html#ref-TheSciPyCommunity_Scipyintegratesolve_ivpSciPyV190_2022" role="doc-biblioref">The SciPy Community, 2022</a>)</span>. <a href="#fig-Figure7_ivp_template" class="quarto-xref">Figure&nbsp;<span>7</span></a> gives the basic template for using solveivp for a one-state variable model, as shown in <a href="#eq-Equation7.9" class="quarto-xref">Equation&nbsp;<span>9</span></a>.</p>
+<div id="fig-Figure7_ivp_template" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7_ivp_template-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<figure class="figure">
+<div id="cb1" class="sourceCode" data-language="Python" data-backgroundcolor="\color{light-gray}">
+<pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program Name: Exponential Growth Model: Numerical Solution</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 3.17.2020.1</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: Basic script for solving a dynamical system representing</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="co">         exponential growth. A numerical integration technique is</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="co">         used.</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a> </span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t,y,r):</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a><span class="co">#   y = a list that contains the system state</span></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co">#       is to be calculated.</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co">#   r = a parameter needed for the model</span></span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="co">#   Unpack the state of the system</span></span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>] <span class="co"># cell density </span></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a><span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> r<span class="op">*</span>y0</span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt] </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre>
+</div>
+</figure>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7_ivp_template-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Template for using solveivp.
+</figcaption>
+</figure>
+</div>
+<figure id="fig:template-for-using-solve ivp" class="figure">
+<div id="cb1" class="sourceCode" data-language="Python" data-startfrom="31" data-backgroundcolor="\color{light-gray}">
+<pre class="sourceCode python code-with-copy"><code class="sourceCode python" style="counter-reset: source-line 30;"><span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="fl">0.021</span>]</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>,<span class="dv">300</span>,<span class="dv">200</span>)</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model parameters</span></span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">0.014</span></span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (r,)</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f,(<span class="dv">0</span>,<span class="dv">300</span>),yi,t_eval<span class="op">=</span>t,args<span class="op">=</span>p)</span>
+<span id="cb1-45"><a href="#cb1-45" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="cb1-46"><a href="#cb1-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-47"><a href="#cb1-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the theory</span></span>
+<span id="cb1-48"><a href="#cb1-48" aria-hidden="true" tabindex="-1"></a>plt.plot(t,ys,color<span class="op">=</span><span class="st">'g'</span>)</span>
+<span id="cb1-49"><a href="#cb1-49" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [min]'</span>)</span>
+<span id="cb1-50"><a href="#cb1-50" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'OD'</span>)</span>
+<span id="cb1-51"><a href="#cb1-51" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'ExponentialGrowth.png'</span>,dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb1-52"><a href="#cb1-52" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre>
+</div>
+<figcaption>
+Continuation of Template for using solveivp.
+</figcaption>
+</figure>
+<p>As the code shows, you must define a Python function that calculates the right hand side of the rate equation defined in <a href="#eq-Equation7.9" class="quarto-xref">Equation&nbsp;<span>9</span></a> in terms of <em>t</em> and the current value of the state variable <em>y</em>, symbolized by the parameter <span class="math inline">\(y\)</span> in <span class="math inline">\(f(t,y,r)\)</span>. You must also define the initial value <span class="math inline">\(y(0)\)</span>, called yi in the program, and a list of t values for which you need the value of the state variable <span class="math inline">\(y\left(t\right)\)</span>, which is done in line 37. The function solveivp returns a list of objects, contained in sol, that defines the solution. The solution corresponding to the times in the array t are contained in the array sol.y[0]. To use the solution values in a plot we extract the actual solution values from sol and name the array ys, in line 45. If the dynamical systems model had more than one state variable then we could extract the solution values for each state variable as shown below.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ys0 <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>ys1 <span class="op">=</span> sol.y[<span class="dv">1</span>]</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>.</span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>.</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>We will see an example of doing this in the next chapter. If the model has more than one parameter, they must all be placed in the tuple <em>p</em> in line 41 but listed separately in the function definition. The next section will show an example of such a model.</p>
+</section>
+<section id="computational-problem-solving-mathematical-model-for-the-growth-of-pseudomonas-aeruginosa" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solving-mathematical-model-for-the-growth-of-pseudomonas-aeruginosa">Computational Problem Solving: Mathematical Model for the Growth of <em>Pseudomonas aeruginosa</em></h2>
+<p>To illustrate the numerical solution of a dynamical systems model we will return to the problem presented at the beginning of the chapter: the growth of <em>Pseudomonas aeruginosa</em> in a container with a fixed amount of liquid growth medium. When our goal is to develop a mathematical model of a system, we will use a modification of our four-step computational problem-solving strategy. Our strategy is</p>
+<ol type="1">
+<li><p>Analyze the problem</p></li>
+<li><p>Formulate a model</p></li>
+<li><p>Solve the model</p></li>
+<li><p>Verify and interpret the model’s solution</p></li>
+<li><p>Report on the model</p></li>
+<li><p>Maintain the model</p></li>
+</ol>
+<p><strong>Analyze the Problem</strong></p>
+<p>Our analysis begins with some library research on growth of microorganisms. We find that the typical stages of growth for bacteria in a container with fixed amount of growth medium are those shown in <a href="#fig-Figure7.8" class="quarto-xref">Figure&nbsp;<span>8</span></a>. This is supposed to be a semi-log plot with the y-axis being the log axis. On such a plot, exponential growth appears as a straight line <span class="citation" data-cites="Hardy_Chapter2Bacterial_2002">(<a href="../../bibliography.html#ref-Hardy_Chapter2Bacterial_2002" role="doc-biblioref">Hardy, 2002</a>)</span>.</p>
+<div id="fig-Figure7.8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/Figure7.8.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Typical stages of growth for bacteria in a fixed amount of medium <span class="citation" data-cites="Hardy_Chapter2Bacterial_2002">(<a href="../../bibliography.html#ref-Hardy_Chapter2Bacterial_2002" role="doc-biblioref">Hardy, 2002</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>For now, we will concentrate on modeling the exponential phase of cell growth. What factors in the system might affect the growth? In general, we might expect the temperature, pH, and other environmental factors will influence growth. We will assume those environmental factors are held constant. We are being very restrictive in how we describe the system. This is typical in starting a modeling project. We start with simple models and work our way up in complexity. In our case, there is one state variable:</p>
+<p><span class="math display">\[y\left(t\right) \equiv \text{number of cells per ml}\]</span></p>
+<p>What will determine the rate of change of <span class="math inline">\(y\left(t\right)\)</span>? A reasonable hypothesis is that the rate of change of <em>y</em> will depend on the current number of cells, or cell density, that are present.</p>
+<p><strong>Formulate a model</strong></p>
+<p>We can express the hypothesis stated above with <a href="#eq-Equation7_ExpGrowthModel" class="quarto-xref">Equation&nbsp;<span>11</span></a>, repeated below.</p>
+<p><span id="eq-Equation7.13"><span class="math display">\[\frac{dy}{dt} = ry\left(t\right) \tag{13}\]</span></span></p>
+<p><strong>Solve the model</strong></p>
+<p>The model defined by <a href="#eq-Equation7.13" class="quarto-xref">Equation&nbsp;<span>13</span></a> can be solved with a little bit of calculus to give</p>
+<p><span id="eq-Equation7.14"><span class="math display">\[y\left(t\right) = y\left(0\right)e^{rt} \tag{14}\]</span></span></p>
+<p>This is the exponential growth model.</p>
+<p>We will implement a numerical solution below since it is more common for the scientist or engineer to require such an approach.</p>
+<p><strong>Verify and interpret the model’s solution</strong></p>
+<p>We have data for the state variables with which to compare the predictions from the model. This is the ideal way of verifying the model. The data used to produce <a href="#fig-Figure7.1" class="quarto-xref">Figure&nbsp;<span>1</span></a> is in the file PA01SuspCell0p25PerCentGlucose-3-2017.txt. This data uses optical density of the liquid in the growth container to represent the cell density. Optical density is usually proportional to the actual cell density but establishing the exact relationship can be time-consuming.</p>
+<p>The code in <a href="#fig-Figure7_ivp_template" class="quarto-xref">Figure&nbsp;<span>7</span></a> can be adapted to display both the theory and the data. Since the data file is composed of simple numerical columns we use the loadtxt function from Numpy to read in the data rather using Pandas. We can get the initial value of the state variable from the first row of data in the file. The value of the growth rate, <em>r</em>, is adjusted through trial and error to improve the fit between model and data. <a href="#fig-Figure7PA01ModelAndDataCode" class="quarto-xref">Figure&nbsp;<span>9</span></a> shows the adapted code. We will use statistical methods in Chapter 10 to find the best-fit model parameters. <a href="#fig-Exponential-growth-model-with-data-comparison" class="quarto-xref">Figure&nbsp;<span>10</span></a> shows the comparison of the model and data.</p>
+<div id="fig-Figure7PA01ModelAndDataCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7PA01ModelAndDataCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure7PA01ModelAndDataCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure7PA01ModelAndDataCode-1"><a href="#fig-Figure7PA01ModelAndDataCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-2"><a href="#fig-Figure7PA01ModelAndDataCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program Name: PA01 Growth - Model and Data</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-3"><a href="#fig-Figure7PA01ModelAndDataCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-4"><a href="#fig-Figure7PA01ModelAndDataCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 8.16.2022.1</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-5"><a href="#fig-Figure7PA01ModelAndDataCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program performs a numerical solution for the exponential</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-6"><a href="#fig-Figure7PA01ModelAndDataCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">         growth dynamical systems model and compares the model results</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-7"><a href="#fig-Figure7PA01ModelAndDataCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">         with actual growth data for PA01.</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-8"><a href="#fig-Figure7PA01ModelAndDataCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-9"><a href="#fig-Figure7PA01ModelAndDataCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">    8.16.2022.1: base</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-10"><a href="#fig-Figure7PA01ModelAndDataCode-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-11"><a href="#fig-Figure7PA01ModelAndDataCode-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-12"><a href="#fig-Figure7PA01ModelAndDataCode-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-13"><a href="#fig-Figure7PA01ModelAndDataCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="fig-Figure7PA01ModelAndDataCode-14"><a href="#fig-Figure7PA01ModelAndDataCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure7PA01ModelAndDataCode-15"><a href="#fig-Figure7PA01ModelAndDataCode-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-Figure7PA01ModelAndDataCode-16"><a href="#fig-Figure7PA01ModelAndDataCode-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-17"><a href="#fig-Figure7PA01ModelAndDataCode-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y, r):</span>
+<span id="fig-Figure7PA01ModelAndDataCode-18"><a href="#fig-Figure7PA01ModelAndDataCode-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   y = a list that contains the system state</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-19"><a href="#fig-Figure7PA01ModelAndDataCode-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-20"><a href="#fig-Figure7PA01ModelAndDataCode-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       is to be calculated.</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-21"><a href="#fig-Figure7PA01ModelAndDataCode-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   p = a tuple with parameters needed for the model</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-22"><a href="#fig-Figure7PA01ModelAndDataCode-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-23"><a href="#fig-Figure7PA01ModelAndDataCode-23" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure7PA01ModelAndDataCode-24"><a href="#fig-Figure7PA01ModelAndDataCode-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-25"><a href="#fig-Figure7PA01ModelAndDataCode-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Unpack the state of the system</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-26"><a href="#fig-Figure7PA01ModelAndDataCode-26" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>]  <span class="co"># cell density</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-27"><a href="#fig-Figure7PA01ModelAndDataCode-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-28"><a href="#fig-Figure7PA01ModelAndDataCode-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-29"><a href="#fig-Figure7PA01ModelAndDataCode-29" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> r <span class="op">*</span> y0</span>
+<span id="fig-Figure7PA01ModelAndDataCode-30"><a href="#fig-Figure7PA01ModelAndDataCode-30" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt]</span>
+<span id="fig-Figure7PA01ModelAndDataCode-31"><a href="#fig-Figure7PA01ModelAndDataCode-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-32"><a href="#fig-Figure7PA01ModelAndDataCode-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-33"><a href="#fig-Figure7PA01ModelAndDataCode-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-34"><a href="#fig-Figure7PA01ModelAndDataCode-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-35"><a href="#fig-Figure7PA01ModelAndDataCode-35" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> np.loadtxt(<span class="st">'PA01_SuspCell_0p25PerCentGlucose_5-3-2017.txt'</span>,skiprows<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-36"><a href="#fig-Figure7PA01ModelAndDataCode-36" aria-hidden="true" tabindex="-1"></a>timeData <span class="op">=</span> cols[:,<span class="dv">0</span>]</span>
+<span id="fig-Figure7PA01ModelAndDataCode-37"><a href="#fig-Figure7PA01ModelAndDataCode-37" aria-hidden="true" tabindex="-1"></a>ODData <span class="op">=</span> cols[:,<span class="dv">1</span>]</span>
+<span id="fig-Figure7PA01ModelAndDataCode-38"><a href="#fig-Figure7PA01ModelAndDataCode-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-39"><a href="#fig-Figure7PA01ModelAndDataCode-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-40"><a href="#fig-Figure7PA01ModelAndDataCode-40" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="fl">0.074</span>]</span>
+<span id="fig-Figure7PA01ModelAndDataCode-41"><a href="#fig-Figure7PA01ModelAndDataCode-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-42"><a href="#fig-Figure7PA01ModelAndDataCode-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-43"><a href="#fig-Figure7PA01ModelAndDataCode-43" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">400</span>, <span class="dv">200</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-44"><a href="#fig-Figure7PA01ModelAndDataCode-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-45"><a href="#fig-Figure7PA01ModelAndDataCode-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model parameters</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-46"><a href="#fig-Figure7PA01ModelAndDataCode-46" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">0.01175</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-47"><a href="#fig-Figure7PA01ModelAndDataCode-47" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (r,)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-48"><a href="#fig-Figure7PA01ModelAndDataCode-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-49"><a href="#fig-Figure7PA01ModelAndDataCode-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-50"><a href="#fig-Figure7PA01ModelAndDataCode-50" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f, (<span class="dv">0</span>, <span class="dv">400</span>), yi, t_eval<span class="op">=</span>t, args<span class="op">=</span>p)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-51"><a href="#fig-Figure7PA01ModelAndDataCode-51" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="fig-Figure7PA01ModelAndDataCode-52"><a href="#fig-Figure7PA01ModelAndDataCode-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7PA01ModelAndDataCode-53"><a href="#fig-Figure7PA01ModelAndDataCode-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the theory and data</span></span>
+<span id="fig-Figure7PA01ModelAndDataCode-54"><a href="#fig-Figure7PA01ModelAndDataCode-54" aria-hidden="true" tabindex="-1"></a>plt.plot(t, ys, color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Model'</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-55"><a href="#fig-Figure7PA01ModelAndDataCode-55" aria-hidden="true" tabindex="-1"></a>plt.plot(timeData, ODData, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'d'</span>,</span>
+<span id="fig-Figure7PA01ModelAndDataCode-56"><a href="#fig-Figure7PA01ModelAndDataCode-56" aria-hidden="true" tabindex="-1"></a>         markersize<span class="op">=</span><span class="fl">5.0</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Data'</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-57"><a href="#fig-Figure7PA01ModelAndDataCode-57" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [min]'</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-58"><a href="#fig-Figure7PA01ModelAndDataCode-58" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'OD'</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-59"><a href="#fig-Figure7PA01ModelAndDataCode-59" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">'log'</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-60"><a href="#fig-Figure7PA01ModelAndDataCode-60" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'PA01 Growth: Comparison with Exponential Growth Model'</span>,</span>
+<span id="fig-Figure7PA01ModelAndDataCode-61"><a href="#fig-Figure7PA01ModelAndDataCode-61" aria-hidden="true" tabindex="-1"></a>          fontsize<span class="op">=</span> <span class="dv">12</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-62"><a href="#fig-Figure7PA01ModelAndDataCode-62" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-Figure7PA01ModelAndDataCode-63"><a href="#fig-Figure7PA01ModelAndDataCode-63" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'PA01_ExpGrowth_ModelAndData.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Figure7PA01ModelAndDataCode-64"><a href="#fig-Figure7PA01ModelAndDataCode-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7PA01ModelAndDataCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: :Code for exponential growth model calculation and data comparison.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Exponential-growth-model-with-data-comparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Exponential-growth-model-with-data-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/PA01_ExpGrowth_ModelAndData.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Exponential-growth-model-with-data-comparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Comparison of exponential growth model with PA01 data.
+</figcaption>
+</figure>
+</div>
+<p>The exponential growth model shows a clear deficiency in describing the PA01 growth data for <span class="math inline">\(t&gt;200[\text{min}]\)</span>. We can improve our model by including the effect of a finite amount of nutrients. At some point there will not be enough nutrients to allow cells to grow and divide. We must replace the rate equation <a href="#eq-Equation7.13" class="quarto-xref">Equation&nbsp;<span>13</span></a> with one that shows exponential growth for the rate equation for small values of y but eventually has the rate go to zero. One possible hypothesis is</p>
+<p><span id="eq-EquationLogisticsGrowthModel"><span class="math display">\[\frac{dy\left(t\right)}{dt} = ry\left(1- \frac{y}{M}\right) \tag{15}\]</span></span></p>
+<p><em>M</em> is a new model parameter that represents the carrying capacity of the growth environment. When <em>y</em> approaches <em>M</em>, the rate of change for <em>y</em> will go to zero. The rate equation in <a href="#eq-EquationLogisticsGrowthModel" class="quarto-xref">Equation&nbsp;<span>15</span></a> is a historically famous one that defines the logistics model. Calculus techniques can be used to solve this differential equation exactly yielding <a href="#eq-EquationLogisticsGrowthModelSolution" class="quarto-xref">Equation&nbsp;<span>16</span></a>.</p>
+<p><span id="eq-EquationLogisticsGrowthModelSolution"><span class="math display">\[y\left(t\right) = \frac{My\left(0\right)e^{rt}}{M + y\left(0\right)(e^{rt}- 1)} \tag{16}\]</span></span></p>
+<p>Instead of using the exact solution of <a href="#eq-EquationLogisticsGrowthModel" class="quarto-xref">Equation&nbsp;<span>15</span></a> we will implement a numerical solution so as to gain a little more experience in setting up the numerical solution framework.</p>
+<div id="fig-Figure7LogisticsModelCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure7LogisticsModelCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure7LogisticsModelCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure7LogisticsModelCode-1"><a href="#fig-Figure7LogisticsModelCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure7LogisticsModelCode-2"><a href="#fig-Figure7LogisticsModelCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program Name: PA01 Growth - Logistics Model and Data</span></span>
+<span id="fig-Figure7LogisticsModelCode-3"><a href="#fig-Figure7LogisticsModelCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure7LogisticsModelCode-4"><a href="#fig-Figure7LogisticsModelCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 8.16.2022.1</span></span>
+<span id="fig-Figure7LogisticsModelCode-5"><a href="#fig-Figure7LogisticsModelCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program performs a numerical solution for the logistics</span></span>
+<span id="fig-Figure7LogisticsModelCode-6"><a href="#fig-Figure7LogisticsModelCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">         growth dynamical systems model and compares the model results</span></span>
+<span id="fig-Figure7LogisticsModelCode-7"><a href="#fig-Figure7LogisticsModelCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">         with actual growth data for PA01.</span></span>
+<span id="fig-Figure7LogisticsModelCode-8"><a href="#fig-Figure7LogisticsModelCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-Figure7LogisticsModelCode-9"><a href="#fig-Figure7LogisticsModelCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">    8.16.2022.1: base</span></span>
+<span id="fig-Figure7LogisticsModelCode-10"><a href="#fig-Figure7LogisticsModelCode-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-11"><a href="#fig-Figure7LogisticsModelCode-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure7LogisticsModelCode-12"><a href="#fig-Figure7LogisticsModelCode-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-13"><a href="#fig-Figure7LogisticsModelCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="fig-Figure7LogisticsModelCode-14"><a href="#fig-Figure7LogisticsModelCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure7LogisticsModelCode-15"><a href="#fig-Figure7LogisticsModelCode-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-Figure7LogisticsModelCode-16"><a href="#fig-Figure7LogisticsModelCode-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-17"><a href="#fig-Figure7LogisticsModelCode-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y, r, M):</span>
+<span id="fig-Figure7LogisticsModelCode-18"><a href="#fig-Figure7LogisticsModelCode-18" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   y = a list that contains the system state</span></span>
+<span id="fig-Figure7LogisticsModelCode-19"><a href="#fig-Figure7LogisticsModelCode-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="fig-Figure7LogisticsModelCode-20"><a href="#fig-Figure7LogisticsModelCode-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       is to be calculated.</span></span>
+<span id="fig-Figure7LogisticsModelCode-21"><a href="#fig-Figure7LogisticsModelCode-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   r = the specific growth rate</span></span>
+<span id="fig-Figure7LogisticsModelCode-22"><a href="#fig-Figure7LogisticsModelCode-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   M = the carrying capacity</span></span>
+<span id="fig-Figure7LogisticsModelCode-23"><a href="#fig-Figure7LogisticsModelCode-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#</span></span>
+<span id="fig-Figure7LogisticsModelCode-24"><a href="#fig-Figure7LogisticsModelCode-24" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure7LogisticsModelCode-25"><a href="#fig-Figure7LogisticsModelCode-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-26"><a href="#fig-Figure7LogisticsModelCode-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Unpack the state of the system</span></span>
+<span id="fig-Figure7LogisticsModelCode-27"><a href="#fig-Figure7LogisticsModelCode-27" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>]  <span class="co"># cell density</span></span>
+<span id="fig-Figure7LogisticsModelCode-28"><a href="#fig-Figure7LogisticsModelCode-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-29"><a href="#fig-Figure7LogisticsModelCode-29" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="fig-Figure7LogisticsModelCode-30"><a href="#fig-Figure7LogisticsModelCode-30" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> r <span class="op">*</span> y0 <span class="op">*</span> (<span class="fl">1.0</span> <span class="op">-</span> y0<span class="op">/</span>M)</span>
+<span id="fig-Figure7LogisticsModelCode-31"><a href="#fig-Figure7LogisticsModelCode-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt]</span>
+<span id="fig-Figure7LogisticsModelCode-32"><a href="#fig-Figure7LogisticsModelCode-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-33"><a href="#fig-Figure7LogisticsModelCode-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure7LogisticsModelCode-34"><a href="#fig-Figure7LogisticsModelCode-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-35"><a href="#fig-Figure7LogisticsModelCode-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in data</span></span>
+<span id="fig-Figure7LogisticsModelCode-36"><a href="#fig-Figure7LogisticsModelCode-36" aria-hidden="true" tabindex="-1"></a>cols <span class="op">=</span> np.loadtxt(<span class="st">'PA01_SuspCell_0p25PerCentGlucose_5-3-2017.txt'</span>, skiprows<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-37"><a href="#fig-Figure7LogisticsModelCode-37" aria-hidden="true" tabindex="-1"></a>timeData <span class="op">=</span> cols[:, <span class="dv">0</span>]</span>
+<span id="fig-Figure7LogisticsModelCode-38"><a href="#fig-Figure7LogisticsModelCode-38" aria-hidden="true" tabindex="-1"></a>ODData <span class="op">=</span> cols[:, <span class="dv">1</span>]</span>
+<span id="fig-Figure7LogisticsModelCode-39"><a href="#fig-Figure7LogisticsModelCode-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-40"><a href="#fig-Figure7LogisticsModelCode-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="fig-Figure7LogisticsModelCode-41"><a href="#fig-Figure7LogisticsModelCode-41" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="fl">0.074</span>]</span>
+<span id="fig-Figure7LogisticsModelCode-42"><a href="#fig-Figure7LogisticsModelCode-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-43"><a href="#fig-Figure7LogisticsModelCode-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="fig-Figure7LogisticsModelCode-44"><a href="#fig-Figure7LogisticsModelCode-44" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(<span class="dv">0</span>, <span class="dv">415</span>, <span class="dv">200</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-45"><a href="#fig-Figure7LogisticsModelCode-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-46"><a href="#fig-Figure7LogisticsModelCode-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the model parameters</span></span>
+<span id="fig-Figure7LogisticsModelCode-47"><a href="#fig-Figure7LogisticsModelCode-47" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">0.014</span></span>
+<span id="fig-Figure7LogisticsModelCode-48"><a href="#fig-Figure7LogisticsModelCode-48" aria-hidden="true" tabindex="-1"></a>M <span class="op">=</span> <span class="fl">1.25</span></span>
+<span id="fig-Figure7LogisticsModelCode-49"><a href="#fig-Figure7LogisticsModelCode-49" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (r, M)</span>
+<span id="fig-Figure7LogisticsModelCode-50"><a href="#fig-Figure7LogisticsModelCode-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-51"><a href="#fig-Figure7LogisticsModelCode-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="fig-Figure7LogisticsModelCode-52"><a href="#fig-Figure7LogisticsModelCode-52" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f, (<span class="dv">0</span>, <span class="dv">415</span>), yi, t_eval<span class="op">=</span>t, args<span class="op">=</span>p)</span>
+<span id="fig-Figure7LogisticsModelCode-53"><a href="#fig-Figure7LogisticsModelCode-53" aria-hidden="true" tabindex="-1"></a>ys <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="fig-Figure7LogisticsModelCode-54"><a href="#fig-Figure7LogisticsModelCode-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure7LogisticsModelCode-55"><a href="#fig-Figure7LogisticsModelCode-55" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the theory and data</span></span>
+<span id="fig-Figure7LogisticsModelCode-56"><a href="#fig-Figure7LogisticsModelCode-56" aria-hidden="true" tabindex="-1"></a>plt.plot(t, ys, color<span class="op">=</span><span class="st">'g'</span>, label<span class="op">=</span><span class="st">'Model'</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-57"><a href="#fig-Figure7LogisticsModelCode-57" aria-hidden="true" tabindex="-1"></a>plt.plot(timeData, ODData, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'d'</span>,</span>
+<span id="fig-Figure7LogisticsModelCode-58"><a href="#fig-Figure7LogisticsModelCode-58" aria-hidden="true" tabindex="-1"></a>         markersize<span class="op">=</span><span class="fl">5.0</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'Data'</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-59"><a href="#fig-Figure7LogisticsModelCode-59" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [min]'</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-60"><a href="#fig-Figure7LogisticsModelCode-60" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'OD'</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-61"><a href="#fig-Figure7LogisticsModelCode-61" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">'log'</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-62"><a href="#fig-Figure7LogisticsModelCode-62" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'PA01 Growth: Comparison with Logistics Growth Model'</span>,</span>
+<span id="fig-Figure7LogisticsModelCode-63"><a href="#fig-Figure7LogisticsModelCode-63" aria-hidden="true" tabindex="-1"></a>          fontsize<span class="op">=</span><span class="dv">12</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-64"><a href="#fig-Figure7LogisticsModelCode-64" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-Figure7LogisticsModelCode-65"><a href="#fig-Figure7LogisticsModelCode-65" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'PA01_LogisticsGrowth_ModelAndData.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Figure7LogisticsModelCode-66"><a href="#fig-Figure7LogisticsModelCode-66" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure7LogisticsModelCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: :Code for the logistics growth model calculation and data comparison.
+</figcaption>
+</figure>
+</div>
+<div id="fig-LogisticsGrowthMmodelWithDataComparison" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-LogisticsGrowthMmodelWithDataComparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch07/Figures/PA01_LogisticsGrowth_ModelAndData.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-LogisticsGrowthMmodelWithDataComparison-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Comparison of logistics growth model with PA01 data.
+</figcaption>
+</figure>
+</div>
+<p><strong>Report on the model</strong></p>
+<p>We used two different dynamical systems models to describe the PA01 bacteria growing in a glucose medium. The exponential growth model described by <a href="#eq-Equation7.13" class="quarto-xref">Equation&nbsp;<span>13</span></a> did not compare well with the available data over the time period in the data set, as can be seen in <a href="#fig-Exponential-growth-model-with-data-comparison" class="quarto-xref">Figure&nbsp;<span>10</span></a>. The logistics model given by <a href="#eq-EquationLogisticsGrowthModel" class="quarto-xref">Equation&nbsp;<span>15</span></a> described the available data well, as seen in <a href="#fig-LogisticsGrowthMmodelWithDataComparison" class="quarto-xref">Figure&nbsp;<span>12</span></a>. The model parameter values that are appropriate for the PA01 strain of <em>Pseudomonas aeruginosa</em> grown in a 0.25% glucose minimal medium at 37 [C] are</p>
+<p><span class="math display">\[\begin{array}{l} r = 0.014\left[{\min}^{- 1}\right] \\ M = 1.25\left[\text{OD units}\right] \\  \end{array}\]</span></p>
+<p><strong>Maintain the model</strong></p>
+<p>If we could obtain growth data over a longer period of time, then we would see the stationary phase give way to the death phase. We would then need to develop a more sophisticated model that could account for this phase. This could be the subject of a future research project.</p>
+</section>
+<section id="ch07-exercises:sec" class="level2">
+<h2 class="anchored" data-anchor-id="ch07-exercises:sec">Exercises</h2>
+<p>1. A dynamical system is one that changes with ____.</p>
+<p>2. Select the statements that are true for a mathematical dynamical systems model.</p>
+<ol type="a">
+<li>The state of the system is described by a set of time-dependent variables.</li>
+<li>The time rate of change of each state variable must be known.</li>
+<li>The current state of the system does not depend on the past state.</li>
+<li>It is a stochastic model.</li>
+</ol>
+<p>3. T/F: The solve_ivp function can solve a first-order differential equation using numerical methods.</p>
+<p>4. Calculate the integral of <em>v(t)</em> from t = 0 to t = 2 [s] where <em>v(t)</em> is shown in the figure below.</p>
+<p><img src="../..\chapters/Ch07/Figures/Figure7_v-t_graphForEx4.png" class="img-fluid" style="width:70.0%"></p>
+<p>5. Write a short Python program that will calculate the derivative of the function</p>
+<p><span class="math display">\[f\left(x\right) = \left(3x + 2x^3\right)\cos \left(x\right)\]</span></p>
+<p>at <span class="math inline">\(x=2\)</span>. Use the cosine function in the Numpy module.</p>
+<p>6. Write a short Python program that will calculate the integral from <span class="math inline">\(0 \leq x \leq 4\)</span> of the following function</p>
+<p><span class="math display">\[f\left(x\right) = \left(3x + 2x^3\right)\cos \left(x\right)\]</span></p>
+</section>
+<section id="ch07-program-modification-problems:sec" class="level2">
+<h2 class="anchored" data-anchor-id="ch07-program-modification-problems:sec">Program Modification Problems</h2>
+<p>1. Your goal is to use a numerical solution to an exponential growth model to simulate bacteria growth in an unconstrained environment (plenty of food) and find the growth rate parameter for <em>Escherichia coli</em> grown in CSHA media. Start with the code in Ch7ProgModProb1.py . Add a section that reads in the growth data in BacterialGrowthData.txt. Make sure you read in the column with the CSHA optical density measurement. Calculate the exponential growth model values for the optical density over the same time period as the data. Plot the data on the same graph. Change the value of the growth rate parameter and make the theory fit the data as best as you can.</p>
+<p>Your plot should have the following features:</p>
+<ul>
+<li><p>The theoretical (exponential growth model) values should be plotted with a solid green line.</p></li>
+<li><p>The data points should be plotted using a filled circle as the marker. Make the color red and the size 8.</p></li>
+<li><p>Add an appropriate title.</p></li>
+<li><p>Save the graph as a png file.</p></li>
+</ul>
+<p>2. Your goal is to use a numerical solution to a logistics growth model to simulate bacteria growth in a constrained environment (limitation in food) and find the growth rate parameter and carrying capacity for <em>Vibrio natriegens</em> grown in TSB media. Start with the code in Ch7ProgModProb2.py .</p>
+<ul>
+<li><p>Change the import data section that reads in the growth data in V_natriegensGrowthData.txt. Make sure you read in the column with the TSB optical density measurement.</p></li>
+<li><p>Change the function <span class="math inline">\(f\left(t,y,r\right)\)</span> to implement the logistics model rate equation.</p></li>
+<li><p>Change the initial condition.</p></li>
+<li><p>Change the model parameter tuple p so that it contains both the growth rate r and the carrying capacity M.</p></li>
+<li><p>Change the value of the growth rate parameter and carrying capacity and make the theory fit the data as best as you can.</p></li>
+<li><p>Create a plot of both theory and data on the same graph. Your plot should have the following features:</p>
+<ul>
+<li><p>The theoretical (logistics model) values should be plotted with a solid green line.</p></li>
+<li><p>The data points should be plotted using a triangle as the marker. Make the color red and the size 8.</p></li>
+<li><p>Save the graph as a png file.</p></li>
+</ul></li>
+</ul>
+</section>
+<section id="ch07-program-development-problems:sec" class="level2">
+<h2 class="anchored" data-anchor-id="ch07-program-development-problems:sec">Program Development Problems</h2>
+<p>1. Develop an argument that the numerical solution of a dynamical system model that we are using is valid. This will involve choosing a specific model for which we know the exact solution. The exponential growth model would be one choice. Next, create a program that solves the model numerically, add a function that calculates the exact solution, and then create a table that compares the numerical and the exact values for 10 values of the independent variable. Write a brief essay that summarizes your evidence that the numerical solution method is valid.</p>
+<p>2. Solve the following first-order differential equation with the given initial condition by developing a Python program that can solve the equation numerically.</p>
+<p><span class="math display">\[\frac{dy\left(t\right)}{dt} = \frac{\left(e^{rt}- 2y\left(t\right)\right)}{\left(1 + y^2\left(t\right)\right)}\text{,}y\left(0\right) = 0\]</span></p>
+<p>Your program should make a plot of the solution for <span class="math inline">\(0 \leq t \leq 5\)</span> and for <em>r</em><sub>1</sub> = 0.1 and <em>r</em><sub>2</sub> = 0.5 . The plot should have a solid blue continuous line for the model solution with <em>r<sub>1</sub></em> and a solid red line for the model solution with <em>r<sub>2</sub></em> . Add appropriate axis titles, a legend, and a chart title (y(t) versus t).</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Diggle, S. P., &amp; Whiteley, M. (2020). Microbe Profile: Pseudomonas aeruginosa: opportunistic pathogen and lab rat. <em>Microbiology</em>, <em>166</em>(1), 30–33. https://doi.org/10.1099/mic.0.000860</p>
+<p>Hardy, S. P. (2002). Chapter 2: Bacterial Growth. In <em>Human Microbiology</em>. Taylor &amp; Francis.</p>
+<p>Iserles, A. (2009). <em>A first course in the numerical analysis of differential equations</em> (2nd ed., Vol. 1–1 online resource (xviii, 459 pages) : illustrations). Cambridge University Press; WorldCat.org. http://www.books24x7.com/marc.asp?bookid=30922</p>
+<p>The SciPy community. (2022a). <em>scipy.integrate.quad—SciPy v1.9.0 Manual</em>. https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html</p>
+<p>The SciPy Community. (2022). <em>scipy.integrate.solve_ivp—SciPy v1.9.0 Manual</em>. https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html</p>
+<p>The SciPy community. (2022b). <em>scipy.misc.derivative—SciPy v1.9.0 Manual</em>. https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.derivative.html</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-DiggleWhiteley_MicrobeProfilePseudomonas_2020" class="csl-entry" role="listitem">
+Diggle, S. P., &amp; Whiteley, M. (2020). Microbe <span>Profile</span>: <span>Pseudomonas</span> aeruginosa: Opportunistic pathogen and lab rat. <em>Microbiology</em>, <em>166</em>(1), 30–33. <a href="https://doi.org/10.1099/mic.0.000860">https://doi.org/10.1099/mic.0.000860</a>
+</div>
+<div id="ref-Hardy_Chapter2Bacterial_2002" class="csl-entry" role="listitem">
+Hardy, S. P. (2002). Chapter 2: <span>Bacterial Growth</span>. In <em>Human <span>Microbiology</span></em>. Taylor &amp; Francis.
+</div>
+<div id="ref-Iserles_FirstCourseNumerical_2009" class="csl-entry" role="listitem">
+Iserles, A. (2009). <em>A first course in the numerical analysis of differential equations</em> (2nd ed., 1–1 online resource (xviii, 459 pages) : illustrations). Cambridge University Press. <a href="http://www.books24x7.com/marc.asp?bookid=30922">http://www.books24x7.com/marc.asp?bookid=30922</a>
+</div>
+<div id="ref-TheSciPycommunity_ScipyintegratequadSciPyV190_2022" class="csl-entry" role="listitem">
+The SciPy community. (2022a). <em>Scipy.integrate.quad — <span>SciPy</span> v1.9.0 <span>Manual</span></em>. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.quad.html</a>
+</div>
+<div id="ref-TheSciPyCommunity_Scipyintegratesolve_ivpSciPyV190_2022" class="csl-entry" role="listitem">
+The SciPy Community. (2022). <em>Scipy.integrate.solve_ivp — <span>SciPy</span> v1.9.0 <span>Manual</span></em>. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.integrate.solve_ivp.html</a>
+</div>
+<div id="ref-TheSciPycommunity_ScipymiscderivativeSciPyV190_2022" class="csl-entry" role="listitem">
+The SciPy community. (2022b). <em>Scipy.misc.derivative — <span>SciPy</span> v1.9.0 <span>Manual</span></em>. <a href="https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.derivative.html">https://docs.scipy.org/doc/scipy/reference/generated/scipy.misc.derivative.html</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch06/Ch06_Functions.html" class="pagination-link" aria-label="Functions">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="pagination-link" aria-label="Dynamical Systems Modeling II">
+        <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

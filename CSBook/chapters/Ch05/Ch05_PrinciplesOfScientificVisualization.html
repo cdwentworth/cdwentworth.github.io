@@ -1,0 +1,2270 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Principles of Scientific Visualization – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch06/Ch06_Functions.html" rel="next">
+<link href="../../chapters/Ch04/Ch04_Lists.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-comparing-co2-emissions-by-country" id="toc-motivating-problem-comparing-co2-emissions-by-country" class="nav-link active" data-scroll-target="#motivating-problem-comparing-co2-emissions-by-country">Motivating Problem: Comparing CO<sub>2</sub> Emissions by Country</a></li>
+  <li><a href="#what-are-scientific-visualizations" id="toc-what-are-scientific-visualizations" class="nav-link" data-scroll-target="#what-are-scientific-visualizations">What are Scientific Visualizations?</a>
+  <ul class="collapse">
+  <li><a href="#definition-of-scientific-visualization" id="toc-definition-of-scientific-visualization" class="nav-link" data-scroll-target="#definition-of-scientific-visualization">Definition of Scientific Visualization</a></li>
+  </ul></li>
+  <li><a href="#classifying-scientific-visualizations" id="toc-classifying-scientific-visualizations" class="nav-link" data-scroll-target="#classifying-scientific-visualizations">Classifying Scientific Visualizations</a></li>
+  <li><a href="#python-modules-for-visualization" id="toc-python-modules-for-visualization" class="nav-link" data-scroll-target="#python-modules-for-visualization">Python Modules for Visualization</a>
+  <ul class="collapse">
+  <li><a href="#creating-2d-graphs-using-matplotlib" id="toc-creating-2d-graphs-using-matplotlib" class="nav-link" data-scroll-target="#creating-2d-graphs-using-matplotlib">Creating 2d Graphs Using Matplotlib</a></li>
+  <li><a href="#introduction-to-the-pandas-module" id="toc-introduction-to-the-pandas-module" class="nav-link" data-scroll-target="#introduction-to-the-pandas-module">Introduction to the Pandas Module</a></li>
+  <li><a href="#introduction-to-the-seaborn-module" id="toc-introduction-to-the-seaborn-module" class="nav-link" data-scroll-target="#introduction-to-the-seaborn-module">Introduction to the Seaborn Module</a></li>
+  </ul></li>
+  <li><a href="#sec-creating_a_good_visualization" id="toc-sec-creating_a_good_visualization" class="nav-link" data-scroll-target="#sec-creating_a_good_visualization">Creating a Good Visualization</a>
+  <ul class="collapse">
+  <li><a href="#first-steps" id="toc-first-steps" class="nav-link" data-scroll-target="#first-steps">First Steps</a></li>
+  <li><a href="#visualization-development-workflow" id="toc-visualization-development-workflow" class="nav-link" data-scroll-target="#visualization-development-workflow">Visualization Development Workflow</a></li>
+  <li><a href="#iris-flower-example" id="toc-iris-flower-example" class="nav-link" data-scroll-target="#iris-flower-example">Iris Flower Example</a></li>
+  </ul></li>
+  <li><a href="#computational-problem-solution-comparing-co2-emissions-by-country" id="toc-computational-problem-solution-comparing-co2-emissions-by-country" class="nav-link" data-scroll-target="#computational-problem-solution-comparing-co2-emissions-by-country">Computational Problem Solution: Comparing CO<sub>2</sub> Emissions by Country</a></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#ch05-program-modification-problems" id="toc-ch05-program-modification-problems" class="nav-link" data-scroll-target="#ch05-program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#program-development-problems" id="toc-program-development-problems" class="nav-link" data-scroll-target="#program-development-problems">Program Development Problems</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Principles of Scientific Visualization</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivating-problem-comparing-co2-emissions-by-country" class="level2">
+<h2 class="anchored" data-anchor-id="motivating-problem-comparing-co2-emissions-by-country">Motivating Problem: Comparing CO<sub>2</sub> Emissions by Country</h2>
+<p>Carbon dioxide is a significant greenhouse gas, and fossil fuel use is the major contributor to its increase in the earth’s atmosphere. Understanding the emissions from fossil fuel use by different countries is an integral part of public policy discussions. The US Department of Energy maintains a database of such data that can be used by environmental scientists, economists, and other professionals <span class="citation" data-cites="BodenEtAl_GlobalRegionalNational_2013">(<a href="../../bibliography.html#ref-BodenEtAl_GlobalRegionalNational_2013" role="doc-biblioref">Boden et al., 2013</a>)</span>. A subset of the data is shown below in <a href="#tbl-Table5p1" class="quarto-xref">Table&nbsp;<span>1</span></a>. The entire dataset is available in the file fossil-fuel-co2-emissions-by-nation.csv.</p>
+<div id="tbl-Table5p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: CO2 emission from fossil fuel use.
+</figcaption>
+<div aria-describedby="tbl-Table5p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 4%">
+<col style="width: 19%">
+<col style="width: 5%">
+<col style="width: 8%">
+<col style="width: 9%">
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 9%">
+<col style="width: 8%">
+<col style="width: 21%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Year</th>
+<th style="text-align: center;">Country</th>
+<th style="text-align: center;">Total</th>
+<th style="text-align: center;">Solid Fuel</th>
+<th style="text-align: center;">Liquid Fuel</th>
+<th style="text-align: center;">Gas Fuel</th>
+<th style="text-align: center;">Cement</th>
+<th style="text-align: center;">Gas Flaring</th>
+<th style="text-align: center;">Per Capita</th>
+<th style="text-align: center;">Bunker fuels (Not in Total)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1800</td>
+<td style="text-align: center;">CANADA</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1800</td>
+<td style="text-align: center;">GERMANY</td>
+<td style="text-align: center;">217</td>
+<td style="text-align: center;">217</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1800</td>
+<td style="text-align: center;">POLAND</td>
+<td style="text-align: center;">111</td>
+<td style="text-align: center;">111</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1800</td>
+<td style="text-align: center;">UNITED KINGDOM</td>
+<td style="text-align: center;">7269</td>
+<td style="text-align: center;">7269</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1800</td>
+<td style="text-align: center;">UNITED STATES OF AMERICA</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">69</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1801</td>
+<td style="text-align: center;">CANADA</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1801</td>
+<td style="text-align: center;">GERMANY</td>
+<td style="text-align: center;">146</td>
+<td style="text-align: center;">146</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1801</td>
+<td style="text-align: center;">POLAND</td>
+<td style="text-align: center;">121</td>
+<td style="text-align: center;">121</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1801</td>
+<td style="text-align: center;">UNITED KINGDOM</td>
+<td style="text-align: center;">7290</td>
+<td style="text-align: center;">7290</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1801</td>
+<td style="text-align: center;">UNITED STATES OF AMERICA</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">73</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">CANADA</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">FRANCE (INCLUDING MONACO)</td>
+<td style="text-align: center;">611</td>
+<td style="text-align: center;">611</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">GERMANY</td>
+<td style="text-align: center;">151</td>
+<td style="text-align: center;">151</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">POLAND</td>
+<td style="text-align: center;">123</td>
+<td style="text-align: center;">123</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">UNITED KINGDOM</td>
+<td style="text-align: center;">7328</td>
+<td style="text-align: center;">7328</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1802</td>
+<td style="text-align: center;">UNITED STATES OF AMERICA</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">79</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A complete description of the data in each column is provided in <a href="#tbl-Table5p2" class="quarto-xref">Table&nbsp;<span>2</span></a>.</p>
+<div id="tbl-Table5p2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Column description for data in Table 5.1.
+</figcaption>
+<div aria-describedby="tbl-Table5p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 18%">
+<col style="width: 4%">
+<col style="width: 9%">
+<col style="width: 66%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Field Name</th>
+<th>Order</th>
+<th>Type (Format)</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Year</td>
+<td>1</td>
+<td>year</td>
+<td>Year</td>
+</tr>
+<tr class="even">
+<td>Country</td>
+<td>2</td>
+<td>string</td>
+<td>Nation</td>
+</tr>
+<tr class="odd">
+<td>Total</td>
+<td>3</td>
+<td>number</td>
+<td>Total carbon emissions from fossil fuel consumption and cement production (million metric tons of C)</td>
+</tr>
+<tr class="even">
+<td>Solid Fuel</td>
+<td>4</td>
+<td>number</td>
+<td>Carbon emissions from solid fuel consumption</td>
+</tr>
+<tr class="odd">
+<td>Liquid Fuel</td>
+<td>5</td>
+<td>number</td>
+<td>Carbon emissions from liquid fuel consumption</td>
+</tr>
+<tr class="even">
+<td>Gas Fuel</td>
+<td>6</td>
+<td>number</td>
+<td>Carbon emissions from gas fuel consumption</td>
+</tr>
+<tr class="odd">
+<td>Cement</td>
+<td>7</td>
+<td>number</td>
+<td>Carbon emissions from cement production</td>
+</tr>
+<tr class="even">
+<td>Gas Flaring</td>
+<td>8</td>
+<td>number</td>
+<td>Carbon emissions from gas flaring</td>
+</tr>
+<tr class="odd">
+<td>Per Capita</td>
+<td>9</td>
+<td>number</td>
+<td>Per capita carbon emissions (metric tons of carbon; after 1949 only)</td>
+</tr>
+<tr class="even">
+<td>Bunker fuels (Not in Total)</td>
+<td>10</td>
+<td>number</td>
+<td>Carbon emissions from bunker fuels (not included in total)</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The computational problem we want to solve in this chapter is to develop visualizations of the data in this table that can help in discussing the issue of greenhouse gas emissions from fossil fuel use.</p>
+</section>
+<section id="what-are-scientific-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="what-are-scientific-visualizations">What are Scientific Visualizations?</h2>
+<p>Everyone knows the quaint aphorism “A picture is worth 1000 words”. It communicates that a visual representation of information can often inform more quickly and accurately than a simple verbal description. When scientists and engineers wish to understand large amounts of data or interpret the results of a model, the same principle applies: visual representations are often more useful than the data viewed in its original form. In the age of Big Data and computer simulations, this observation takes on even more meaning and leads to the field of scientific visualization.</p>
+<p>An excellent example of this bit of wisdom is seen in comparing <a href="../Ch04/Ch04_Lists.html#tbl-Table4p1" class="quarto-xref">Table&nbsp;<span>1</span></a> and <a href="../Ch04/Ch04_Lists.html#fig-Figure4.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>. The graph of temperature anomaly as a function of year identifies patterns much more straightforwardly than just looking at the data table itself. Similarly, we want to develop visualizations of the data in <a href="#tbl-Table5p1" class="quarto-xref">Table&nbsp;<span>1</span></a> that will help us identify useful patterns or trends that are difficult to see just by looking at the columns of numbers. Of course, identifying structure using visualization techniques requires some thought about how to create visualizations, and that is the subject of the scientific visualization field.</p>
+<section id="definition-of-scientific-visualization" class="level3">
+<h3 class="anchored" data-anchor-id="definition-of-scientific-visualization">Definition of Scientific Visualization</h3>
+<p>As you might guess, allowing a bunch of academics to define a subject will lead to as many definitions as there are academics. But we can distill some common features that get us oriented to the topic. Here is our working definition of scientific visualization <span class="citation" data-cites="AusoniEtAl_ScientificVisualizationInterfaces_2014a">(<a href="../../bibliography.html#ref-AusoniEtAl_ScientificVisualizationInterfaces_2014a" role="doc-biblioref">Ausoni et al., 2014</a>)</span>:</p>
+<p>Scientific visualization is concerned with graphically representing scientific phenomena to gain understanding and insight into the system that was previously impossible.</p>
+<ul>
+<li><p>This may be part of the research process: graphics are used for understanding, interpretation, and exploration and may guide the direction of the research itself, from tweaking parameters to raising new questions.</p></li>
+<li><p>It may be used in production environments, such as medical procedures, as part of a larger mission.</p></li>
+<li><p>It may be used for educational purposes, in the classroom, etc.</p></li>
+</ul>
+</section>
+</section>
+<section id="classifying-scientific-visualizations" class="level2">
+<h2 class="anchored" data-anchor-id="classifying-scientific-visualizations">Classifying Scientific Visualizations</h2>
+<p>There are many approaches to classifying scientific visualizations, and our goal here is not to perform an exhaustive review. Indeed, there is a rich literature on classifying data visualizations. Some focus on the type of data being visualized <span class="citation" data-cites="Shneiderman_EyesHaveIt_2003">(<a href="../../bibliography.html#ref-Shneiderman_EyesHaveIt_2003" role="doc-biblioref">Shneiderman, 2003</a>)</span> ; others focus on the models and algorithms used with data rather than the data itself <span class="citation" data-cites="ToryMoller_RethinkingVisualizationHighLevel_2004">(<a href="../../bibliography.html#ref-ToryMoller_RethinkingVisualizationHighLevel_2004" role="doc-biblioref">Tory &amp; Moller, 2004</a>)</span>. Instead, we will focus on one basic model that should be useful for novice computational scientists to develop effective visualizations. We will classify visualizations according to three principal axes, as shown in <a href="#fig-Figure5.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>: the content type of visual model (data-based - conceptual), dimensionality of the representation (2D-3D), and the element of time in the visualization (static - dynamic).</p>
+<div id="fig-Figure5.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.1.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Types of visualization models.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-Figure5.2" class="quarto-xref">Figure&nbsp;<span>2</span></a> shows an example of a conceptual visualization. It illustrates the main elements of the earth’s energy budget. While there is some quantitative information in the visualization, the primary purpose and information content are conceptual. <a href="#fig-Figure5.3" class="quarto-xref">Figure&nbsp;<span>3</span></a> shows the measured insolation (incoming solar radiation) as a function of the month for Lincoln, Nebraska <span class="citation" data-cites="PowerProjectTeam_NASAPOWERPrediction_">(<a href="../../bibliography.html#ref-PowerProjectTeam_NASAPOWERPrediction_" role="doc-biblioref">Power Project Team, n.d.</a>)</span> . This is an example of a data-based visualization. It is easy to pick out the seasonal pattern when viewing the data in this form. <a href="#fig-Figure5.3" class="quarto-xref">Figure&nbsp;<span>3</span></a> also serves as an example of a 2D visualization. There are many types of 2D graphs, including XY, contour, and bar. <a href="#fig-Figure5.3" class="quarto-xref">Figure&nbsp;<span>3</span></a> is a bar graph. 2D graphs are the bread and butter for traditional scientific publications, so we will spend quite a bit of time learning how to produce these.</p>
+<div id="fig-Figure5.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/EarthEnergyBudget_NASA.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Earth’s energy budget. <span class="citation" data-cites="Atkinson_WhatEarthsEnergy_2017">(<a href="../../bibliography.html#ref-Atkinson_WhatEarthsEnergy_2017" role="doc-biblioref">Atkinson, 2017</a>)</span>
+</figcaption>
+</figure>
+</div>
+<div id="fig-Figure5.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/solarInsolation_Lincoln.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Insolation (incoming solar radiation) as a function of month measured at the earth’s surface in Lincoln, Nebraska.
+</figcaption>
+</figure>
+</div>
+<p>Both <a href="#fig-Figure5.2" class="quarto-xref">Figure&nbsp;<span>2</span></a> and <a href="#fig-Figure5.3" class="quarto-xref">Figure&nbsp;<span>3</span></a> are considered static visualizations since they are both static images that do not change. Dynamic visualizations such as animations that change over time are also very useful for exploring scientific data, particularly when we are interested in looking at changes over time. The following link shows the monthly average solar radiation arriving at earth’s surface for one year: <a href="https://climvis.org/content/anim/ltm/globe/snr_globe_1991-2020_ltm/snr_globe_1991-2020_ltm.html"><strong>Net Radiation Animation</strong></a> <span class="citation" data-cites="Shinker_GlobalClimateAnimations_2016">(<a href="../../bibliography.html#ref-Shinker_GlobalClimateAnimations_2016" role="doc-biblioref">Shinker, 2016</a>)</span> . <a href="#fig-Figure5.4" class="quarto-xref">Figure&nbsp;<span>4</span></a> shows three frames from the animation. This visualization is a dynamic, data-based, 2D visualization. Dynamic visualizations require more sophisticated viewing technologies than standard publications.</p>
+<div id="fig-Figure5.4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.4.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Average short wave solar radiation arriving at Earths surface.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="python-modules-for-visualization" class="level2">
+<h2 class="anchored" data-anchor-id="python-modules-for-visualization">Python Modules for Visualization</h2>
+<p>There are several modules that make up a useful Python visualization environment. These include Numpy, Matplotlib, Pandas, and Seaborn. We introduced numpy and matplotlib previously. In this section we will cover some additional features of Matplotlib and then introduce the Pandas and Seaborn modules.</p>
+<section id="creating-2d-graphs-using-matplotlib" class="level3">
+<h3 class="anchored" data-anchor-id="creating-2d-graphs-using-matplotlib">Creating 2d Graphs Using Matplotlib</h3>
+<p>In Chapter 4 we saw how to create a basic scatter graph using the plot function in the Matplotlib.pyplot module. We will now learn to customize a 2D plot. We will start with plotting functions. The following code illustrates specifying line color and line style. <a href="#fig-Figure5.5" class="quarto-xref">Figure&nbsp;<span>5</span></a> shows the result of this code.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">40</span>)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.10</span><span class="op">*</span>x)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.20</span><span class="op">*</span>x)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>y3 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.30</span><span class="op">*</span>x)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y1,color<span class="op">=</span><span class="st">'k'</span> , label<span class="op">=</span><span class="st">'mu= 0.1'</span> , linestyle<span class="op">=</span><span class="st">'-'</span> , linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y2,color<span class="op">=</span><span class="st">'b'</span> ,label<span class="op">=</span><span class="st">'mu= 0.2'</span> ,linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y3,color<span class="op">=</span><span class="st">'r'</span> ,label<span class="op">=</span><span class="st">' mu= .3'</span> , linestyle<span class="op">=-</span>.<span class="st">' , linewidth=3)</span></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="er">plt.xlabel</span>(<span class="st">'x'</span> , fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span> , fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>plt.legend()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="fig-Figure5.5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.5.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Example of changing colors and linestyles.
+</figcaption>
+</figure>
+</div>
+<p>There are several things to point out about the code.</p>
+<ul>
+<li>The Numpy linspace function is used to generate a set of equally spaced numbers that can be used for the function calculations. This function generates a set of equally spaced numbers and returns them as a 1D numpy array. The syntax is</li>
+</ul>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>np.linspace(start, stop, num)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>start: starting number of the interval</p>
+<p>stop: ending number of the interval</p>
+<p>num: the number samples to generate</p>
+<ul>
+<li><p>The color of a line (or data symbol) is determined by the color keyword argument. <a href="#tbl-Table5p3" class="quarto-xref">Table&nbsp;<span>3</span></a> gives the codes for the base set of colors in Matplotlib. The CSS color list gives considerably more choice. See the Matplotlib documentation for the CSS color codes <span class="citation" data-cites="TheMatplotlibdevelopmentteam_ListNamedColors_2022">(<a href="../../bibliography.html#ref-TheMatplotlibdevelopmentteam_ListNamedColors_2022" role="doc-biblioref">The Matplotlib development team, 2022</a>)</span>.</p></li>
+<li><p>The thickness of the line is set by the linewidth keyword argument. The number can be any positive float.</p></li>
+<li><p>The type of line drawn is determined by the linestyle keyword argument. The allowed values are listed in <a href="#tbl-Table5p4" class="quarto-xref">Table&nbsp;<span>4</span></a>.</p></li>
+</ul>
+<div id="tbl-Table5p3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: :Matplotlib linestyle codes.
+</figcaption>
+<div aria-describedby="tbl-Table5p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<style type="text/css">
+.tg  {border-collapse:collapse;border-color:#ccc;border-spacing:0;}
+.tg td{background-color:#fff;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+  font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{background-color:#f0f0f0;border-color:#ccc;border-style:solid;border-width:1px;color:#333;
+  font-family:Arial, sans-serif;font-size:14px;font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-1wig{font-weight:bold;text-align:left;vertical-align:top}
+.tg .tg-baqh{text-align:center;vertical-align:top}
+.tg .tg-0lax{text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-1wig">
+description
+</th>
+<th class="tg-1wig">
+color
+</th>
+<th class="tg-1wig">
+code
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">blue</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_blue.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">b</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">green</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_green.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">g</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">red</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_red.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">r</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">cyan</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_cyan.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">c</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">magenta</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_magenta.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">m</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">yellow</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_yellow.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">y</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">black</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_black.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">k</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0lax">
+<span style="font-weight:normal">white</span>
+</td>
+<td class="tg-0lax">
+<img src="../..\chapters\Ch05\Figures\color_white.png" class="img-fluid figure-img">
+</td>
+<td class="tg-0lax">
+<span style="font-weight:normal">w</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="tbl-Table5p4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Matplotlib linestyle codes.
+</figcaption>
+<div aria-describedby="tbl-Table5p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: left;"><strong>code</strong></th>
+<th style="text-align: center;"><strong>short code</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Solid</td>
+<td style="text-align: left;">‘solid’</td>
+<td style="text-align: center;">‘-’</td>
+</tr>
+<tr class="even">
+<td>Dashed</td>
+<td style="text-align: left;">‘dashed’</td>
+<td style="text-align: center;">‘–’</td>
+</tr>
+<tr class="odd">
+<td>Dotted</td>
+<td style="text-align: left;">‘dotted’</td>
+<td style="text-align: center;">‘:’</td>
+</tr>
+<tr class="even">
+<td>Dashdot</td>
+<td style="text-align: left;">‘dashdot’</td>
+<td style="text-align: center;">‘-.’</td>
+</tr>
+<tr class="odd">
+<td>None</td>
+<td style="text-align: left;">‘none’</td>
+<td style="text-align: center;">”</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>If you do not like the default location of the legend, then you can customize it by using the loc keyword argument. The allowed strings or corresponding numerical codes are shown in Table 5.5.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper center'</span>)    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div id="tbl-Table5p5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Matplotlib legend loc values.
+</figcaption>
+<div aria-describedby="tbl-Table5p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>string</strong></th>
+<th style="text-align: center;"><strong>number code</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">‘best’</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">‘upper right’</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">‘upper left’</td>
+<td style="text-align: center;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">‘lower left’</td>
+<td style="text-align: center;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">‘lower right’</td>
+<td style="text-align: center;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">‘right’</td>
+<td style="text-align: center;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">‘center left’</td>
+<td style="text-align: center;">6</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">‘center right’</td>
+<td style="text-align: center;">7</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">‘lower center’</td>
+<td style="text-align: center;">8</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">‘upper center’</td>
+<td style="text-align: center;">9</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">‘center’</td>
+<td style="text-align: center;">10</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>When numbers to be plotted cover a large order of magnitude range, or when we want to easily identify power law or exponential law behavior, using a logarithmic scale can be helpful. To make the y-axis use a logarithmic scale we can use the yscale function.</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>plt.yscale(<span class="st">'log'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Adding this to the code that produced <a href="#fig-Figure5.5" class="quarto-xref">Figure&nbsp;<span>5</span></a> gives us <a href="#fig-Figure5.6" class="quarto-xref">Figure&nbsp;<span>6</span></a>.</p>
+<div id="fig-Figure5.6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.6.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Example of using the yscale function.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="introduction-to-the-pandas-module" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-to-the-pandas-module">Introduction to the Pandas Module</h3>
+<p>The Pandas module is a basic component of the Python computational science environment and is particularly helpful for problems involving data analytics <span class="citation" data-cites="Thepandasdevelopmentteam_PandasPythonData_2022">(<a href="../../bibliography.html#ref-Thepandasdevelopmentteam_PandasPythonData_2022" role="doc-biblioref">The pandas development team, 2022</a>)</span>. It provides a useful data structure for containing data, the dataframe, and many functions for working with a dataframe. To illustrate some of the features of Pandas we will use a classic data set used for educational purposes: the Fisher Iris Flower Data Set <span class="citation" data-cites="Fisher_UseMultipleMeasurements_1936">(<a href="../../bibliography.html#ref-Fisher_UseMultipleMeasurements_1936" role="doc-biblioref">Fisher, 1936</a>)</span>. This data set can be obtained in a convenient electronic form as a csv file from Kaggle <span class="citation" data-cites="_IrisSpecies_">(<a href="../../bibliography.html#ref-_IrisSpecies_" role="doc-biblioref"><em>Iris <span>Species</span></em>, n.d.</a>)</span>. This data is in the file Iris.csv.</p>
+<p>A dataframe is a two-dimensional data structure, visualized as a 2-D grid, where each column can contain a different datatype. The data does not need to be numerical, as in the case of NumPy arrays. Each column in the dataframe has a label that will appear above the column in the first row of the grid. Each row of the grid, except for the first row containing the column labels, is indexed by a row number starting with 0. <a href="#fig-Figure5.7" class="quarto-xref">Figure&nbsp;<span>7</span></a> is a Colab Notebook excerpt that illustrates how to read in data from a csv file to create a Pandas dataframe. The Pandas function read_csv can be used to read in tab-delimited data, too, by using the header keyword argument <span class="citation" data-cites="_Pandasread_csvPandas143_">(<a href="../../bibliography.html#ref-_Pandasread_csvPandas143_" role="doc-biblioref"><em>Pandas.read_csv — Pandas 1.4.3 Documentation</em>, n.d.</a>)</span>.</p>
+<div id="fig-Figure5.7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.7.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Reading data into a dataframe and obtaining basic information about it.
+</figcaption>
+</figure>
+</div>
+<p>An overview of the dataframe contents can be obtained by using the Pandas info function, as shown in <a href="#fig-Figure5.7" class="quarto-xref">Figure&nbsp;<span>7</span></a>. We can see a listing of the column labels and how many non-null entries each column has. This last piece of information can be helpful in deciding what kind of data clean-up must be performed. The first few rows from the dataframe can be viewed by using the head function.</p>
+<p>The data in an individual column from the dataframe can be accessed by using a square bracket notation, where the index in the bracket is the desired column label:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>ds <span class="op">=</span> df[<span class="st">'Species'</span>]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>In this example, the variable ds will be a pandas data series, which is a special pandas data structure that can be manipulated with appropriate pandas functions. Instead of working with pandas data series we will usually convert columns to Numpy arrays when the data type is numerical. This can be done with the to_numpy() method applied to a pandas data series. Here is an example:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>SepalLength_data <span class="op">=</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'SepalLengthCm'</span>]}.to_numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The variable SepalLength_data will be a 1D numpy array that can be used by matplotlib plotting functions, for example. Pandas has many plotting functions that can be used with dataframes, but we will usually convert dataframe columns to numpy arrays and use matplotlib for our plotting.</p>
+</section>
+<section id="introduction-to-the-seaborn-module" class="level3">
+<h3 class="anchored" data-anchor-id="introduction-to-the-seaborn-module">Introduction to the Seaborn Module</h3>
+<p>The Seaborn module is built on top of Matplotlib but offers some advantages in certain situations. Some of the advantages are</p>
+<ul>
+<li><p>Integration with Pandas so that dataframes can be used directly without needing to convert columns to Numpy arrays.</p></li>
+<li><p>Some useful graph types are prebuilt so that they can be implemented with a single function. One example is the pairwise or all-against-all scatterplot that we will use in 5.4.3.</p></li>
+<li><p>There are some predefined styles that create aesthetically pleasing graphs consistent with good graphic design principles.</p></li>
+</ul>
+<p>To illustrate some basic features of the Seaborn module we will use a selection of data from the NASA Exoplanet Archive <span class="citation" data-cites="_NASAExoplanetArchive_">(<a href="../../bibliography.html#ref-_NASAExoplanetArchive_" role="doc-biblioref"><em><span>NASA Exoplanet Archive</span></em>, n.d.</a>)</span>. The data we will use is in the file PSCompPars_subset.csv. Before using the Seaborn module you must import it into your code file:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Seaborn contains functions to create a wide variety of plots. One method of generating a scatterplot is to use the lmplot() function. The basic syntax is</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> sns.lmplot(x<span class="op">=</span>x_string, y<span class="op">=</span>y_string, data<span class="op">=</span>dataframe_name,</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>                 fit_reg<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>x_string: the x-axis column heading from the dataframe</p>
+<p>y_string: the y-axis column heading from the dataframe</p>
+<p>dataframe_name: the Pandas dataframe containing the data</p>
+<p>If the fit_reg keyword argument is not set to False then a linear regression line is automatically added to the graph. We will come back to performing a linear regression fit to data in Chapter 10.</p>
+<p>Here is an example of creating a scatterplot from the exoplanet data file.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>planets <span class="op">=</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>pd.read_csv(<span class="st">'PSCompPars_subset.csv'</span>, header<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>planets_fig <span class="op">=</span> sns.lmplot(x<span class="op">=</span><span class="st">'pl_orbsmax'</span>, y<span class="op">=</span><span class="st">'pl_orbper'</span>, data<span class="op">=</span>planets, fit_reg<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>                            plt.xlim(<span class="dv">0</span>,<span class="fl">1.5</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Orbital Semi-major Axis [au]'</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Orbital Period [days]'</span>)</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a>planets_fig.savefig(<span class="st">'pl_orbsmax-pl_orbper.png'</span> , dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Note that we applied three matplotlib.pyplot functions to the Seaborn plot, xlim, xlabel, and ylabel. This illustrates a nice feature of Seaborn. We can use matplotlib to provide some customization of the plot. This can be done because Seaborn is built on top of Matplotlib. (#fig:Figure5.8)shows the result of this code.</p>
+<table width="100%" border="0">
+<tbody>
+<tr>
+<td>
+<div id="fig-Figure5.8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.8.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Example of the Seaborn white theme.
+</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div id="fig-Figure5.9" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Figure5.9.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Example of the Seaborn darkgrid theme.
+</figcaption>
+</figure>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Overall style of a graph is determined by using one of the predefined themes. This is done with</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>sns.set_style(theme)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where theme is one of the following strings:</p>
+<p>darkgrid, whitegrid, dark, white, ticks</p>
+<p>Using the darkgrid theme to create the scatterplot shown in <a href="#fig-Figure5.8" class="quarto-xref">Figure&nbsp;<span>8</span></a> yields <a href="#fig-Figure5.9" class="quarto-xref">Figure&nbsp;<span>9</span></a>.</p>
+</section>
+</section>
+<section id="sec-creating_a_good_visualization" class="level2">
+<h2 class="anchored" data-anchor-id="sec-creating_a_good_visualization">Creating a Good Visualization</h2>
+<p>Solving complex scientific and engineering problems can be facilitated by using a structured approach or strategy and the same is true for developing a good scientific visualization. We will use a strategy or workflow suggested by Ben Fry <span class="citation" data-cites="Fry_VisualizingData_2008">(<a href="../../bibliography.html#ref-Fry_VisualizingData_2008" role="doc-biblioref">Fry, 2008</a>)</span>.</p>
+<section id="first-steps" class="level3">
+<h3 class="anchored" data-anchor-id="first-steps">First Steps</h3>
+<p>The first step is to start with a question that you want to answer with the visualization. Starting with data and asking what it can tell us can lead to being overwhelmed by possibilities, whereas beginning with a question before even looking for or looking at data allows us to focus the visualization that we develop in a constructive way. A second part of this initial step is to define the audience for the visualization. Some helpful questions to define the audience include</p>
+<ul>
+<li><p>Are they science professionals used to looking at graphs?</p></li>
+<li><p>What information would they expect in a visualization?</p></li>
+<li><p>How much time will they devote to looking at the visualization?</p></li>
+</ul>
+</section>
+<section id="visualization-development-workflow" class="level3">
+<h3 class="anchored" data-anchor-id="visualization-development-workflow">Visualization Development Workflow</h3>
+<p>Once we have defined a question and our audience, Fry suggests the following workflow <span class="citation" data-cites="Fry_VisualizingData_2008">(<a href="../../bibliography.html#ref-Fry_VisualizingData_2008" role="doc-biblioref">Fry, 2008</a>)</span>:</p>
+<ol type="1">
+<li><p>Acquire - Obtain the data, whether from a file on a disk or a source over a network.</p></li>
+<li><p>Parse or Understand the Data - Provide structure for the data’s meaning, and order it into categories.</p></li>
+<li><p>Filter – Clean the data and remove all but the data of interest.</p></li>
+<li><p>Mine – Use methods from statistics, data mining, or more fundamental scientific principles to discern patterns or place the data in a mathematical context.</p></li>
+<li><p>Represent - Choose a basic visual model, such as a bar graph, scatter graph, contour plot, or other visual construct.</p></li>
+<li><p>Refine - Improve the basic representation to make it clearer and more visually engaging.</p></li>
+<li><p>Interact - Add methods for manipulating the data or controlling what features are visible.</p></li>
+</ol>
+<p>The last step, adding interaction, will not be discussed in this book.</p>
+</section>
+<section id="iris-flower-example" class="level3">
+<h3 class="anchored" data-anchor-id="iris-flower-example">Iris Flower Example</h3>
+<p>As an example, we will explore some properties of the iris flower contained in the classic educational data set originally created by R.A. Fisher <span class="citation" data-cites="Fisher_UseMultipleMeasurements_1936">(<a href="../../bibliography.html#ref-Fisher_UseMultipleMeasurements_1936" role="doc-biblioref">Fisher, 1936</a>)</span>. The question guiding our visualization development is</p>
+<blockquote class="blockquote">
+<p>Can sepal or petal measurements be used to distinguish species of the iris flower?</p>
+</blockquote>
+<p>The sepal is the part of the flower that protects the petals in the flower bud. <a href="#fig-IrisFlower" class="quarto-xref">Figure&nbsp;<span>10</span></a> shows an example of an iris flower.</p>
+<div id="fig-IrisFlower" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-IrisFlower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/IrisFlower.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-IrisFlower-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: An iris flower showing how petal and sepal measurements are defined <span class="citation" data-cites="Rathod_IrisFlowerCaseStudy_2020">(<a href="../../bibliography.html#ref-Rathod_IrisFlowerCaseStudy_2020" role="doc-biblioref">Rathod, 2020</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>We will step through the workflow defined above to develop visualizations that can help answer the question.</p>
+<p><strong>Acquire</strong></p>
+<p>We can easily <strong>acquire</strong> a nice dataset related to the iris flower already in a convenient electronic form as a csv file from Kaggle <span class="citation" data-cites="_IrisSpecies_">(<a href="../../bibliography.html#ref-_IrisSpecies_" role="doc-biblioref"><em>Iris <span>Species</span></em>, n.d.</a>)</span>. This data is in the file Iris.csv.</p>
+<p><strong>Parse</strong></p>
+<p>We must <strong>parse</strong> or inspect the dataset to understand the properties or measurements that are included and whether any cleanup must be done. The pandas module contains some useful functions for inspecting a data frame. Therefore, we should first read the data in the Iris.csv file as a pandas data frame, as discussed in section 5.3. Next, we inspect the dataframe using the pandas info function. The output is shown in <a href="#fig-Figure5.7" class="quarto-xref">Figure&nbsp;<span>7</span></a> . The output shows that all the columns are numerical data, except for the Species column. We can also see that there are 150 rows, or records, of data and that there are no null values. This will help us in the next step of filtering the data.</p>
+<div id="tbl-Table5p6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table5p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Description of the iris flower data set.
+</figcaption>
+<div aria-describedby="tbl-Table5p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 40%">
+<col style="width: 59%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Property</strong></th>
+<th><strong>Value</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Number of Observations</td>
+<td>150</td>
+</tr>
+<tr class="even">
+<td>Number of Attributes for each observation</td>
+<td>5</td>
+</tr>
+<tr class="odd">
+<td>Attributes observed</td>
+<td>sepal length sepal width petal length petal width species</td>
+</tr>
+<tr class="even">
+<td>Number of null values</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Filter</strong></p>
+<p>Filtering data involves removing data that will not be needed. Part of this process is to clean up the data by removing null values or removing records (rows in a pandas dataframe) that contain null values. We can determine whether there are null values by looking at the results from the pandas info function or by using the isnull function. The output from the info function applied to the iris flower dataframe already tells us that we do not have null values in the data set. The output from the isnull function, shown in <a href="#fig-isnull_output.png" class="quarto-xref">Figure&nbsp;<span>11</span></a> , can also tell us this result. It specifies whether each value in the dataframe is null (True) or not null (False). We would have to inspect all rows to verify the result. Note that the output of the isnull function is another pandas dataframe.</p>
+<div id="fig-isnull_output.png" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-isnull_output.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/isnull_output.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-isnull_output.png-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Output from the isnull function applied to the iris flower dataset.
+</figcaption>
+</figure>
+</div>
+<p>One way to verify that there are no null values in a column of the dataframe is to sum up the values of the corresponding column in the isnull dataframe. For example, the following code would check on the existence of null values in the SepalLengthCm column.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>isnull_result <span class="op">=</span> pd.isnull(df)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>sepal_length_number_of_nulls <span class="op">=</span> isnull_result[<span class="st">'SepalLengthCm'</span>].<span class="bu">sum</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The value of sepal_length_number_of_nulls would come out to be 0. This works because the Boolean value False is interpreted as a 0 in the sum function. We can perform this check on all columns with the following</p>
+<p><img src="../..\chapters/Ch05/Figures/isnull_sum_output.png" class="img-fluid"></p>
+<p>We are fortunate, in this example, to be working with a clean data set.</p>
+<p><strong>Mine</strong></p>
+<p>To mine our data set requires performing some exploratory data analysis so that we can begin to discern any patterns in the data. Basic descriptive statistics on each column, representing a particular measured attribute, can be obtained with the pandas describe function. <a href="#fig-describe_output" class="quarto-xref">Figure&nbsp;<span>12</span></a> shows the result for the iris flower dataframe.</p>
+<div id="fig-describe_output" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-describe_output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/describe_output.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-describe_output-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Results from applying the describe function to the iris dataframe.
+</figcaption>
+</figure>
+</div>
+<p>Looking at a histogram for each numerical observation can be an informative part of exploratory data analysis. The Seaborn module has a histogram function that will create professional-looking histograms. To generate a histogram of the petal length measurements, use the following</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>sns.histplot(df, x<span class="op">=</span><span class="st">'PetalLengthCm'</span> , bins<span class="op">=</span><span class="dv">18</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="#fig-petalHistograms" class="quarto-xref">Figure&nbsp;<span>13</span></a> shows the resulting histograms for both petal measurement. Note that there is an interesting double peak structure which may be related to the species.</p>
+<div id="fig-petalHistograms" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-petalHistograms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/petalHistograms.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-petalHistograms-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Histograms for the petal measurements.
+</figcaption>
+</figure>
+</div>
+<p>When we have multivariate data to explore a pairwise or all-against-all scatterplot can be useful to identify possible correlations and clustering in the data. A quick way to produce such a plot when the data is in a pandas dataframe is to use the seaborn module pairplot function.</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(df,hue<span class="op">=</span><span class="st">"Species"</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>g.savefig(<span class="st">'iris_pairplot.png'</span> , dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><a href="#fig-iris_pairplot" class="quarto-xref">Figure&nbsp;<span>14</span></a> shows the resulting pairwise plot. The diagonal plots in the matrix are the frequency distributions for the variable indicated by the column or row label.</p>
+<div id="fig-iris_pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-iris_pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/iris_pairplot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-iris_pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Pairwise plot for the iris flower data set.
+</figcaption>
+</figure>
+</div>
+<p>Looking at the pairwise plot suggests that the following plots might be useful in identifying species:</p>
+<ul>
+<li><p>petal length versus sepal length</p></li>
+<li><p>petal length versus sepal width</p></li>
+<li><p>petal length versus petal width</p></li>
+</ul>
+<p>To extract the data required for producing these three plots using matplotlib we will create new pandas dataframes containing one species each and then extract the numerical columns and convert them to numpy arrays. Figure <a href="#fig:create_dataframe" data-reference-type="ref" data-reference="fig:create_dataframe">1.15</a> shows the code that will accomplish this.</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a dataframe for each species</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>setosa <span class="op">=</span> df.loc[df[<span class="st">'Species'</span>]<span class="op">==</span><span class="st">'Iris-setosa'</span>]</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>versicolor <span class="op">=</span> df.loc[df[<span class="st">'Species'</span>]<span class="op">==</span><span class="st">'Iris-versicolor'</span>]</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>virginica <span class="op">=</span> df.loc[df[<span class="st">'Species'</span>]<span class="op">==</span><span class="st">'Iris-virginica'</span>]</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Create numpy arrays containing the numerical measurements</span></span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>setosa_np <span class="op">=</span> setosa.loc[:,[<span class="st">'SepalLengthCm'</span>,<span class="st">'SepalWidthCm'</span>,<span class="st">'PetalLengthCm'</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>          <span class="st">'PetalWidthCm'</span>]].to_numpy()</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>versicolor_np <span class="op">=</span> versicolor.loc[:,[<span class="st">'SepalLengthCm'</span>,<span class="st">'SepalWidthCm'</span>,<span class="st">'PetalLengthCm'</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>          <span class="st">'PetalWidthCm'</span>]].to_numpy()</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>virginica_np <span class="op">=</span> virginica.loc[:,[<span class="st">'SepalLengthCm'</span>,<span class="st">'SepalWidthCm'</span>,<span class="st">'PetalLengthCm'</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>          <span class="st">'PetalWidthCm'</span>]].to_numpy()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Represent</strong></p>
+<p>Based on the exploratory data analysis performed in the mining part of our workflow we want to construct three scatter graphs that show petal lengths versus sepal lengths, sepal widths, and petal widths. We will use matplotlib so that we have greatest control over the final appearance of the plots. The code in <a href="#fig-petal_length_sepal_length" class="quarto-xref">Figure&nbsp;<span>15</span></a> can be used for the petal length versus sepal length graph.</p>
+<div id="fig-petal_length_sepal_length" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-petal_length_sepal_length-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-petal_length_sepal_length"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-petal_length_sepal_length-1"><a href="#fig-petal_length_sepal_length-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Create Petal Length versus Sepal Length plot</span></span>
+<span id="fig-petal_length_sepal_length-2"><a href="#fig-petal_length_sepal_length-2" aria-hidden="true" tabindex="-1"></a>plt.plot(setosa_np[:,<span class="dv">2</span>],setosa_np[:,<span class="dv">0</span>], linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'d'</span>,</span>
+<span id="fig-petal_length_sepal_length-3"><a href="#fig-petal_length_sepal_length-3" aria-hidden="true" tabindex="-1"></a>          label<span class="op">=</span><span class="st">'setosa'</span>)</span>
+<span id="fig-petal_length_sepal_length-4"><a href="#fig-petal_length_sepal_length-4" aria-hidden="true" tabindex="-1"></a>plt.plot(versicolor_np[:,<span class="dv">2</span>],versicolor_np[:,<span class="dv">0</span>], linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'o'</span>, </span>
+<span id="fig-petal_length_sepal_length-5"><a href="#fig-petal_length_sepal_length-5" aria-hidden="true" tabindex="-1"></a>          label<span class="op">=</span><span class="st">'versicolor'</span>)</span>
+<span id="fig-petal_length_sepal_length-6"><a href="#fig-petal_length_sepal_length-6" aria-hidden="true" tabindex="-1"></a>plt.plot(virginica_np[:,<span class="dv">2</span>],virginica_np[:,<span class="dv">0</span>], linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'^'</span>, </span>
+<span id="fig-petal_length_sepal_length-7"><a href="#fig-petal_length_sepal_length-7" aria-hidden="true" tabindex="-1"></a>          label<span class="op">=</span><span class="st">'virginica'</span>)</span>
+<span id="fig-petal_length_sepal_length-8"><a href="#fig-petal_length_sepal_length-8" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-petal_length_sepal_length-9"><a href="#fig-petal_length_sepal_length-9" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Sepal Length [cm]'</span>)</span>
+<span id="fig-petal_length_sepal_length-10"><a href="#fig-petal_length_sepal_length-10" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Petal Length [cm]'</span>)</span>
+<span id="fig-petal_length_sepal_length-11"><a href="#fig-petal_length_sepal_length-11" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Petal Length versus Sepal length'</span>)</span>
+<span id="fig-petal_length_sepal_length-12"><a href="#fig-petal_length_sepal_length-12" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'PetalLengthVsSepalLength.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-petal_length_sepal_length-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: :Code for creating the petal length versus sepal length graph.
+</figcaption>
+</figure>
+</div>
+<p>This code can be modified to produce the other two graphs by changing the column used for the y axis in the plot function. <a href="#fig-Figure5.16" class="quarto-xref">Figure&nbsp;<span>16</span></a> shows the three graphs created in this step of the workflow.</p>
+<div id="fig-Figure5.16" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table width="100%" border="0">
+<tbody>
+<tr>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsSepalLength.png" class="img-fluid figure-img"></p>
+<figcaption>(a)</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsSepalWidth.png" class="img-fluid figure-img"></p>
+<figcaption>(b)</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsPetalWidth.png" class="img-fluid figure-img"></p>
+<figcaption>(c)</figcaption>
+</figure>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: :Iris flower measurement comparisons by species.
+</figcaption>
+</figure>
+</div>
+<p><strong>Refine</strong></p>
+<p>We should refine our visualization to clarify the representation or by changing attributes that contribute to readability. One thing that might be changed in <a href="#fig-Figure5.16" class="quarto-xref">Figure&nbsp;<span>16</span></a> to aid comparing the graphs is to make the y-axis scale the same. We can set the y-axis scale with</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>plt.ylim((<span class="dv">0</span>,<span class="dv">8</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The result of putting this statement in the code is <a href="#fig-Figure5_Iris_Species_Comparison_Ref" class="quarto-xref">Figure&nbsp;<span>17</span></a>.</p>
+<div id="fig-Figure5_Iris_Species_Comparison_Ref" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure5_Iris_Species_Comparison_Ref-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table width="100%" border="0">
+<tbody>
+<tr>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsSepalLengthRef.png" class="img-fluid figure-img"></p>
+<figcaption>(a)</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsSepalWidthRef.png" class="img-fluid figure-img"></p>
+<figcaption>(b)</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch05/Figures/PetalLengthVsPetalWidthRef.png" class="img-fluid figure-img"></p>
+<figcaption>(c)</figcaption>
+</figure>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure5_Iris_Species_Comparison_Ref-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: :Iris flower measurement comparisons by species.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="computational-problem-solution-comparing-co2-emissions-by-country" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solution-comparing-co2-emissions-by-country">Computational Problem Solution: Comparing CO<sub>2</sub> Emissions by Country</h2>
+<p>As a final example of developing scientific visualizations, we return to the problem posed at the beginning of the chapter: looking at CO<sub>2</sub> emissions from fossil fuel use. We will focus on two questions.</p>
+<ol type="1">
+<li><p>How do nations of the world compare in their CO<sub>2</sub> emissions from fossil fuel use for a recent year?</p></li>
+<li><p>How has the CO<sub>2</sub> emission from fossil fuel use changed over time for the highest emitters?</p></li>
+</ol>
+<p>Our target audience will be policymakers in government.</p>
+<p><strong>Acquire</strong> - Obtain the data</p>
+<p>We will use a subset of data from the U.S. Department of Energy <span class="citation" data-cites="BodenEtAl_GlobalRegionalNational_2013">(<a href="../../bibliography.html#ref-BodenEtAl_GlobalRegionalNational_2013" role="doc-biblioref">Boden et al., 2013</a>)</span>. The subset is provided in the csv file fossil-fuel-co2-emissions-by-nation.csv. A description of each column in the file, including units used is in <a href="#tbl-Table5p2" class="quarto-xref">Table&nbsp;<span>2</span></a>.</p>
+<p><strong>Parse</strong> or Understand the Data - Provide structure for the data’s meaning, and order it into categories.</p>
+<p>We will import the data as a Pandas dataframe and then look at information about the data set using the pandas info and describe functions. Screenshots of the Colab notebook that performs these operations are shown in <a href="#fig-Fig5_Colab_describing_dataframe" class="quarto-xref">Figure&nbsp;<span>18</span></a> and <a href="#fig-Fig5_Pandas_describe_dataframe" class="quarto-xref">Figure&nbsp;<span>19</span></a>.</p>
+<div id="fig-Fig5_Colab_describing_dataframe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_Colab_describing_dataframe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2EmissionsExploration1.png" class="img-fluid figure-img" style="width:74.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_Colab_describing_dataframe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Colab notebook section illustrating some parsing of the data.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Fig5_Pandas_describe_dataframe" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_Pandas_describe_dataframe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2EmissionsExploration2.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_Pandas_describe_dataframe-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19: Result of the pandas describe function.
+</figcaption>
+</figure>
+</div>
+<p>One important observation from the describe results is that the final year for which we have data is 2014.</p>
+<p>Next, we check for any null values in the dataset that would have to be removed using the pandas isnull function. The results are shown in <a href="#fig-Fig5_Pandas_isnull_check" class="quarto-xref">Figure&nbsp;<span>20</span></a>.</p>
+<div id="fig-Fig5_Pandas_isnull_check" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_Pandas_isnull_check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/Fig5_Pandas_isnull_check.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_Pandas_isnull_check-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: Checking for null values in the data set.
+</figcaption>
+</figure>
+</div>
+<p><strong>Filter</strong> – Clean the data and remove all but the data of interest.</p>
+<p>Again, we are fortunate in that the data set is relatively clean. There are no null entries that must be deleted to work with the plotting functions. It is likely that we will need to extract a subset of the data to focus on answering the questions that we posed. The data for 2014 can be extracted into its own dataframe with</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract rows for 2014</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>data_2014 <span class="op">=</span> df.loc[(df[<span class="st">'Year'</span>] <span class="op">==</span> <span class="dv">2014</span>) <span class="op">&amp;</span> (df[<span class="st">'Total'</span>]<span class="op">&gt;</span><span class="fl">5.e4</span>)]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>data_2014_sort <span class="op">=</span> data_2014.sort_values(<span class="st">'Total'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p><strong>Mine</strong> – Use methods from statistics, data mining, or more fundamental scientific principles to discern patterns or place the data in a mathematical context.</p>
+<p>Creating histograms for each measurement ends up not being very informative, except to show that most countries have very low emissions for most years. The high emitter countries dominate.</p>
+<p>A basic pairwise or all-against-all scatterplot can be produced with the following code</p>
+<div class="sourceCode" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>g <span class="op">=</span> sns.pairplot(df, corner<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>g.savefig(<span class="st">'CO2Emissions_pairplot.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The corner keyword argument is used to produce a plot containing the bottom left triangle of plots, since the top right triangle contains the same information with axes reversed. <a href="#fig-Fig5_CO2Emissions_pairplot" class="quarto-xref">Figure&nbsp;<span>21</span></a> shows the result.</p>
+<div id="fig-Fig5_CO2Emissions_pairplot" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2Emissions_pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2Emissions_pairplot.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2Emissions_pairplot-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21: Pair plot for the CO2 emissions data set.
+</figcaption>
+</figure>
+</div>
+<p>There are some interesting correlations suggested in Figure 5.20, but they are probably not relevant for answering our questions.</p>
+<p><strong>Represent</strong> - Choose a basic visual model, such as a bar graph, scatter graph, contour plot, or other visual construct.</p>
+<p>A bar chart will be a good way of comparing country data for 2014, the most recent year for which we have data. We will use the matplotlib horizontal bar plot function, barh. We must extract the relevant columns from the dataframe and convert them to numpy arrays. The following code will generate an appropriate bar plot.</p>
+<div class="sourceCode" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert columns to numpy arrays</span></span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>Country_data <span class="op">=</span> data_2014_sort[<span class="st">'Country'</span>].to_numpy()</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>Total_data <span class="op">=</span> data_2014_sort[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>plt.barh(Country_data, Total_data)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'CO2Emissions2014.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The result is <a href="#fig-Fig5_CO2Emissions2014" class="quarto-xref">Figure&nbsp;<span>22</span></a>.</p>
+<div id="fig-Fig5_CO2Emissions2014" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2Emissions2014-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2Emissions2014.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2Emissions2014-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22: Comparison by country of CO<sub>2</sub> emission data for 2014.
+</figcaption>
+</figure>
+</div>
+<p>To address the question of how emissions have changed over time for the high emitter countries we will use a scatterplot that shows total emission in a year as a function of year. We will focus on the top five emitters: China, United States, India, Russian Federation, and Japan, shown in <a href="#fig-Fig5_CO2EmissionsVersusYear1800" class="quarto-xref">Figure&nbsp;<span>23</span></a>.</p>
+<div id="fig-Fig5_CO2EmissionsVersusYear1800" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2EmissionsVersusYear1800-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2EmissionsVersusYear1800.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2EmissionsVersusYear1800-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;23: CO<sub>2</sub> emissions from fossil fuels versus year.
+</figcaption>
+</figure>
+</div>
+<p><strong>Refine</strong></p>
+<p>The final version of the horizontal bar plot should have an x-axis label and a title. This is accomplished with the code in <a href="#fig-Fig5_Country_Comparison_Code" class="quarto-xref">Figure&nbsp;<span>24</span></a>. Note the additions in lines 31-33. The result is shown in <a href="#fig-Fig5_CO2EmissionByCountry2014" class="quarto-xref">Figure&nbsp;<span>25</span></a>.</p>
+<div id="fig-Fig5_Country_Comparison_Code" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_Country_Comparison_Code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Fig5_Country_Comparison_Code"><pre class="sourceCode numberSource python numberLines code-with-copy"><code class="sourceCode python"><span id="fig-Fig5_Country_Comparison_Code-1"><a href="#fig-Fig5_Country_Comparison_Code-1"></a><span class="co">"""</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-2"><a href="#fig-Fig5_Country_Comparison_Code-2"></a><span class="co">Title: Fossil Fuel CO2 Emissions - 2014</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-3"><a href="#fig-Fig5_Country_Comparison_Code-3"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-4"><a href="#fig-Fig5_Country_Comparison_Code-4"></a><span class="co">Version: 7.31.2022.2</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-5"><a href="#fig-Fig5_Country_Comparison_Code-5"></a><span class="co">Summary: This program will read in U.S. Dept. of Energy data for</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-6"><a href="#fig-Fig5_Country_Comparison_Code-6"></a><span class="co">         CO2 emissions by fossil fuel and produce a bar graph for</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-7"><a href="#fig-Fig5_Country_Comparison_Code-7"></a><span class="co">         the year 2014.</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-8"><a href="#fig-Fig5_Country_Comparison_Code-8"></a></span>
+<span id="fig-Fig5_Country_Comparison_Code-9"><a href="#fig-Fig5_Country_Comparison_Code-9"></a><span class="co">Revision History:</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-10"><a href="#fig-Fig5_Country_Comparison_Code-10"></a><span class="co">    7.31.2022.1: base</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-11"><a href="#fig-Fig5_Country_Comparison_Code-11"></a><span class="co">    7.31.2022.2: adjusts font size for the y-axis</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-12"><a href="#fig-Fig5_Country_Comparison_Code-12"></a></span>
+<span id="fig-Fig5_Country_Comparison_Code-13"><a href="#fig-Fig5_Country_Comparison_Code-13"></a><span class="co">"""</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-14"><a href="#fig-Fig5_Country_Comparison_Code-14"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Fig5_Country_Comparison_Code-15"><a href="#fig-Fig5_Country_Comparison_Code-15"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Fig5_Country_Comparison_Code-16"><a href="#fig-Fig5_Country_Comparison_Code-16"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="fig-Fig5_Country_Comparison_Code-17"><a href="#fig-Fig5_Country_Comparison_Code-17"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="fig-Fig5_Country_Comparison_Code-18"><a href="#fig-Fig5_Country_Comparison_Code-18"></a><span class="co"># Import data as pandas dataframe</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-19"><a href="#fig-Fig5_Country_Comparison_Code-19"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'fossil-fuel-co2-emissions-by-nation.csv'</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-20"><a href="#fig-Fig5_Country_Comparison_Code-20"></a></span>
+<span id="fig-Fig5_Country_Comparison_Code-21"><a href="#fig-Fig5_Country_Comparison_Code-21"></a><span class="co"># Extract rows for 2014</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-22"><a href="#fig-Fig5_Country_Comparison_Code-22"></a>data_2014 <span class="op">=</span> df.loc[(df[<span class="st">'Year'</span>] <span class="op">==</span> <span class="dv">2014</span>) <span class="op">&amp;</span> (df[<span class="st">'Total'</span>]<span class="op">&gt;</span><span class="fl">5.e4</span>)]</span>
+<span id="fig-Fig5_Country_Comparison_Code-23"><a href="#fig-Fig5_Country_Comparison_Code-23"></a>data_2014_sort <span class="op">=</span> data_2014.sort_values(<span class="st">'Total'</span>, ascending<span class="op">=</span><span class="va">False</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-24"><a href="#fig-Fig5_Country_Comparison_Code-24"></a></span>
+<span id="fig-Fig5_Country_Comparison_Code-25"><a href="#fig-Fig5_Country_Comparison_Code-25"></a><span class="co"># Convert columns to numpy arrays</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-26"><a href="#fig-Fig5_Country_Comparison_Code-26"></a>Country_data <span class="op">=</span> data_2014_sort[<span class="st">'Country'</span>].to_numpy()</span>
+<span id="fig-Fig5_Country_Comparison_Code-27"><a href="#fig-Fig5_Country_Comparison_Code-27"></a>Total_data <span class="op">=</span> data_2014_sort[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="fig-Fig5_Country_Comparison_Code-28"><a href="#fig-Fig5_Country_Comparison_Code-28"></a></span>
+<span id="fig-Fig5_Country_Comparison_Code-29"><a href="#fig-Fig5_Country_Comparison_Code-29"></a><span class="co"># Create bar plot using matplotlib</span></span>
+<span id="fig-Fig5_Country_Comparison_Code-30"><a href="#fig-Fig5_Country_Comparison_Code-30"></a>plt.barh(Country_data, Total_data)</span>
+<span id="fig-Fig5_Country_Comparison_Code-31"><a href="#fig-Fig5_Country_Comparison_Code-31"></a>plt.xlabel(<span class="st">'Emissions [MMTons of C]'</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-32"><a href="#fig-Fig5_Country_Comparison_Code-32"></a>plt.title(<span class="st">'Total CO^2 Emissions for 2014'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-33"><a href="#fig-Fig5_Country_Comparison_Code-33"></a>plt.yticks(fontsize<span class="op">=</span><span class="dv">6</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-34"><a href="#fig-Fig5_Country_Comparison_Code-34"></a>plt.tight_layout()</span>
+<span id="fig-Fig5_Country_Comparison_Code-35"><a href="#fig-Fig5_Country_Comparison_Code-35"></a>plt.savefig(<span class="st">'CO2Emissions2014V2.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Fig5_Country_Comparison_Code-36"><a href="#fig-Fig5_Country_Comparison_Code-36"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_Country_Comparison_Code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24: :Final code for country comparison for 2014.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Fig5_CO2EmissionByCountry2014" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2EmissionByCountry2014-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2EmissionsByCountryFor2014Final.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2EmissionByCountry2014-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;25: Total CO2 emissions by country, final form.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-Fig5_CO2EmissionsVersusYear1800" class="quarto-xref">Figure&nbsp;<span>23</span></a> shows no measurable emissions for any of the displayed countries before 1850 on the chosen y-axis scale, therefore it would be better to define the x-axis limits to start with 1850. To show data for Russia over the same time period we would need to create a data series that combines the USSR with Russia. To avoid this complication, we will just delete Russia from the displayed countries. Since color will not always show for printouts of the graph, we will use grayscale colors, line width and line style changes to help distinguish the different countries. <a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode" class="quarto-xref">Figure&nbsp;<span>26</span></a> shows the code for the final form of the plot. <a href="#fig-Fig5_CO2EmissionsVersusYearFinal" class="quarto-xref">Figure&nbsp;<span>27</span></a> shows the final plot.</p>
+<div id="fig-Fig5_CO2EmissionsVersusYearFinalCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2EmissionsVersusYearFinalCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Fig5_CO2EmissionsVersusYearFinalCode"><pre class="sourceCode python numberlines code-with-copy"><code class="sourceCode python"><span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-1"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-2"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Fossil Fuel CO2 Emissions Versus Year</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-3"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-4"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 7.31.2022.2</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-5"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program will read in  U.S. Dept. of Energy data for</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-6"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">         CO2 emissions by fossil fuel and produce a scatter graph for</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-7"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">         of emissions versus year.</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-8"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">Revision History:</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-9"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">    7.31.2022.1: base</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-10"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-10" aria-hidden="true" tabindex="-1"></a><span class="co">    7.31.2022.2: change x-axis scale and linestyles</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-11"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-12"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-12" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-13"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-14"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-15"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-16"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-17"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-18"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data as pandas dataframe</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-19"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-19" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'fossil-fuel-co2-emissions-by-nation.csv'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-20"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-21"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Extract rows of particular countries</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-22"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-22" aria-hidden="true" tabindex="-1"></a>China_data <span class="op">=</span> df.loc[df[<span class="st">'Country'</span>] <span class="op">==</span> <span class="st">'CHINA (MAINLAND)'</span>]</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-23"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-23" aria-hidden="true" tabindex="-1"></a>US_data <span class="op">=</span> df.loc[df[<span class="st">'Country'</span>] <span class="op">==</span> <span class="st">'UNITED STATES OF AMERICA'</span>]</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-24"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-24" aria-hidden="true" tabindex="-1"></a>India_data <span class="op">=</span> df.loc[df[<span class="st">'Country'</span>] <span class="op">==</span> <span class="st">'INDIA'</span>]</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-25"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-25" aria-hidden="true" tabindex="-1"></a>Japan_data <span class="op">=</span> df.loc[df[<span class="st">'Country'</span>] <span class="op">==</span> <span class="st">'JAPAN'</span>]</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-26"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-27"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert columnes to numpy arrays</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-28"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-28" aria-hidden="true" tabindex="-1"></a>China_data_year <span class="op">=</span> China_data[<span class="st">'Year'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-29"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-29" aria-hidden="true" tabindex="-1"></a>China_data_total <span class="op">=</span> China_data[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-30"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-30" aria-hidden="true" tabindex="-1"></a>US_data_year <span class="op">=</span> US_data[<span class="st">'Year'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-31"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-31" aria-hidden="true" tabindex="-1"></a>US_data_total <span class="op">=</span> US_data[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-32"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-32" aria-hidden="true" tabindex="-1"></a>India_data_year <span class="op">=</span> India_data[<span class="st">'Year'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-33"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-33" aria-hidden="true" tabindex="-1"></a>India_data_total <span class="op">=</span> India_data[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-34"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-34" aria-hidden="true" tabindex="-1"></a>Japan_data_year <span class="op">=</span> Japan_data[<span class="st">'Year'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-35"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-35" aria-hidden="true" tabindex="-1"></a>Japan_data_total <span class="op">=</span> Japan_data[<span class="st">'Total'</span>].to_numpy()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-36"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-37"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-38"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Create scatter plot - matplotlib</span></span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-39"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-39" aria-hidden="true" tabindex="-1"></a>plt.plot(China_data_year, China_data_total, linewidth<span class="op">=</span><span class="dv">5</span>, color<span class="op">=</span><span class="st">'silver'</span>,</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-40"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-40" aria-hidden="true" tabindex="-1"></a>         linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'China'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-41"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-41" aria-hidden="true" tabindex="-1"></a>plt.plot(US_data_year, US_data_total, linewidth<span class="op">=</span><span class="dv">3</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-42"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-42" aria-hidden="true" tabindex="-1"></a>         linestyle<span class="op">=</span><span class="st">':'</span>, label<span class="op">=</span><span class="st">'US'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-43"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-43" aria-hidden="true" tabindex="-1"></a>plt.plot(India_data_year, India_data_total, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">'black'</span>,</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-44"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-44" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">'India'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-45"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-45" aria-hidden="true" tabindex="-1"></a>plt.plot(Japan_data_year, Japan_data_total, linewidth<span class="op">=</span><span class="dv">4</span>, color<span class="op">=</span><span class="st">'gray'</span>,</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-46"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-46" aria-hidden="true" tabindex="-1"></a>         label<span class="op">=</span><span class="st">'Japan'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-47"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-47" aria-hidden="true" tabindex="-1"></a>plt.xlim(xmin<span class="op">=</span><span class="dv">1850</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-48"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-48" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Year'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-49"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-49" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Emmisions [MMTons of C]'</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-50"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-50" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Total CO2 Emissions - Year'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-51"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-51" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-52"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-52" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'CO2EmissionsVersusYearFinal.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Fig5_CO2EmissionsVersusYearFinalCode-53"><a href="#fig-Fig5_CO2EmissionsVersusYearFinalCode-53" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2EmissionsVersusYearFinalCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26: :Code for emissions versus year, final form.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Fig5_CO2EmissionsVersusYearFinal" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig5_CO2EmissionsVersusYearFinal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch05/Figures/CO2EmissionsVersusYearFinal.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig5_CO2EmissionsVersusYearFinal-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;27: CO2 emission versus year, final form.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>1. True or False: Scientific visualization is the same thing as computer graphics.</p>
+<p>2. Scientific visualization is the process of selecting and combining _________ of data to help in discovering laws or in communicating results appropriately for a given audience.</p>
+<p>3. Scientific visualizations can be classified using the following dimensions (or axes): (choose all that apply)</p>
+<ol type="a">
+<li>content</li>
+<li>dimensionality (2D/3D)</li>
+<li>time</li>
+<li>color</li>
+</ol>
+<p>4. Classify the following visualization using the system in <a href="#fig-Figure5.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
+<p><img src="../..\chapters/Ch05/Figures/Star-FormingCloudInCepheus.png" class="img-fluid" style="width:60.0%"></p>
+<p>5. Classify the following visualization using the system in <a href="#fig-Figure5.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
+<p><img src="../..\chapters/Ch05/Figures/Period-luminosityRelationshipForCepheids.png" class="img-fluid" style="width:60.0%"></p>
+<p>6. Classify the following visualization using the system in <a href="#fig-Figure5.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>. This visualization shows the hydrogen electron wave function for the n=4, l=3, m=0 state.</p>
+<p><img src="../..\chapters/Ch05/Figures/HydrogenElectronWaveFunc.png" class="img-fluid" style="width:60.0%"></p>
+</section>
+<section id="ch05-program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="ch05-program-modification-problems">Program Modification Problems</h2>
+<p>1. The code shown below creates a histogram of the petal length measurements in the Iris Flower Data Set similar to <a href="#fig-petalHistograms" class="quarto-xref">Figure&nbsp;<span>13</span></a>, except that bars have been colored according to species. You need to modify this code so that</p>
+<ul>
+<li><p>It will create a histogram for the sepal length in the data set.</p></li>
+<li><p>The x-axis label says “Sepal Length [cm]”</p></li>
+</ul>
+<div class="sourceCode" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Iris Histogram</span></span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 7.31.2022.1</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program will read in the Iris data set and</span></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="co">         produce a histogram of one of the measurements.</span></span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="co">Revision History:</span></span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="co">    7.31.2022.1: base</span></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns </span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Import data as pandas dataframe</span></span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'Iris.csv'</span>)</span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a histogram - Seaborn version</span></span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a>sns.histplot(df, x<span class="op">=</span><span class="st">'PetalLengthCm'</span>, bins<span class="op">=</span><span class="dv">18</span>, hue<span class="op">=</span><span class="st">'Species'</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'petalLengthHist.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb19-23"><a href="#cb19-23" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>2. The code below plots three exponential functions on the same graph. You need to modify the code so that it does the following:</p>
+<ul>
+<li>plots the following three functions on the same graph:</li>
+</ul>
+<p><span class="math inline">\(f_1\left(x\right) = x \quad,\quad f_2\left(x\right) = x^2 \quad, \quad f_3\left(x\right) = x^3\)</span></p>
+<ul>
+<li><p>plot the functions over the range <span class="math inline">\(0.1 \leq x \leq 10\)</span></p></li>
+<li><p>Change the legend to indicate the power involved in each function:</p></li>
+</ul>
+<p>p = 1 , p = 2 , p = 3</p>
+<ul>
+<li>Make both the x-axis scale and the y-axis scale logarithmic.</li>
+</ul>
+<div class="sourceCode" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Plotting Multiple Functions</span></span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 8.4.2022.1</span></span>
+<span id="cb20-5"><a href="#cb20-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program will plot several functions on one graph</span></span>
+<span id="cb20-6"><a href="#cb20-6" aria-hidden="true" tabindex="-1"></a><span class="co">         using matplotlib.</span></span>
+<span id="cb20-7"><a href="#cb20-7" aria-hidden="true" tabindex="-1"></a><span class="co">Revision History:</span></span>
+<span id="cb20-8"><a href="#cb20-8" aria-hidden="true" tabindex="-1"></a><span class="co">        8.4.2022.1: base</span></span>
+<span id="cb20-9"><a href="#cb20-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-10"><a href="#cb20-10" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb20-11"><a href="#cb20-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="cb20-12"><a href="#cb20-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb20-13"><a href="#cb20-13" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> np.linspace(<span class="dv">0</span>,<span class="dv">5</span>,<span class="dv">40</span>)</span>
+<span id="cb20-14"><a href="#cb20-14" aria-hidden="true" tabindex="-1"></a>y1 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.10</span><span class="op">*</span>x)</span>
+<span id="cb20-15"><a href="#cb20-15" aria-hidden="true" tabindex="-1"></a>y2 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.20</span><span class="op">*</span>x)</span>
+<span id="cb20-16"><a href="#cb20-16" aria-hidden="true" tabindex="-1"></a>y3 <span class="op">=</span> <span class="fl">0.10</span><span class="op">*</span>np.exp(<span class="fl">0.30</span><span class="op">*</span>x)</span>
+<span id="cb20-17"><a href="#cb20-17" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y1,color<span class="op">=</span><span class="st">'k'</span>,label<span class="op">=</span><span class="st">'mu = 0.1'</span>,linestyle<span class="op">=</span><span class="st">'solid'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb20-18"><a href="#cb20-18" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y2,color<span class="op">=</span><span class="st">'b'</span>,label<span class="op">=</span><span class="st">'mu = 0.2'</span>,linestyle<span class="op">=</span><span class="st">'dashdot'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb20-19"><a href="#cb20-19" aria-hidden="true" tabindex="-1"></a>plt.plot(x,y3,color<span class="op">=</span><span class="st">'r'</span>,label<span class="op">=</span><span class="st">'mu = 0.3'</span>,linestyle<span class="op">=</span><span class="st">'dotted'</span>, linewidth<span class="op">=</span><span class="dv">3</span>)</span>
+<span id="cb20-20"><a href="#cb20-20" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'x'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb20-21"><a href="#cb20-21" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'y'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="cb20-22"><a href="#cb20-22" aria-hidden="true" tabindex="-1"></a>plt.legend(loc<span class="op">=</span><span class="st">'upper left'</span>)</span>
+<span id="cb20-23"><a href="#cb20-23" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb20-24"><a href="#cb20-24" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'Ch5ProgModProb2.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb20-25"><a href="#cb20-25" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>3. The code shown below creates a scatterplot using the planets data. It uses the Seaborn module, as discussed in section 5.3.3. You need to modify the code to do the following</p>
+<ul>
+<li>Use data for bacterial growth in the file BacterialGrowthData.txt. This data gives the measured bacterial cell density in the growth bottle filled with either CHSA or TSB media (liquid food) as a function of time. To read this data into a Pandas dataframe you will need to tell read_csv that the file is tab-delimited instead of comma-delimited. This is done with sep keyward argument:</li>
+</ul>
+<p>sep=‘\t’</p>
+<p>You will also need to inspect the data file to determine which row is the header that contains the column headings. Remember that Python uses zero-based indexing.</p>
+<ul>
+<li><p>Create a scatterplot of the CHSA column versus time.</p></li>
+<li><p>Use the whitegrid Seaborn style.</p></li>
+<li><p>Set the x-axis label to ‘t [min]’</p></li>
+<li><p>Set the y-axis label to ’ N [rel]’. The N stands for the density of bacteria in the sample. The units [rel] indicate relative units.</p></li>
+<li><p>Add a title: ‘Bacterial Growth versus Time: CHSA Media’ ; set the font size to 14.</p></li>
+<li><p>Save the graph as a png graphics file.</p></li>
+</ul>
+<div class="sourceCode" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Scatter Plot - Seaborn Version</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 8.4.2022.1</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program will plot several functions on one graph</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="co">         using matplotlib.</span></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a><span class="co">Revision History:</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="co">        8.4.2022.1: base</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a>sns.set_style(<span class="st">'darkgrid'</span>)</span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in exoplanet data as a pandas dataframe</span></span>
+<span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>planets <span class="op">=</span> pd.read_csv(<span class="st">'PSCompPars_subset.csv'</span>, sep<span class="op">=</span><span class="st">','</span>, header<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a scatterplot</span></span>
+<span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>sns.lmplot(x<span class="op">=</span><span class="st">'pl_orbsmax'</span>, y<span class="op">=</span><span class="st">'pl_orbper'</span>, data<span class="op">=</span>planets,  fit_reg<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="dv">0</span>,<span class="fl">1.2</span>)</span>
+<span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'Orbital Semi-major Axis [au]'</span>)</span>
+<span id="cb21-24"><a href="#cb21-24" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'Orbital Period [days]'</span>)</span>
+<span id="cb21-25"><a href="#cb21-25" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'pl_orbsmax-pl_orbper.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="cb21-26"><a href="#cb21-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="program-development-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-development-problems">Program Development Problems</h2>
+<p>1. Develop visualizations that will help explore how per capita fossil fuel CO2 emissions have developed over time and how they compare by country in recent years. You can use the data in the csv file</p>
+<p>fossil-fuel-co2-emissions-by-nation.csv</p>
+<p>Go through the visualization development workflow discussed in <a href="#sec-creating_a_good_visualization" class="quarto-xref"><span>Creating a Good Visualization</span></a>. In addition to the code file or Jupyter notebook that you create, you need to write a brief summary of how you executed each workflow step (excluding the addition of interaction).</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Atkinson, J. (2017, April 10). <em>What is Earth’s Energy Budget? Five Questions with a Guy Who Knows</em> [Text]. NASA. http://www.nasa.gov/feature/langley/what-is-earth-s-energy-budget-five-questions-with-a-guy-who-knows</p>
+<p>Ausoni, C. O., Frey, P., &amp; Tierny, J. (2014). <em>Scientific Visualization at the interfaces</em>. https://www.ljll.math.upmc.fr/frey/visu.html</p>
+<p>Boden, T. A., Andres, R. J., &amp; Marland, G. (2013). <em>Global, Regional, and National Fossil-Fuel CO2 Emissions (1751—2010) (V. 2013)</em>. Environmental System Science Data Infrastructure for a Virtual Ecosystem (ESS-DIVE) (United States); Carbon Dioxide Information Analysis Center (CDIAC), Oak Ridge National Laboratory (ORNL), Oak Ridge, TN (United States). https://doi.org/10.3334/CDIAC/00001_V2013</p>
+<p>Fisher, R. A. (1936). The Use of Multiple Measurements in Taxonomic Problems. <em>Annals of Eugenics</em>, <em>7</em>(2), 179–188. https://doi.org/10.1111/j.1469-1809.1936.tb02137.x</p>
+<p>Fry, Ben. (2008). <em>Visualizing data</em>. O’Reilly Media, Inc.; WorldCat.org. https://www.loc.gov/catdir/toc/fy0804/2008297507.html</p>
+<p><em>Iris Species</em>. (n.d.). Retrieved July 31, 2022, from https://www.kaggle.com/datasets/uciml/iris</p>
+<p><em>List of named colors—Matplotlib 3.5.2 documentation</em>. (2022). https://matplotlib.org/stable/gallery/color/named_colors.html</p>
+<p><em>NASA Exoplanet Archive</em>. (n.d.). Retrieved August 2, 2022, from https://exoplanetarchive.ipac.caltech.edu/index.html</p>
+<p><em>pandas.read_csv—Pandas 1.4.3 documentation</em>. (n.d.). Retrieved August 1, 2022, from https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</p>
+<p>Power Project Team. (n.d.). <em>NASA POWER Prediction Of Worldwide Energy Resources</em>. Retrieved July 30, 2022, from https://power.larc.nasa.gov/</p>
+<p>Rathod, V. (2020). <em>Iris Flower CaseStudy</em>. RPubs. https://rpubs.com/vidhividhi/irisdataeda</p>
+<p>Shinker, J. J. (2016). <em>Global Climate Animations</em>. Gobal Climate Animations. http://climvis.org/content/global.htm</p>
+<p>Shneiderman, B. (2003). The Eyes Have It: A Task by Data Type Taxonomy for Information Visualizations. In B. B. Bederson &amp; B. Shneiderman (Eds.), <em>The Craft of Information Visualization</em> (pp.&nbsp;364–371). Morgan Kaufmann. https://doi.org/10.1016/B978-155860915-0/50046-9</p>
+<p>The pandas development team. (2022). <em>pandas—Python Data Analysis Library</em>. https://pandas.pydata.org/</p>
+<p>Tory, M., &amp; Moller, T. (2004). Rethinking Visualization: A High-Level Taxonomy. <em>IEEE Symposium on Information Visualization</em>, 151–158. https://doi.org/10.1109/INFVIS.2004.59</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-Atkinson_WhatEarthsEnergy_2017" class="csl-entry" role="listitem">
+Atkinson, J. (2017, April 10). <em>What is Earth’s Energy Budget? Five Questions with a Guy Who Knows</em> [Text]. NASA. <a href="http://www.nasa.gov/feature/langley/what-is-earth-s-energy-budget-five-questions-with-a-guy-who-knows">http://www.nasa.gov/feature/langley/what-is-earth-s-energy-budget-five-questions-with-a-guy-who-knows</a>
+</div>
+<div id="ref-AusoniEtAl_ScientificVisualizationInterfaces_2014a" class="csl-entry" role="listitem">
+Ausoni, C. O., Frey, P., &amp; Tierny, J. (2014). <em>Scientific <span>Visualization</span> at the interfaces</em>. <a href="https://www.ljll.math.upmc.fr/frey/visu.html">https://www.ljll.math.upmc.fr/frey/visu.html</a>
+</div>
+<div id="ref-BodenEtAl_GlobalRegionalNational_2013" class="csl-entry" role="listitem">
+Boden, T. A., Andres, R. J., &amp; Marland, G. (2013). <em>Global, <span>Regional</span>, and <span>National Fossil-Fuel CO2 Emissions</span> (1751 - 2010) (<span>V</span>. 2013)</em>. Environmental System Science Data Infrastructure for a Virtual Ecosystem (ESS-DIVE) (United States); Carbon Dioxide Information Analysis Center (CDIAC), Oak Ridge National Laboratory (ORNL), Oak Ridge, TN (United States). <a href="https://doi.org/10.3334/CDIAC/00001_V2013">https://doi.org/10.3334/CDIAC/00001_V2013</a>
+</div>
+<div id="ref-Fisher_UseMultipleMeasurements_1936" class="csl-entry" role="listitem">
+Fisher, R. A. (1936). The <span>Use</span> of <span>Multiple Measurements</span> in <span>Taxonomic Problems</span>. <em>Annals of Eugenics</em>, <em>7</em>(2), 179–188. <a href="https://doi.org/10.1111/j.1469-1809.1936.tb02137.x">https://doi.org/10.1111/j.1469-1809.1936.tb02137.x</a>
+</div>
+<div id="ref-Fry_VisualizingData_2008" class="csl-entry" role="listitem">
+Fry, Ben. (2008). <em>Visualizing data</em>. O’Reilly Media, Inc. <a href="https://www.loc.gov/catdir/toc/fy0804/2008297507.html">https://www.loc.gov/catdir/toc/fy0804/2008297507.html</a>
+</div>
+<div id="ref-_IrisSpecies_" class="csl-entry" role="listitem">
+<em>Iris <span>Species</span></em>. (n.d.). Retrieved July 31, 2022, from <a href="https://www.kaggle.com/datasets/uciml/iris">https://www.kaggle.com/datasets/uciml/iris</a>
+</div>
+<div id="ref-_NASAExoplanetArchive_" class="csl-entry" role="listitem">
+<em><span>NASA Exoplanet Archive</span></em>. (n.d.). Retrieved August 3, 2022, from <a href="https://exoplanetarchive.ipac.caltech.edu/index.html">https://exoplanetarchive.ipac.caltech.edu/index.html</a>
+</div>
+<div id="ref-_Pandasread_csvPandas143_" class="csl-entry" role="listitem">
+<em>Pandas.read_csv — pandas 1.4.3 documentation</em>. (n.d.). Retrieved August 1, 2022, from <a href="https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html">https://pandas.pydata.org/docs/reference/api/pandas.read_csv.html</a>
+</div>
+<div id="ref-PowerProjectTeam_NASAPOWERPrediction_" class="csl-entry" role="listitem">
+Power Project Team. (n.d.). <em><span>NASA POWER</span> | <span>Prediction Of Worldwide Energy Resources</span></em>. Retrieved July 30, 2022, from <a href="https://power.larc.nasa.gov/">https://power.larc.nasa.gov/</a>
+</div>
+<div id="ref-Rathod_IrisFlowerCaseStudy_2020" class="csl-entry" role="listitem">
+Rathod, V. (2020). <em>Iris <span>Flower CaseStudy</span></em>. RPubs. <a href="https://rpubs.com/vidhividhi/irisdataeda">https://rpubs.com/vidhividhi/irisdataeda</a>
+</div>
+<div id="ref-Shinker_GlobalClimateAnimations_2016" class="csl-entry" role="listitem">
+Shinker, J. J. (2016). <em>Global <span>Climate Animations</span></em>. Gobal Climate Animations. <a href="https://climvis.org/animations.html">https://climvis.org/animations.html</a>
+</div>
+<div id="ref-Shneiderman_EyesHaveIt_2003" class="csl-entry" role="listitem">
+Shneiderman, B. (2003). The <span>Eyes Have It</span>: <span>A Task</span> by <span>Data Type Taxonomy</span> for <span>Information Visualizations</span>. In B. B. Bederson &amp; B. Shneiderman (Eds.), <em>The <span>Craft</span> of <span>Information Visualization</span></em> (pp. 364–371). Morgan Kaufmann. <a href="https://doi.org/10.1016/B978-155860915-0/50046-9">https://doi.org/10.1016/B978-155860915-0/50046-9</a>
+</div>
+<div id="ref-TheMatplotlibdevelopmentteam_ListNamedColors_2022" class="csl-entry" role="listitem">
+The Matplotlib development team. (2022). <em>List of named colors — <span>Matplotlib</span> 3.5.2 documentation</em>. <a href="https://matplotlib.org/stable/gallery/color/named_colors.html">https://matplotlib.org/stable/gallery/color/named_colors.html</a>
+</div>
+<div id="ref-Thepandasdevelopmentteam_PandasPythonData_2022" class="csl-entry" role="listitem">
+The pandas development team. (2022). <em>Pandas - <span>Python Data Analysis Library</span></em>. <a href="https://pandas.pydata.org/">https://pandas.pydata.org/</a>
+</div>
+<div id="ref-ToryMoller_RethinkingVisualizationHighLevel_2004" class="csl-entry" role="listitem">
+Tory, M., &amp; Moller, T. (2004). Rethinking <span>Visualization</span>: <span>A High-Level Taxonomy</span>. <em><span>IEEE Symposium</span> on <span>Information Visualization</span></em>, 151–158. <a href="https://doi.org/10.1109/INFVIS.2004.59">https://doi.org/10.1109/INFVIS.2004.59</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch04/Ch04_Lists.html" class="pagination-link" aria-label="Lists">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch06/Ch06_Functions.html" class="pagination-link" aria-label="Functions">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

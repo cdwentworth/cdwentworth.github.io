@@ -1,0 +1,1191 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Project Ideas: Stochastic Models – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../bibliography.html" rel="next">
+<link href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#forest-fire-propagation" id="toc-forest-fire-propagation" class="nav-link active" data-scroll-target="#forest-fire-propagation">Forest Fire Propagation</a></li>
+  <li><a href="#solid-state-diffusion" id="toc-solid-state-diffusion" class="nav-link" data-scroll-target="#solid-state-diffusion">Solid-State Diffusion</a></li>
+  <li><a href="#creating-animations-with-python:sec" id="toc-creating-animations-with-python:sec" class="nav-link" data-scroll-target="#creating-animations-with-python\:sec">Creating Animations with Python</a>
+  <ul class="collapse">
+  <li><a href="#using-the-pause-function" id="toc-using-the-pause-function" class="nav-link" data-scroll-target="#using-the-pause-function">Using the pause() Function</a></li>
+  <li><a href="#using-the-funcanimation-function" id="toc-using-the-funcanimation-function" class="nav-link" data-scroll-target="#using-the-funcanimation-function">Using the FuncAnimation Function</a></li>
+  </ul></li>
+  <li><a href="#projects" id="toc-projects" class="nav-link" data-scroll-target="#projects">Projects</a></li>
+  <li><a href="#ch12-references:sec" id="toc-ch12-references:sec" class="nav-link" data-scroll-target="#ch12-references\:sec">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Project Ideas: Stochastic Models</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="forest-fire-propagation" class="level2">
+<h2 class="anchored" data-anchor-id="forest-fire-propagation">Forest Fire Propagation</h2>
+<p>When forest fires encroach on regions with human habitation, the damage done can be substantial, including property damage, health effects, and death. Between 2017 and 2021 the average cost per year of wildfires in the U.S. was $16.8 billion, and the average number of deaths per year was 43 <span class="citation" data-cites="Smith_USBilliondollarWeather_2020">(<a href="../../bibliography.html#ref-Smith_USBilliondollarWeather_2020" role="doc-biblioref">Smith, 2020</a>)</span>. If health effects of particulate inhalation are included, the death toll from wildfires climbs to about 33000 deaths per year globally (Verzoni, 2021). <a href="#fig-Figure12_PlotAcresBurned" class="quarto-xref">Figure&nbsp;<span>1</span></a> shows the acres burned by wildfires in the U.S. between 1983 and 2021, which suggests an upward trend over this time <span class="citation" data-cites="NICC_WildfiresAcres_2022">(<a href="../../bibliography.html#ref-NICC_WildfiresAcres_2022" role="doc-biblioref">NICC, 2022</a>)</span>.</p>
+<div id="fig-Figure12_PlotAcresBurned" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_PlotAcresBurned-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch12/Figures/plotAcresBurned_1983-2021Data.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_PlotAcresBurned-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Acres burned from forest fires in the U.S. <span class="citation" data-cites="NICC_WildfiresAcres_2022">(<a href="../../bibliography.html#ref-NICC_WildfiresAcres_2022" role="doc-biblioref">NICC, 2022</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>As the acres burned and human migration into forest increases, the money spent on wildfire suppression also increases, as shown in <a href="#fig-Figure12_FireSuppressionCosts" class="quarto-xref">Figure&nbsp;<span>2</span></a>.</p>
+<div id="fig-Figure12_FireSuppressionCosts" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_FireSuppressionCosts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch12/Figures/plotfireSuppressionCosts.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_FireSuppressionCosts-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Federal wildfire suppression costs in the U.S. <span class="citation" data-cites="NIFC_SuppressionCostsNational_2022">(<a href="../../bibliography.html#ref-NIFC_SuppressionCostsNational_2022" role="doc-biblioref">NIFC, 2022</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>The economic and health costs of wildfires have provided motivation for developing models that can help us understand and predict forest fire propagation. Historically, fire propagation models were based on partial differential equations, but more recently cellular automata models have been developed <span class="citation" data-cites="Perry_CurrentApproachesModelling_1998">(<a href="../../bibliography.html#ref-Perry_CurrentApproachesModelling_1998" role="doc-biblioref">Perry, 1998</a>)</span>. We will explore the use of cellular automata (CA) to model forest fire propagation since the technique is mathematically and computationally simpler than using PDE’s.</p>
+<p>Several cellular automata models for forest fires have been proposed. Some models focus on basic physics questions concerning self-organized criticality and are not meant to model real forest fires in detail <span class="citation" data-cites="BakEtAl_ForestfireModelThoughts_1990">(<a href="../../bibliography.html#ref-BakEtAl_ForestfireModelThoughts_1990" role="doc-biblioref">Bak et al., 1990</a>)</span>. Other models attempt to build in features from observations of actual fires including effects of fuel moisture, wind speed, local temperature, and relative humidity <span class="citation" data-cites="ClarkeEtAl_CellularAutomatonModel_1994">(<a href="../../bibliography.html#ref-ClarkeEtAl_CellularAutomatonModel_1994" role="doc-biblioref">Clarke et al., 1994</a>)</span>. More recent CA models incorporate real forest fire data to calculate the transition rules governing a cell’s change of state <span class="citation" data-cites="CollinEtAl_PhysicalBasedCellularAutomaton_2011">(<a href="../../bibliography.html#ref-CollinEtAl_PhysicalBasedCellularAutomaton_2011" role="doc-biblioref">Collin et al., 2011</a>)</span> or incorporate the effects of inhomogeneous terrain <span class="citation" data-cites="EncinasEtAl_SimulationForestFire_2007">(<a href="../../bibliography.html#ref-EncinasEtAl_SimulationForestFire_2007" role="doc-biblioref">Encinas et al., 2007</a>)</span>.</p>
+<p>We will outline a basic forest fire cellular automaton model. Chapter 9 gives the basic elements of a cellular automaton model. It requires</p>
+<ul>
+<li><p>a discrete lattice of sites or cells in d dimensions, <em>L</em></p></li>
+<li><p>operating using discrete time steps</p></li>
+<li><p>a discrete set of possible cell values, <em>S</em></p></li>
+<li><p>a defined neighborhood, <em>N</em> of each cell in <em>L</em></p></li>
+<li><p>a transition rule, <span class="math inline">\(\Phi\)</span>, that specifies how the state of a cell will be updated depending on its current value and the values of sites in the neighborhood.</p></li>
+</ul>
+<p>The cellular automaton model is described by the collection <span class="math inline">\(\langle L,S,N,\Phi \rangle\)</span>.</p>
+<p>We will develop an adaptation of the Encinas model <span class="citation" data-cites="EncinasEtAl_SimulationForestFire_2007">(<a href="../../bibliography.html#ref-EncinasEtAl_SimulationForestFire_2007" role="doc-biblioref">Encinas et al., 2007</a>)</span>. Our model will use a 2-dimensional lattice <em>L</em> that can represent the earth’s surface. We will assume that <em>L</em> is square, with the number of grid points on one side set to a fixed value. A time step in the simulation corresponds to allowing each grid point in the lattice the chance to change state. The state of a cell is defined as</p>
+<p><span id="eq-Equation12_CellState"><span class="math display">\[S_{ij} = \frac{A_{bij}}{A} \tag{1}\]</span></span></p>
+<p>where <span class="math inline">\(A_{bij}\)</span> is the burned area of the cell, and <em>A</em> is the total area of a cell. The neighborhood of a cell at (i,j) will be taken to be the Moore neighborhood illustrated in <a href="#fig-Figure12_MooreNeighborhood" class="quarto-xref">Figure&nbsp;<span>3</span></a>. <span class="citation" data-cites="WikipediaContributors_MooreNeighborhood_2022">(<a href="../../bibliography.html#ref-WikipediaContributors_MooreNeighborhood_2022" role="doc-biblioref">Wikipedia Contributors, 2022</a>)</span>. If (i,j) is on the lattice boundary then <span class="math inline">\(S_{ij} = 0\)</span>.</p>
+<div id="fig-Figure12_MooreNeighborhood" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_MooreNeighborhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch12/Figures/MooreNeighborhood.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_MooreNeighborhood-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Moore neighborhood for a 2-d cellular automaton.
+</figcaption>
+</figure>
+</div>
+<p>The transition rule is</p>
+<p><span id="eq-Equation12_TransitionRule"><span class="math display">\[\begin{array}{l} \Phi :S_{ij}^{(t + 1)} = \frac{R_{ij}}{R}S_{ij}^{(t)} + \sum_{(\alpha ,\beta )\varepsilon N_{adj}}\mu_{\alpha \beta}\frac{R_{i + \alpha ,j + \beta}}{R}S_{i + \alpha ,j + \beta}^{(t)} \\ \\ \quad + \sum_{(\alpha ,\beta )\varepsilon N_{diag}}\mu_{\alpha \beta}\frac{\pi (R_{i + \alpha ,j + \beta})^2}{4R^2}S_{i + \alpha ,j + \beta}^{(t)} \\  \end{array} \tag{2}\]</span></span></p>
+<p>where <span class="math inline">\(\mu_{\alpha \beta}\)</span> incorporates physical effects including wind speed and slope height at each cell. The values <span class="math inline">\((\alpha,\beta)\)</span> that define the neighbors of <span class="math inline">\((i,j)\)</span> in <a href="#eq-Equation12_TransitionRule" class="quarto-xref">Equation&nbsp;<span>2</span></a> are given by</p>
+<p><span id="eq-Equation12_AdjacentNeighbors"><span class="math display">\[N_{adj} = \left\{\left(- 1,0\right),\left(0,1\right),\left(1,0\right),\left(0,- 1\right)\right\} \tag{3}\]</span></span></p>
+<p><span id="eq-Equation12_DiagonalNeighbors"><span class="math display">\[N_{diag} = \left\{\left(- 1,1\right),\left(1,1\right),\left(1,- 1\right),\left(- 1,- 1\right)\right\} \tag{4}\]</span></span></p>
+<p>In this version of the model, we will take <span class="math inline">\(\mu_{\alpha \beta}\)</span> to be</p>
+<p><span id="eq-Equation12_muTransitionRule"><span class="math display">\[\mu_{\alpha \beta} = w_{i + \alpha ,j + \beta} \cdot h_{i + \alpha ,j + \beta} \tag{5}\]</span></span></p>
+<p>and <span class="math inline">\(w_{i + \alpha ,j + \beta}\)</span> are the entries in the wind speed matrix</p>
+<p><span id="eq-Equation12_WindMatrix"><span class="math display">\[W_{ij} = \left[\begin{array}{ccc} w_{i- 1,j- 1} &amp; w_{i- 1,j} &amp; w_{i- 1,j + 1} \\ w_{i,j- 1} &amp; 1 &amp; w_{i,j + 1} \\ w_{i + 1,j- 1} &amp; w_{i + 1,j} &amp; w_{i + 1,j + 1} \\  \end{array}\right] \tag{6}\]</span></span></p>
+<p>and <span class="math inline">\(h_{i + \alpha ,j + \beta}\)</span> are entries in the slope height matrix</p>
+<p><span id="eq-Equation12_HeightMatrix"><span class="math display">\[H_{ij} = \left[\begin{array}{ccc} h_{i- 1,j- 1} &amp; h_{i- 1,j} &amp; h_{i- 1,j + 1} \\ h_{i,j- 1} &amp; 1 &amp; h_{i,j + 1} \\ h_{i + 1,j- 1} &amp; h_{i + 1,j} &amp; h_{i + 1,j + 1} \\  \end{array}\right] \tag{7}\]</span></span></p>
+<p>If <a href="#eq-Equation12_TransitionRule" class="quarto-xref">Equation&nbsp;<span>2</span></a> yields a value greater than 1 then <span class="math inline">\(S_{ij}^{\left(t + 1\right)}\)</span> should be replaced by 1. Finally, to introduce a stochastic element into the state transition rule we assume that the cell state changes according to <a href="#eq-Equation12_TransitionRule" class="quarto-xref">Equation&nbsp;<span>2</span></a> with probability <em>p</em>, otherwise it remains unchanged.</p>
+<p>The state of a cellular automaton cell is usually taken to be discrete. Since <a href="#eq-Equation12_TransitionRule" class="quarto-xref">Equation&nbsp;<span>2</span></a> can generally yield a continuous result, forming discrete values requires an additional step. One way to achieve state values that are discrete is to use the following definition. Assume the number of discrete values desired is <em>N<sub>s</sub></em>.</p>
+<p><span id="eq-Equation12_DiscreteDef"><span class="math display">\[
+S_{ij}^{\prime} = \left\{\begin{array}{left} 0 &amp; ,S_{ij} = 0 \\ \frac{1}{\left(N_s- 1\right)} &amp; ,0 &lt; S_{ij} &lt; \frac{1}{\left(N_s- 1\right)} \\ \frac{2}{\left(N_s- 1\right)} &amp; ,\frac{1}{\left(N_s- 1\right)} \leq S_{ij} &lt; \frac{2}{\left(N_s- 1\right)} \\ \vdots  &amp;  \\ 1 &amp; ,S_{ij} \geq 1 \\  \end{array}\right.
+\tag{8}\]</span></span></p>
+<p>Some system properties that might be studied using the simulation include the percentage of cells that have not burned (<em>S<sub>ij</sub> = 0</em>), are burning (0&lt;<em>S<sub>ij</sub> &lt;1</em>), and have burnt out (<em>S<sub>ij</sub> = 1</em>) as functions of time.</p>
+</section>
+<section id="solid-state-diffusion" class="level2">
+<h2 class="anchored" data-anchor-id="solid-state-diffusion">Solid-State Diffusion</h2>
+<p>Diffusion is the transport of matter through the movement of individual atoms or molecules. Macroscopically, diffusion involves movement from a region of high concentration to low concentration of the diffusing material. Diffusion can be contrasted with fluid flow, where all the atoms move together due to a pressure gradient. Solid-state diffusion involves the motion of individual atoms in a solid material.</p>
+<p>Solid-state diffusion plays a significant role in many industrial applications. Examples of materials in which solid-state diffusion plays a significant role are steel, doped semiconductors, and superionic conductors.</p>
+<p>Steel is made from iron by the addition of carbon to iron. Uniform distribution of carbon can be achieved by diffusion of carbon atoms during a sintering process. The carbon content of solid steel can be adjusted by diffusion of carbon at the solid surface, a process called carburizing <span class="citation" data-cites="Mandal_HeatTreatmentWelding_2015">(<a href="../../bibliography.html#ref-Mandal_HeatTreatmentWelding_2015" role="doc-biblioref">Mandal, 2015</a>)</span>. Other elements, such as titanium or nitrogen, can be added to iron in the same way as carbon to change the mechanical properties of the steel.</p>
+<p>The electrical and optical properties of semiconductor materials can be adjusted by doping the base material, such as silicon, with other elements, such as gallium. This can be done by exposing the silicon to a gas containing the dopant and allowing it to diffuse into the silicon <span class="citation" data-cites="Zant_Doping_2014">(<a href="../../bibliography.html#ref-Zant_Doping_2014" role="doc-biblioref">Zant, 2014</a>)</span>.</p>
+<p>Superionic, or fast-ion, conductors are materials in which charge transport is achieved by moving ions rather than moving electrons, as occurs in metallic conductors <span class="citation" data-cites="Beard_SECTIONSOLIDSTATEELECTROLYTES_2019">(<a href="../../bibliography.html#ref-Beard_SECTIONSOLIDSTATEELECTROLYTES_2019" role="doc-biblioref">Beard, 2019</a>)</span>. These materials are important in creating solid-state batteries, supercapacitors, and fuel cells, where solid electrolytes are required. Charge transport in these materials can be modeled by a hopping motion of ions in the solid with a preferred direction of motion established by an electric field.</p>
+<p>We will develop a model of solid-state diffusion based on the idea of a lattice gas, in which particles that can move are placed in a lattice structure and can move between sites in the lattice. The following assumptions will be made for the model.</p>
+<ol type="1">
+<li><p>The diffusive motion is accomplished by a particle hopping to a nearby lattice site.</p></li>
+<li><p>Particles can only hop to nearest-neighbor lattice sites, which are assumed to be separated by a distance <em>a</em>.</p></li>
+<li><p>The particles do not interact with each other except that double occupancy of a lattice site is not allowed.</p></li>
+<li><p>At each time step, a particle will choose a direction at random and attempt to move to the nearest-neighbor lattice site in that direction.</p></li>
+</ol>
+<div id="fig-Figure12_2DLatticeGas" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_2DLatticeGas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch12/Figures/LatticeGas-01.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_2DLatticeGas-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Two-dimensional lattice gas.
+</figcaption>
+</figure>
+</div>
+<p><a href="#fig-Figure12_2DLatticeGas" class="quarto-xref">Figure&nbsp;<span>4</span></a> shows an example of a lattice gas in a two-dimensional, square lattice. The allowed nearest-neighbor hops for one particle are shown.</p>
+<p>An important property that can be studied with this model is the tracer diffusion coefficient, <em>D*</em>. Tracer diffusion refers to diffusion of a single particle that can be tracked over time. The tracer diffusion coefficient can be defined in terms of the mean square displacement of the tracer particle. For the square lattice, this definition is</p>
+<p><span id="eq-Equation12_TracerDiffusionCoef"><span class="math display">\[D^* = \frac{〈\left|\overrightarrow{r}\left(t\right)- \overrightarrow{r}\left(0\right)\right|^2〉}{4t} \tag{9}\]</span></span></p>
+<p>where <span class="math inline">\(\overrightarrow{r}\left(t\right)\)</span> is the position of the tracer at time <em>t</em> and the averaging, indicated by the angle brackets, is over all the diffusing particles in the lattice, since each one can be considered as a tracer.</p>
+<p>We want to implement a Monte Carlo simulation of this model. The time <em>t</em> in a simulation will be considered as one pass through all the diffusing particles, attempting to allow each one to hop. The long-term time behavior of the mean square tracer displacement should be linear, giving a time-independent tracer diffusion coefficient. We can use the simulation to calculate <em>D*</em> as a function of particle concentration in the lattice. <span class="quarto-unresolved-ref">?tbl-Table12.1</span> defines the most important data structures or variables that might be used in the simulation code.</p>
+<div id="tbl-Table12.1" class="anchored">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 18%">
+<col style="width: 64%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>Variable Name</strong></th>
+<th style="text-align: center;"><strong>Data Type</strong></th>
+<th style="text-align: center;"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">concentration</td>
+<td style="text-align: center;">float</td>
+<td style="text-align: center;">gives the fraction of lattice sites occupied by diffusing particles</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">init_particle_positions</td>
+<td style="text-align: center;">list</td>
+<td style="text-align: center;">init_particle_positions[p] is a list of the initial x/y coordinates of particle number p</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">lattice_size</td>
+<td style="text-align: center;">integer</td>
+<td style="text-align: center;">the length of one side of the lattice as a number of sites</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">num_of_particles</td>
+<td style="text-align: center;">integer</td>
+<td style="text-align: center;">the number of particles in the lattice</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">p</td>
+<td style="text-align: center;">integer</td>
+<td style="text-align: center;">particle number</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">particle_positions</td>
+<td style="text-align: center;">list</td>
+<td style="text-align: center;">particle_positions[p] is a list of the current x/y coordinates of particle number p</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">site_occupancy</td>
+<td style="text-align: center;">2d numpy array of integers</td>
+<td style="text-align: center;">site_occupancy[xi,yi] specifies whether the lattice site with coordinates (xi,yi) is occupied</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">t</td>
+<td style="text-align: center;">integer</td>
+<td style="text-align: center;">current time step being considered</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">total_time_steps</td>
+<td style="text-align: center;">integer</td>
+<td style="text-align: center;">the number of time steps in a simulation</td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="creating-animations-with-python:sec" class="level2">
+<h2 class="anchored" data-anchor-id="creating-animations-with-python:sec">Creating Animations with Python</h2>
+<p>Animations can be used to facilitate exploring a model or data particularly when identifying time-dependent patterns. Basic animations can be created using the matplotlib package. Two methods will be discussed here.</p>
+<ol type="1">
+<li><p>placing the matplotlib.pyplot pause function in a for loop</p></li>
+<li><p>using the FuncAnimation function from the matplotlib.animation package</p></li>
+</ol>
+<p>Animations can be useful in the early stages of analyzing the models discussed in this chapter.</p>
+<section id="using-the-pause-function" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-pause-function">Using the pause() Function</h3>
+<p>The pause(interval) function from the matplotlib.pyplot package will pause program execution for the number of seconds indicated by the interval parameter. An animation can be created by setting up a for loop in which the plot function is executed and then the pause function is executed within the loop. Figure <a href="#fig:UsingPauseFunction" data-reference-type="ref" data-reference="fig:UsingPauseFunction">1.5</a> shows an example of code that will animate plotting a function using the pause() function.</p>
+<div id="fig-Figure12_AnimationWithPauseFunction" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_AnimationWithPauseFunction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure12_AnimationWithPauseFunction"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure12_AnimationWithPauseFunction-1"><a href="#fig-Figure12_AnimationWithPauseFunction-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-2"><a href="#fig-Figure12_AnimationWithPauseFunction-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-3"><a href="#fig-Figure12_AnimationWithPauseFunction-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-4"><a href="#fig-Figure12_AnimationWithPauseFunction-4" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> []</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-5"><a href="#fig-Figure12_AnimationWithPauseFunction-5" aria-hidden="true" tabindex="-1"></a>y <span class="op">=</span> []</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-6"><a href="#fig-Figure12_AnimationWithPauseFunction-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-7"><a href="#fig-Figure12_AnimationWithPauseFunction-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">100</span>):</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-8"><a href="#fig-Figure12_AnimationWithPauseFunction-8" aria-hidden="true" tabindex="-1"></a>    x.append(i)</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-9"><a href="#fig-Figure12_AnimationWithPauseFunction-9" aria-hidden="true" tabindex="-1"></a>    y.append(np.sqrt(i))</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-10"><a href="#fig-Figure12_AnimationWithPauseFunction-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-11"><a href="#fig-Figure12_AnimationWithPauseFunction-11" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Mention x and y limits to define their range</span></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-12"><a href="#fig-Figure12_AnimationWithPauseFunction-12" aria-hidden="true" tabindex="-1"></a>    plt.xlim(<span class="dv">0</span>, <span class="dv">100</span>)</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-13"><a href="#fig-Figure12_AnimationWithPauseFunction-13" aria-hidden="true" tabindex="-1"></a>    plt.ylim(<span class="dv">0</span>, <span class="dv">10</span>)</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-14"><a href="#fig-Figure12_AnimationWithPauseFunction-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="fig-Figure12_AnimationWithPauseFunction-15"><a href="#fig-Figure12_AnimationWithPauseFunction-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ploting graph</span></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-16"><a href="#fig-Figure12_AnimationWithPauseFunction-16" aria-hidden="true" tabindex="-1"></a>    plt.plot(x, y, color <span class="op">=</span> <span class="st">'green'</span>)</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-17"><a href="#fig-Figure12_AnimationWithPauseFunction-17" aria-hidden="true" tabindex="-1"></a>    plt.pause(<span class="fl">0.01</span>)</span>
+<span id="fig-Figure12_AnimationWithPauseFunction-18"><a href="#fig-Figure12_AnimationWithPauseFunction-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationWithPauseFunction-19"><a href="#fig-Figure12_AnimationWithPauseFunction-19" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_AnimationWithPauseFunction-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: :. Example of animation using the pause function.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="using-the-funcanimation-function" class="level3">
+<h3 class="anchored" data-anchor-id="using-the-funcanimation-function">Using the FuncAnimation Function</h3>
+<p>The matplotlib.animation package has a function named FuncAnimation that requires a bit more work to set up than just using the pause function but allows for more flexibility including being able to save the animation in a gif, avi, mov, or mp4 file format. Using FuncAnimation to create an animation requires the following steps</p>
+<ol type="1">
+<li><p>defining an empty figure object</p></li>
+<li><p>defining a callable Python function that can create one frame of the animation, usually performed using the matplotlib plot function</p></li>
+<li><p>making a call to the FuncAnimation function</p></li>
+</ol>
+<p>Defining the empty figure object is done using the Object Oriented interface for matplotlib. The basic syntax for creating an empty plotting grid is</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The callable function that creates a frame must have the frame number as the first argument with any other arguments following:</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> func(frame, <span class="op">*</span>fargs)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where frame will be an integer specifying the frame number being created.</p>
+<p>FuncAnimation has many parameters <span class="citation" data-cites="TheMatplotlibdevelopmentteam_MatplotlibanimationFuncAnimation_2023">(<a href="../../bibliography.html#ref-TheMatplotlibdevelopmentteam_MatplotlibanimationFuncAnimation_2023" role="doc-biblioref">The Matplotlib development team, 2023</a>)</span>. A basic call will be of the form</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>animation_name <span class="op">=</span> animation.FuncAnimation(fig<span class="op">=</span>fig_name, </span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>                 func<span class="op">=</span>frame_creation_function, interval<span class="op">=</span>time , </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>                 save_count<span class="op">=</span>num_of_frames)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where</p>
+<p>fig_name is the figure object</p>
+<p>frame_creation_function is the callable function that creates one frame in the animation</p>
+<p>interval is the time between frames in millisecond</p>
+<p>num_of_frames is an integer that specifies the number of frames in the animation</p>
+<p>animation_name is a user specified variable that refers to the animation object and can be used to play the animation or save it as video file</p>
+<p><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation" class="quarto-xref">Figure&nbsp;<span>6</span></a> gives an example of a program that produces an animation of a two-dimensional random walk.</p>
+<div id="fig-Figure12_AnimationExampleUsingFuncAnimation" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure12_AnimationExampleUsingFuncAnimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure12_AnimationExampleUsingFuncAnimation"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure12_AnimationExampleUsingFuncAnimation-1"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-2"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Random Walk in 2D: animations</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-3"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-4"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 12.31.2022.1</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-5"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program performs a random walk on a</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-6"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-6" aria-hidden="true" tabindex="-1"></a><span class="co">         two-dimensional lattice. It uses reflective</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-7"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-7" aria-hidden="true" tabindex="-1"></a><span class="co">         boundary conditions. It produces an animation </span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-8"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-8" aria-hidden="true" tabindex="-1"></a><span class="co">         of the walk</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-9"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-9" aria-hidden="true" tabindex="-1"></a><span class="co">version history:</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-10"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-10" aria-hidden="true" tabindex="-1"></a><span class="co">        12.31.2022.1: base</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-11"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-12"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-12" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-13"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-14"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-15"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-16"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-16" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> animation</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-17"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-17" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> matplotlib <span class="im">import</span> rc</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-18"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-19"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-19" aria-hidden="true" tabindex="-1"></a>rc(<span class="st">'animation'</span>, html<span class="op">=</span><span class="st">'html5'</span>)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-20"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-21"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-21" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> createFrame(t):</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-22"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-22" aria-hidden="true" tabindex="-1"></a>    x_frame.append(x_array[t])</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-23"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-23" aria-hidden="true" tabindex="-1"></a>    y_frame.append(y_array[t])</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-24"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-24" aria-hidden="true" tabindex="-1"></a>    axes.set_title(<span class="bu">str</span>(t))</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-25"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-25" aria-hidden="true" tabindex="-1"></a>    plt.plot(x_frame,y_frame, scaley<span class="op">=</span><span class="va">True</span>, scalex<span class="op">=</span><span class="va">True</span>, linewidth<span class="op">=</span><span class="dv">2</span>, color<span class="op">=</span><span class="st">"blue"</span>)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-26"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-26" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-27"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-28"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-28" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi, yi, lx, ux, ly, uy):</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-29"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-29" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-30"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-30" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.randint(<span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-31"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-32"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-32" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go east</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-33"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-33" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&lt;</span> ux:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-34"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-34" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-35"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> r <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-36"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-36" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go west</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-37"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&gt;</span> lx:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-38"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-38" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-39"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-39" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> r <span class="op">==</span> <span class="dv">3</span>:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-40"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-40" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go north</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-41"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-41" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> yi <span class="op">&lt;</span> uy:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-42"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-42" aria-hidden="true" tabindex="-1"></a>            yi <span class="op">=</span> yi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-43"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-44"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-44" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go south</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-45"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-45" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> yi <span class="op">&gt;</span> ly:</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-46"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-46" aria-hidden="true" tabindex="-1"></a>            yi <span class="op">=</span> yi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-47"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi, yi</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-48"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-49"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-50"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-50" aria-hidden="true" tabindex="-1"></a><span class="co"># --Main Program</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-51"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-51" aria-hidden="true" tabindex="-1"></a><span class="co"># set up random generator</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-52"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-52" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">42</span>)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-53"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-53" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-54"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-54" aria-hidden="true" tabindex="-1"></a><span class="co"># define the grid</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-55"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-55" aria-hidden="true" tabindex="-1"></a>lx <span class="op">=</span> <span class="op">-</span><span class="dv">30</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-56"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-56" aria-hidden="true" tabindex="-1"></a>ux <span class="op">=</span> <span class="dv">30</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-57"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-57" aria-hidden="true" tabindex="-1"></a>ly <span class="op">=</span> <span class="op">-</span><span class="dv">30</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-58"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-58" aria-hidden="true" tabindex="-1"></a>uy <span class="op">=</span> <span class="dv">30</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-59"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-60"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-60" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the simulation</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-61"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-61" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">500</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-62"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-62" aria-hidden="true" tabindex="-1"></a>xi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-63"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-63" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-64"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-64" aria-hidden="true" tabindex="-1"></a>position_array <span class="op">=</span> np.zeros((N <span class="op">+</span> <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-65"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-66"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-66" aria-hidden="true" tabindex="-1"></a><span class="co"># execute random walk</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-67"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-67" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-68"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-68" aria-hidden="true" tabindex="-1"></a>    xi, yi <span class="op">=</span> step(xi, yi, lx, ux, ly, uy)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-69"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-69" aria-hidden="true" tabindex="-1"></a>    position_array[i, <span class="dv">0</span>] <span class="op">=</span> xi</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-70"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-70" aria-hidden="true" tabindex="-1"></a>    position_array[i, <span class="dv">1</span>] <span class="op">=</span> yi</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-71"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-72"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-72" aria-hidden="true" tabindex="-1"></a>x_array <span class="op">=</span> position_array[:, <span class="dv">0</span>]</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-73"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-73" aria-hidden="true" tabindex="-1"></a>y_array <span class="op">=</span> position_array[:, <span class="dv">1</span>]</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-74"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-74" aria-hidden="true" tabindex="-1"></a>x_frame <span class="op">=</span> []</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-75"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-75" aria-hidden="true" tabindex="-1"></a>y_frame <span class="op">=</span> []</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-76"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-76" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-77"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-77" aria-hidden="true" tabindex="-1"></a><span class="co"># Create the animation</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-78"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-78" aria-hidden="true" tabindex="-1"></a>fig <span class="op">=</span> plt.figure()</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-79"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-79" aria-hidden="true" tabindex="-1"></a>axes <span class="op">=</span> fig.add_subplot(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">1</span>)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-80"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-80" aria-hidden="true" tabindex="-1"></a>axes.set_ylim(lx, ux)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-81"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-81" aria-hidden="true" tabindex="-1"></a>axes.set_xlim(ly, uy)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-82"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-82" aria-hidden="true" tabindex="-1"></a><span class="co">#writervideo = animation.FFMpegWriter(fps=10)</span></span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-83"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-83" aria-hidden="true" tabindex="-1"></a>ani <span class="op">=</span> animation.FuncAnimation(fig<span class="op">=</span>fig, func<span class="op">=</span>createFrame, interval<span class="op">=</span><span class="dv">100</span> ,</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-84"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-84" aria-hidden="true" tabindex="-1"></a>                              save_count<span class="op">=</span>N)</span>
+<span id="fig-Figure12_AnimationExampleUsingFuncAnimation-85"><a href="#fig-Figure12_AnimationExampleUsingFuncAnimation-85" aria-hidden="true" tabindex="-1"></a>ani</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure12_AnimationExampleUsingFuncAnimation-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: :Example code that uses FuncAnimation to show a 2-d random walk.
+</figcaption>
+</figure>
+</div>
+<p>The animation object is named ani, and it is played in a Jupyter notebook by just entering the name as the last statement of the program. If you want to play the animation within an IDE such as Spyder then additional steps will usually need to be completed.</p>
+</section>
+</section>
+<section id="projects" class="level2">
+<h2 class="anchored" data-anchor-id="projects">Projects</h2>
+<p><strong>Forest Fire Propagation</strong></p>
+<p>Develop code that implements the model described in section 12.1. This can be done in stages, depending on available time. One way to start the fire is to initialize one cell to the state in the range <span class="math inline">\(0 &lt; S_{ij} &lt; 1\)</span>. Another possible initial state would be to allow a given concentration <em>c</em> of the cells to be burning. For each of the following scenarios, measure the percentage of cells in the burning state as a function of time. Consider the effect of varying <em>p</em> and <em>c</em>.</p>
+<p>1. Assume a homogeneous lattice, so there is no variation in burn rates, no wind, and no variation in height. This is accomplished by</p>
+<ul>
+<li><p>setting all entries of <em>R</em> to one</p></li>
+<li><p>letting the wind and height matrices be defined by</p></li>
+</ul>
+<p><span class="math display">\[W_{ij} = \left[\begin{array}{ccc} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\  \end{array}\right]\text{ , }H_{ij} = \left[\begin{array}{ccc} 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\ 1 &amp; 1 &amp; 1 \\  \end{array}\right]\]</span></p>
+<p>2. Consider an inhomogeneous system with burn rates that vary in some way on the lattice. You might consider dividing the lattice into two regions with different burn rates.</p>
+<p>3. Explore the effect of wind speed. A north-to-south wind is represented by the wind matrix</p>
+<p><span class="math display">\[W_{ij} = \left[\begin{array}{ccc} 1.5 &amp; 1.5 &amp; 1.5 \\ 1 &amp; 1 &amp; 1 \\ 0.5 &amp; 0.5 &amp; 0.5 \\  \end{array}\right]\]</span></p>
+<p><strong>Solid-State Diffusion</strong></p>
+<p>1. Implement the 2-dimensional diffusion model discussed in section 12.2. Study the mean square displacement of a particle <span class="math inline">\(〈\left|\overrightarrow{r}\left(t\right)- \overrightarrow{r}\left(0\right)\right|^2〉\)</span> as a function of time and as a function of concentration. Does it become linear after some period of time, indicating a well-defined tracer diffusion coefficient? Does the lattice size have an effect on the results? Remember that when performing a Monte Carlo simulation of a model, measured properties of the system will show random variation. To eliminate the effects of this random variation you must repeat the simulation multiple time and form a mean over all the simulations for any measured property, as discussed in Chapter 9.</p>
+<p>2. Develop a model for diffusion in a one-dimensional lattice similar to the two-dimensional model. Implement a Monte Carlo simulation of the model. Does the mean-square displacement <span class="math inline">\(〈\left|x\left(t\right)- x\left(0\right)\right|^2〉\)</span> behave the same as in two dimensions?</p>
+</section>
+<section id="ch12-references:sec" class="level2">
+<h2 class="anchored" data-anchor-id="ch12-references:sec">References</h2>
+<div class="flushleft">
+<p>Bak, P., Chen, K., &amp; Tang, C. (1990). A forest-fire model and some thoughts on turbulence. <em>Physics Letters A</em>, <em>147</em>(5), 297–300. https://doi.org/10.1016/0375-9601(90)90451-S</p>
+<p>Beard, K. W. (Ed.). (2019). SECTION C: SOLID-STATE ELECTROLYTES (CERAMIC, GLASS, POLYMER). In <em>Linden’s Handbook of Batteries</em> (5th edition.). McGraw-Hill Education. https://www.accessengineeringlibrary.com/content/book/9781260115925/toc-chapter/chapter22/section/section24</p>
+<p>Clarke, K. C., Brass, J. A., &amp; Riggan, P. J. (1994). A cellular automaton model of wildfire propagation and extinction. <em>Photogrammetric Engineering and Remote Sensing. 60(11): 1355-1367</em>, <em>60</em>(11), Article 11.</p>
+<p>Collin, A., Bernardin, D., &amp; Séro-Guillaume, O. (2011). A Physical-Based Cellular Automaton Model for Forest-Fire Propagation. <em>Combustion Science and Technology</em>, <em>183</em>(4), 347–369. https://doi.org/10.1080/00102202.2010.508476</p>
+<p>Encinas, A. H., Encinas, L. H., White, S. H., Rey, A. M. del, &amp; Sánchez, G. R. (2007). Simulation of forest fire fronts using cellular automata. <em>Advances in Engineering Software</em>, <em>38</em>(6), 372–378. https://doi.org/10.1016/j.advengsoft.2006.09.002</p>
+<p>Mandal, S. K. (2015). Heat Treatment and Welding of Steels. In <em>Steel Metallurgy: Properties, Specifications and Applications</em> (First edition.). McGraw-Hill Education. https://www.accessengineeringlibrary.com/content/book/ 9780071844611/chapter/chapter8</p>
+<p>NICC. (2022). <em>Wildfires and Acres</em>. National Interagency Fire Center. https://www.nifc.gov/fire-information/statistics/wildfires</p>
+<p>NIFC. (2022). <em>Suppression Costs National Interagency Fire Center</em>. National Interagency Fire Center. https://www.nifc.gov/fire-information/statistics/suppression-costs</p>
+<p>Perry, G. L. W. (1998). Current approaches to modelling the spread of wildland fire: A review. <em>Progress in Physical Geography: Earth and Environment</em>, <em>22</em>(2), 222–245. https://doi.org/10.1177/030913339802200204</p>
+<p>Smith, A. B. (2020). <em>U.S. Billion-dollar Weather and Climate Disasters, 1980—Present (NCEI Accession 0209268)</em> [Data set]. NOAA National Centers for Environmental Information. https://doi.org/10.25921/STKW-7W73</p>
+<p>The Matplotlib development team. (2023). <em>Matplotlib.animation.FuncAnimation</em>. Matplotlib 3.6.3 Documentation. https://matplotlib.org/stable/api/_as_gen/matplotlib.animation.FuncAnimation.html</p>
+<p>Verzoni, A. (2021). <em>Global Wildfire Deaths</em>. http://www.nfpa.org/News-and-Research/Publications-and-media/NFPA-Journal/2021/Winter-2021/News-and-Analysis/Dispatches/International</p>
+<p>Wikipedia Contributors. (2022). Moore neighborhood. In <em>Wikipedia</em>. https://en.wikipedia.org/w/index.php?title=Moore_neighborhood&amp;oldid=1128664897</p>
+<p>Zant, P. V. (2014). Doping. In <em>Microchip Fabrication</em> (6th ed.). McGraw-Hill Education. https://www.accessengineeringlibrary.com/content/book/9780071821018/ chapter/chapter11</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-BakEtAl_ForestfireModelThoughts_1990" class="csl-entry" role="listitem">
+Bak, P., Chen, K., &amp; Tang, C. (1990). A forest-fire model and some thoughts on turbulence. <em>Physics Letters A</em>, <em>147</em>(5), 297–300. <a href="https://doi.org/10.1016/0375-9601(90)90451-S">https://doi.org/10.1016/0375-9601(90)90451-S</a>
+</div>
+<div id="ref-Beard_SECTIONSOLIDSTATEELECTROLYTES_2019" class="csl-entry" role="listitem">
+Beard, K. W. (Ed.). (2019). <span>SECTION C</span>: <span>SOLID-STATE ELECTROLYTES</span> (<span>CERAMIC</span>, <span>GLASS</span>, <span>POLYMER</span>). In <em>Linden’s <span>Handbook</span> of <span>Batteries</span></em> (5th edition.). McGraw-Hill Education. <a href="https://www.accessengineeringlibrary.com/content/book/9781260115925/toc-chapter/chapter22/section/section24">https://www.accessengineeringlibrary.com/content/book/9781260115925/toc-chapter/chapter22/section/section24</a>
+</div>
+<div id="ref-ClarkeEtAl_CellularAutomatonModel_1994" class="csl-entry" role="listitem">
+Clarke, K. C., Brass, J. A., &amp; Riggan, P. J. (1994). A cellular automaton model of wildfire propagation and extinction. <em>Photogrammetric Engineering and Remote Sensing. 60(11): 1355-1367</em>, <em>60</em>(11, 11), 1355–1367. <a href="https://www.fs.usda.gov/research/treesearch/41203">https://www.fs.usda.gov/research/treesearch/41203</a>
+</div>
+<div id="ref-CollinEtAl_PhysicalBasedCellularAutomaton_2011" class="csl-entry" role="listitem">
+Collin, A., Bernardin, D., &amp; Séro-Guillaume, O. (2011). A <span>Physical-Based Cellular Automaton Model</span> for <span>Forest-Fire Propagation</span>. <em>Combustion Science and Technology</em>, <em>183</em>(4), 347–369. <a href="https://doi.org/10.1080/00102202.2010.508476">https://doi.org/10.1080/00102202.2010.508476</a>
+</div>
+<div id="ref-EncinasEtAl_SimulationForestFire_2007" class="csl-entry" role="listitem">
+Encinas, A. H., Encinas, L. H., White, S. H., Rey, A. M. del, &amp; Sánchez, G. R. (2007). Simulation of forest fire fronts using cellular automata. <em>Advances in Engineering Software</em>, <em>38</em>(6), 372–378. <a href="https://doi.org/10.1016/j.advengsoft.2006.09.002">https://doi.org/10.1016/j.advengsoft.2006.09.002</a>
+</div>
+<div id="ref-Mandal_HeatTreatmentWelding_2015" class="csl-entry" role="listitem">
+Mandal, S. K. (2015). Heat <span>Treatment</span> and <span>Welding</span> of <span>Steels</span>. In <em>Steel <span>Metallurgy</span>: <span>Properties</span>, <span>Specifications</span> and <span>Applications</span></em> (First edition.). McGraw-Hill Education. <a href="https://www.accessengineeringlibrary.com/content/book/9780071844611/chapter/chapter8">https://www.accessengineeringlibrary.com/content/book/9780071844611/chapter/chapter8</a>
+</div>
+<div id="ref-NICC_WildfiresAcres_2022" class="csl-entry" role="listitem">
+NICC. (2022). <em>Wildfires and <span>Acres</span></em>. National Interagency Fire Center. <a href="https://www.nifc.gov/fire-information/statistics/wildfires">https://www.nifc.gov/fire-information/statistics/wildfires</a>
+</div>
+<div id="ref-NIFC_SuppressionCostsNational_2022" class="csl-entry" role="listitem">
+NIFC. (2022). <em>Suppression <span>Costs</span> | <span>National Interagency Fire Center</span></em>. National Interagency Fire Center. <a href="https://www.nifc.gov/fire-information/statistics/suppression-costs">https://www.nifc.gov/fire-information/statistics/suppression-costs</a>
+</div>
+<div id="ref-Perry_CurrentApproachesModelling_1998" class="csl-entry" role="listitem">
+Perry, G. L. W. (1998). Current approaches to modelling the spread of wildland fire: A review. <em>Progress in Physical Geography: Earth and Environment</em>, <em>22</em>(2), 222–245. <a href="https://doi.org/10.1177/030913339802200204">https://doi.org/10.1177/030913339802200204</a>
+</div>
+<div id="ref-Smith_USBilliondollarWeather_2020" class="csl-entry" role="listitem">
+Smith, A. B. (2020). <em>U.<span>S</span>. <span class="nocase">Billion-dollar Weather</span> and <span>Climate Disasters</span>, 1980 - present (<span>NCEI Accession</span> 0209268)</em> [Dataset]. NOAA National Centers for Environmental Information. <a href="https://doi.org/10.25921/STKW-7W73">https://doi.org/10.25921/STKW-7W73</a>
+</div>
+<div id="ref-TheMatplotlibdevelopmentteam_MatplotlibanimationFuncAnimation_2023" class="csl-entry" role="listitem">
+The Matplotlib development team. (2023). <em>Matplotlib.animation.<span>FuncAnimation</span></em>. Matplotlib 3.6.3 documentation. <a href="https://matplotlib.org/stable/api/_as_gen/matplotlib.animation.FuncAnimation.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.animation.FuncAnimation.html</a>
+</div>
+<div id="ref-WikipediaContributors_MooreNeighborhood_2022" class="csl-entry" role="listitem">
+Wikipedia Contributors. (2022). Moore neighborhood. In <em>Wikipedia</em>. <a href="https://en.wikipedia.org/w/index.php?title=Moore_neighborhood&amp;oldid=1128664897">https://en.wikipedia.org/w/index.php?title=Moore_neighborhood&amp;oldid=1128664897</a>
+</div>
+<div id="ref-Zant_Doping_2014" class="csl-entry" role="listitem">
+Zant, P. V. (2014). Doping. In <em>Microchip <span>Fabrication</span></em> (6th ed.). McGraw-Hill Education. <a href="https://www.accessengineeringlibrary.com/content/book/9780071821018/chapter/chapter11">https://www.accessengineeringlibrary.com/content/book/9780071821018/chapter/chapter11</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="pagination-link" aria-label="Project Ideas: Dynamical Systems Models">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../bibliography.html" class="pagination-link" aria-label="Bibliography">
+        <span class="nav-page-text">Bibliography</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

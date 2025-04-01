@@ -1,0 +1,1512 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Dynamical Systems Modeling II – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch09/Ch09_StochasticSimulations.html" rel="next">
+<link href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-the-zombie-apocalypse" id="toc-motivating-problem-the-zombie-apocalypse" class="nav-link active" data-scroll-target="#motivating-problem-the-zombie-apocalypse">Motivating Problem: The Zombie Apocalypse</a></li>
+  <li><a href="#compartmental-models" id="toc-compartmental-models" class="nav-link" data-scroll-target="#compartmental-models">Compartmental Models</a></li>
+  <li><a href="#numerical-solution-of-2nd-order-differential-equations" id="toc-numerical-solution-of-2nd-order-differential-equations" class="nav-link" data-scroll-target="#numerical-solution-of-2nd-order-differential-equations">Numerical Solution of 2nd-Order Differential Equations</a></li>
+  <li><a href="#newtons-2nd-law-problems" id="toc-newtons-2nd-law-problems" class="nav-link" data-scroll-target="#newtons-2nd-law-problems">Newton’s 2nd Law Problems</a></li>
+  <li><a href="#computational-problem-solving-modeling-the-zombie-apocalypse" id="toc-computational-problem-solving-modeling-the-zombie-apocalypse" class="nav-link" data-scroll-target="#computational-problem-solving-modeling-the-zombie-apocalypse">Computational Problem Solving: Modeling the Zombie Apocalypse</a>
+  <ul class="collapse">
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design">Design</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
+  </ul></li>
+  <li><a href="#exercises" id="toc-exercises" class="nav-link" data-scroll-target="#exercises">Exercises</a></li>
+  <li><a href="#program-modification-problems" id="toc-program-modification-problems" class="nav-link" data-scroll-target="#program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#program-development-problems" id="toc-program-development-problems" class="nav-link" data-scroll-target="#program-development-problems">Program Development Problems</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Dynamical Systems Modeling II</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Chapter 7 introduced the concept of a dynamical system, a type of deterministic mathematical model with behavior determined by a first-order differential equation, the rate equation for the state variable. This chapter will expand the type of model that we can study to include more than one state variable. One consequence of this generalization is that we will develop the capability to solve problems based on a Newton’s second law analysis of a system. This will open up significant areas of physics and engineering to us.</p>
+<section id="motivating-problem-the-zombie-apocalypse" class="level2">
+<h2 class="anchored" data-anchor-id="motivating-problem-the-zombie-apocalypse">Motivating Problem: The Zombie Apocalypse</h2>
+<p>Zombies are a fixture of modern popular culture. Wikipedia currently lists 588 movies with a zombie theme (Wikipedia Contributors, 2022). If we add in all of the television series, comics, novels, short stories, and electronic games, the list of zombie-themed entertainment titles would undoubtedly be in the thousands. Even the Center for Disease Control offers a pamphlet on preparing for a zombie pandemic (Centers for Disease Control and Prevention (U.S.) &amp; Office of Public Health Preparedness and Response, 2011).</p>
+<p>The first Hollywood box-office hit with a zombie theme was White Zombie, released in 1932 and starring Bela Lugosi, of Dracula fame, as Voodou master “Murder” Legendre, who kills and resurrects people as zombies using a potion (Kay &amp; Brugués, 2012). The zombies in this film are mindless beasts controlled by their maker, not the brain-eating, decayed flesh monstrosities of more modern productions.</p>
+<p>The 1968 film Night of the Living Dead defined critical elements of the modern zombie genre: normal humans become infected from the bite of a zombie, an infected person dies and becomes reanimated with an appetite for human flesh, and a zombie can be killed with a shot to the base of the skull or by fire. Night of the Living Dead did not use the term zombie for the reanimated, flesh-eating wanderers. These creatures were called ghouls in the movie.</p>
+<p>The modern zombie story views the condition as an infectious disease spread through close contact with uninfected people. Typically, the infection is incredibly successful at spreading through the human population, leaving the world with a huge number of roaming, flesh-eating creatures in the midst of a dwindling number of humans. fig-Figure8ZombiePandemic shows one depiction of such a pandemic, as visualized by an artist at the U.S. Centers for Disease Control (Centers for Disease Control and Prevention (U.S.) &amp; Office of Public Health Preparedness and Response, 2011). Our modeling problem is to understand the conditions for which the zombie infection can spread so as to essentially wipe out the human population. A related question is, what are the conditions that will allow humans to make a comeback?</p>
+<div id="fig-Figure8ZombiePandemic" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8ZombiePandemic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/CDC_PreparingForTheZombiePandemic.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8ZombiePandemic-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The zombie pandemic, as pictured by the CDC (Centers for Disease Control and Prevention (U.S.) &amp; Office of Public Health Preparedness and Response, 2011).
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="compartmental-models" class="level2">
+<h2 class="anchored" data-anchor-id="compartmental-models">Compartmental Models</h2>
+<p>Compartmental models are a class of mathematical model for which the system under investigation is assumed to be composed of populations that can exist in one or more states or compartments. Each compartment can be described by one state variable and flows can occur between the compartments. In addition to flows between compartments, other processes that affect the population in a compartment can be included, such as birth and death events.</p>
+<p>Compartmental models have become useful in many areas of science and engineering including chemical engineering, ecology, environmental engineering, epidemiology, pharmacokinetics, and physiology. To introduce the concept, we will focus on developing a compartmental model of a chemostat, a type of bioreactor used in microbiology research and in bioengineering applications.</p>
+<p>A chemostat provides a continuous supply of microorganisms using constant and reproducible growth conditions. This allows the microorganisms to be used in research or industrial applications under predictable and controllable conditions. <a href="#fig-Figure8ChemostatModel" class="quarto-xref">Figure&nbsp;<span>2</span></a> shows the conceptual physical structure of a chemostat.</p>
+<div id="fig-Figure8ChemostatModel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8ChemostatModel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/ChemostatModel.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8ChemostatModel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Physical structure of a simple chemostat.
+</figcaption>
+</figure>
+</div>
+<p>We can start constructing a mathematical model of this device defining important variables or parameters that describe the system.</p>
+<div id="tbl-Table8p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table8p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Chemostat model variables.
+</figcaption>
+<div aria-describedby="tbl-Table8p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 51%">
+<col style="width: 10%">
+<col style="width: 17%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;">Variable</th>
+<th style="text-align: center;">Symbol</th>
+<th style="text-align: center;">Units</th>
+<th style="text-align: center;">Units Example</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><div id="tab:Table8p1">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Concentration of bacteria</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in the culture chamber</td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: center;">N</td>
+<td style="text-align: center;">cells/volume</td>
+<td style="text-align: center;">cells/ml</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;"><div id="tab:Table8p1">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Nutrient concentration</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in the culture chamber</td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: center;">C</td>
+<td style="text-align: center;">mass/volume</td>
+<td style="text-align: center;">g/ml</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;"><div id="tab:Table8p1">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Nutrient concentration</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">in the nutrient reservoir</td>
+</tr>
+</tbody>
+</table>
+</div></td>
+<td style="text-align: center;">C0</td>
+<td style="text-align: center;">mass/volume</td>
+<td style="text-align: center;">g/ml</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Volume of the culture chamber</td>
+<td style="text-align: center;">V</td>
+<td style="text-align: center;">volume</td>
+<td style="text-align: center;">ml</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Nutrient inflow and effluent outflow rate</td>
+<td style="text-align: center;">F</td>
+<td style="text-align: center;">volume/time</td>
+<td style="text-align: center;">ml/s</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>We will make some assumptions about our system to keep our model relatively simple.</p>
+<ol type="1">
+<li><p>The nutrient reservoir will always supply nutrient at the fixed concentration C<sub>0</sub>.</p></li>
+<li><p>The nutrient inflow rate will always equal the outgoing effluent rate, F. This will keep the volume of the culture chamber constant.</p></li>
+<li><p>The culture chamber is well mixed, so the bacteria and nutrient concentrations are constant throughout.</p></li>
+</ol>
+<p>With these assumptions we can focus our attention on the culture chamber containing both the bacteria and the nutrient. Our system can be modeled conceptually by two compartments: a bacteria compartment and a nutrient compartment. Our conceptual compartmental model of the system is represented in <a href="#fig-compartmentalModel" class="quarto-xref">Figure&nbsp;<span>3</span></a>.</p>
+<div id="fig-compartmentalModel" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-compartmentalModel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/compartments.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-compartmentalModel-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Compartmental model of the system.
+</figcaption>
+</figure>
+</div>
+<p>To define the dynamical system model we must specify rate equations for the two state variables, N and C. This will require some additional model parameters, defined in <a href="#tbl-Table8p2" class="quarto-xref">Table&nbsp;<span>2</span></a>.</p>
+<div id="tbl-Table8p2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table8p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Chemostat model parameters.
+</figcaption>
+<div aria-describedby="tbl-Table8p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Parameter</strong></th>
+<th style="text-align: left;"><strong>Symbol</strong></th>
+<th style="text-align: left;"><strong>Units</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">the yield constant</td>
+<td style="text-align: left;"><em>Y</em></td>
+<td style="text-align: left;">(cells/volume)/(mass/volume)</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">specific growth rate</td>
+<td style="text-align: left;"><em>K</em></td>
+<td style="text-align: left;">1/time</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">maximum specific growth rate</td>
+<td style="text-align: left;"><span class="math inline">\(K_{max}\)</span></td>
+<td style="text-align: left;">1/time</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">saturation constant</td>
+<td style="text-align: left;"><span class="math inline">\(K_s\)</span></td>
+<td style="text-align: left;">mass/volume</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The rate equation for a state variable must contain terms corresponding to each arrow going into or out from the associated compartment in Figure 8.3. Following Leah Edelstein-Keshet, we will hypothesize the following rate equations <span class="citation" data-cites="Edelstein-Keshet_MathematicalModelsBiology_2005">(<a href="../../bibliography.html#ref-Edelstein-Keshet_MathematicalModelsBiology_2005" role="doc-biblioref">Edelstein-Keshet, 2005</a>)</span>.</p>
+<p><span id="eq-Equation8.1"><span class="math display">\[\frac{dN}{dt} = K\left(C\right)N- \frac{FN}{V} \tag{1}\]</span></span></p>
+<p><span id="eq-Equation8.2"><span class="math display">\[\frac{dC}{dt} = - \frac{K\left(C\right)N}{Y}- \frac{FC}{V} + \frac{FC_0}{V} \tag{2}\]</span></span></p>
+<p>The specific growth rate, <em>K</em>, is assumed to be a function of the nutrient concentration, <em>C</em>. The yield constant, <em>Y</em>, maximum specific growth rate, <em>K<sub>max</sub></em>, and the saturation constant, <em>K<sub>s</sub></em>, will depend on the species of bacteria being modeled.</p>
+<p>We must also hypothesize a model for the specific growth rate. A realistic model should show the growth rate reaching a maximum for large values of the nutrient concentration. A commonly used model is described by Michaelis-Menten kinetics equation <span class="citation" data-cites="Edelstein-Keshet_MathematicalModelsBiology_2005">(<a href="../../bibliography.html#ref-Edelstein-Keshet_MathematicalModelsBiology_2005" role="doc-biblioref">Edelstein-Keshet, 2005</a>)</span>:</p>
+<p><span id="eq-Equation8.3"><span class="math display">\[K\left(C\right) = \frac{K_{\max}C}{K_s + C} \tag{3}\]</span></span></p>
+<p>With this choice for the growth kinetics model, the rate equations become</p>
+<p><span id="eq-Equation8.4"><span class="math display">\[\frac{dN}{dt} = \left(\frac{K_{\max}C}{K_s + C}\right)N- \frac{FN}{V} \tag{4}\]</span></span></p>
+<p><span id="eq-Equation8.5"><span class="math display">\[\frac{dC}{dt} = - \left(\frac{K_{\max}C}{K_s + C}\right)\frac{N}{Y}- \frac{FC}{V} + \frac{FC_0}{V} \tag{5}\]</span></span></p>
+<p>This model has six parameters: <em>K</em><sub>max</sub><em>, K<sub>s</sub>, Y, V, F, C<sub>0</sub></em>. Exploring the behavior of the model can be complicated with so many parameters. Another complication that arises in performing numerical solutions of the model is that there can be a large range of numbers involved. Both of these complications can be mitigated to some extent by rewriting the equations in a dimensionless form. This can be done by writing the original variables N, C, and t as the product of a dimensionless variable and a dimensional number <span class="citation" data-cites="Edelstein-Keshet_MathematicalModelsBiology_2005">(<a href="../../bibliography.html#ref-Edelstein-Keshet_MathematicalModelsBiology_2005" role="doc-biblioref">Edelstein-Keshet, 2005</a>)</span>.</p>
+<p><span id="eq-Equation8.6"><span class="math display">\[\begin{array}{l} N = N^* \times \widehat{N} \\ C = C^* \times \widehat{C} \\ t = t^* \times \widehat{t} \\  \end{array} \tag{6}\]</span></span></p>
+<p>In these definitions, <span class="math inline">\(N^*\)</span>, <span class="math inline">\(C^*\)</span>, and <span class="math inline">\(t^*\)</span> are the new dimensionless variables and <span class="math inline">\(\widehat{N},\widehat{C},\text{ and }\widehat{t}\)</span> are constants that contain dimensions. Our goal is to choose the values of these dimension-carrying constants in a way that reduces the number of model parameters in <a href="#eq-Equation8.4" class="quarto-xref">Equation&nbsp;<span>4</span></a> and <a href="#eq-Equation8.5" class="quarto-xref">Equation&nbsp;<span>5</span></a>. Substituting the definitions from <a href="#eq-Equation8.6" class="quarto-xref">Equation&nbsp;<span>6</span></a> into <a href="#eq-Equation8.4" class="quarto-xref">Equation&nbsp;<span>4</span></a> and <a href="#eq-Equation8.5" class="quarto-xref">Equation&nbsp;<span>5</span></a> yields <a href="#eq-Equation8.7" class="quarto-xref">Equation&nbsp;<span>7</span></a> and <a href="#eq-Equation8.8" class="quarto-xref">Equation&nbsp;<span>8</span></a>.</p>
+<p><span id="eq-Equation8.7"><span class="math display">\[\frac{dN^*}{dt^*} = \widehat{t}K_{\max}\left(\frac{C^*}{K_s/ \widehat{C} + C^*}\right)N^*- \widehat{t}\frac{FN^*}{V} \tag{7}\]</span></span></p>
+<p><span id="eq-Equation8.8"><span class="math display">\[\frac{dC^*}{dt^*} = - \left(\frac{\widehat{t}K_{\max}\widehat{N}}{Y\widehat{C}}\right)\left(\frac{C^*}{K_s/ \widehat{C} + C^*}\right)N^*- \widehat{t}\frac{FC^*}{V} + \widehat{t}\frac{FC_0}{V\widehat{C}} \tag{8}\]</span></span></p>
+<p>By choosing the dimensional constants <span class="math inline">\(\widehat{N},\widehat{C},\text{ and }\widehat{t}\)</span> appropriately, the number of independent model parameters can be reduced. The following choice yields two model parameters.</p>
+<p><span id="eq-Equation8.9"><span class="math display">\[\widehat{t} = \frac{V}{F}\text{ , }\widehat{C} = K_s\text{ , }\widehat{N} = \frac{YK_s}{\widehat{t}K_{\max}} \tag{9}\]</span></span></p>
+<p>To facilitate performing a numerical solution of these equations to give N* and C* as functions of time, we will change the notation to the generic dynamical systems model notation.</p>
+<p><span id="eq-Equation8.10"><span class="math display">\[\begin{array}{l} N^*\rightarrow y_0 \\ C^*\rightarrow y_1 \\  \end{array} \tag{10}\]</span></span></p>
+<p>Making the substitutions defined in <a href="#eq-Equation8.9" class="quarto-xref">Equation&nbsp;<span>9</span></a> and the notation change defined by <a href="#eq-Equation8.10" class="quarto-xref">Equation&nbsp;<span>10</span></a> gives the final form of our dynamical systems model.</p>
+<p><span id="eq-Equation8.11"><span class="math display">\[\frac{dy_0}{dt} = a_1\left(\frac{y_1}{1 + y_1}\right)y_0- y_0 \tag{11}\]</span></span></p>
+<p><span id="eq-Equation8.12"><span class="math display">\[\frac{dy_1}{dt} = - \left(\frac{y_1}{1 + y_1}\right)y_0- y_1 + a_2 \tag{12}\]</span></span></p>
+<p>where</p>
+<p><span id="eq-Equation8.13"><span class="math display">\[\begin{array}{l} a_1 = \widehat{t}K_{\max} = \frac{VK_{\max}}{F} \\ \\ a_2 = \frac{\widehat{t}FC_0}{V\widehat{C}} = \frac{C_0}{K_s} \\  \end{array} \tag{13}\]</span></span></p>
+<p>The model parameters <em>a<sub>1</sub></em> and <em>a<sub>2</sub></em> are dimensionless.</p>
+<p>The dynamical systems model defined by Equations (8.11) and (8.12) can be solved numerically by using the code template from Figure 7.7. <a href="#fig-Figure8_ChemostatModelCode" class="quarto-xref">Figure&nbsp;<span>4</span></a> shows the Figure 7.7 code adapted for the chemostat problem. <a href="#fig-chemostat-state-functions-graph" class="quarto-xref">Figure&nbsp;<span>5</span></a> shows the result of running the code. For these model parameter values, it takes about 40 dimensionless time units to achieve a stable steady-state production of bacteria.</p>
+<div id="fig-Figure8_ChemostatModelCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8_ChemostatModelCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure8_ChemostatModelCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure8_ChemostatModelCode-1"><a href="#fig-Figure8_ChemostatModelCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_ChemostatModelCode-2"><a href="#fig-Figure8_ChemostatModelCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Chemostat Model</span></span>
+<span id="fig-Figure8_ChemostatModelCode-3"><a href="#fig-Figure8_ChemostatModelCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure8_ChemostatModelCode-4"><a href="#fig-Figure8_ChemostatModelCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 8.22.2022.1</span></span>
+<span id="fig-Figure8_ChemostatModelCode-5"><a href="#fig-Figure8_ChemostatModelCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure8_ChemostatModelCode-6"><a href="#fig-Figure8_ChemostatModelCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">    This program implements a dynamical systems model of a</span></span>
+<span id="fig-Figure8_ChemostatModelCode-7"><a href="#fig-Figure8_ChemostatModelCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">    chemostat that used one growth-limiting nutrient and</span></span>
+<span id="fig-Figure8_ChemostatModelCode-8"><a href="#fig-Figure8_ChemostatModelCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">    produces one species of bacteria.</span></span>
+<span id="fig-Figure8_ChemostatModelCode-9"><a href="#fig-Figure8_ChemostatModelCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">Version History:</span></span>
+<span id="fig-Figure8_ChemostatModelCode-10"><a href="#fig-Figure8_ChemostatModelCode-10" aria-hidden="true" tabindex="-1"></a><span class="co">    8.22.2022.1: base</span></span>
+<span id="fig-Figure8_ChemostatModelCode-11"><a href="#fig-Figure8_ChemostatModelCode-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-12"><a href="#fig-Figure8_ChemostatModelCode-12" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_ChemostatModelCode-13"><a href="#fig-Figure8_ChemostatModelCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="fig-Figure8_ChemostatModelCode-14"><a href="#fig-Figure8_ChemostatModelCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure8_ChemostatModelCode-15"><a href="#fig-Figure8_ChemostatModelCode-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-Figure8_ChemostatModelCode-16"><a href="#fig-Figure8_ChemostatModelCode-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-17"><a href="#fig-Figure8_ChemostatModelCode-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that defines the rhs of the differential equation system</span></span>
+<span id="fig-Figure8_ChemostatModelCode-18"><a href="#fig-Figure8_ChemostatModelCode-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-19"><a href="#fig-Figure8_ChemostatModelCode-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y, Kmax, Ks, Y, V, F, C0):</span>
+<span id="fig-Figure8_ChemostatModelCode-20"><a href="#fig-Figure8_ChemostatModelCode-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   y = a list that contains the system state</span></span>
+<span id="fig-Figure8_ChemostatModelCode-21"><a href="#fig-Figure8_ChemostatModelCode-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="fig-Figure8_ChemostatModelCode-22"><a href="#fig-Figure8_ChemostatModelCode-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       is to be calculated.</span></span>
+<span id="fig-Figure8_ChemostatModelCode-23"><a href="#fig-Figure8_ChemostatModelCode-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Kmax = maximum specific growth rate</span></span>
+<span id="fig-Figure8_ChemostatModelCode-24"><a href="#fig-Figure8_ChemostatModelCode-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Ks = saturation constant</span></span>
+<span id="fig-Figure8_ChemostatModelCode-25"><a href="#fig-Figure8_ChemostatModelCode-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Y = yield</span></span>
+<span id="fig-Figure8_ChemostatModelCode-26"><a href="#fig-Figure8_ChemostatModelCode-26" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   V = volume</span></span>
+<span id="fig-Figure8_ChemostatModelCode-27"><a href="#fig-Figure8_ChemostatModelCode-27" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   F = flow rate for nutrient and effluent</span></span>
+<span id="fig-Figure8_ChemostatModelCode-28"><a href="#fig-Figure8_ChemostatModelCode-28" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   C0 = nutrient concentration in nutrient reservoir</span></span>
+<span id="fig-Figure8_ChemostatModelCode-29"><a href="#fig-Figure8_ChemostatModelCode-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-30"><a href="#fig-Figure8_ChemostatModelCode-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Unpack the state of the system</span></span>
+<span id="fig-Figure8_ChemostatModelCode-31"><a href="#fig-Figure8_ChemostatModelCode-31" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>]  <span class="co"># N, density of bacteria</span></span>
+<span id="fig-Figure8_ChemostatModelCode-32"><a href="#fig-Figure8_ChemostatModelCode-32" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> y[<span class="dv">1</span>]  <span class="co"># C, concentration of nutrient</span></span>
+<span id="fig-Figure8_ChemostatModelCode-33"><a href="#fig-Figure8_ChemostatModelCode-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-34"><a href="#fig-Figure8_ChemostatModelCode-34" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="fig-Figure8_ChemostatModelCode-35"><a href="#fig-Figure8_ChemostatModelCode-35" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> (Kmax<span class="op">*</span>y1<span class="op">/</span>(Ks <span class="op">+</span> y1))<span class="op">*</span>y0 <span class="op">-</span> (F<span class="op">/</span>V)<span class="op">*</span>y0</span>
+<span id="fig-Figure8_ChemostatModelCode-36"><a href="#fig-Figure8_ChemostatModelCode-36" aria-hidden="true" tabindex="-1"></a>    dy1dt <span class="op">=</span> <span class="op">-</span>(Kmax<span class="op">*</span>y1<span class="op">/</span>(Ks <span class="op">+</span> y1))<span class="op">*</span>y0<span class="op">/</span>Y <span class="op">-</span> (F<span class="op">/</span>V)<span class="op">*</span>y1 <span class="op">+</span> (F<span class="op">/</span>V)<span class="op">*</span>C0</span>
+<span id="fig-Figure8_ChemostatModelCode-37"><a href="#fig-Figure8_ChemostatModelCode-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-38"><a href="#fig-Figure8_ChemostatModelCode-38" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt, dy1dt]</span>
+<span id="fig-Figure8_ChemostatModelCode-39"><a href="#fig-Figure8_ChemostatModelCode-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-40"><a href="#fig-Figure8_ChemostatModelCode-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-41"><a href="#fig-Figure8_ChemostatModelCode-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure8_ChemostatModelCode-42"><a href="#fig-Figure8_ChemostatModelCode-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-43"><a href="#fig-Figure8_ChemostatModelCode-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="fig-Figure8_ChemostatModelCode-44"><a href="#fig-Figure8_ChemostatModelCode-44" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="fl">1.0E7</span>, <span class="fl">1.E-2</span>]</span>
+<span id="fig-Figure8_ChemostatModelCode-45"><a href="#fig-Figure8_ChemostatModelCode-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-46"><a href="#fig-Figure8_ChemostatModelCode-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="fig-Figure8_ChemostatModelCode-47"><a href="#fig-Figure8_ChemostatModelCode-47" aria-hidden="true" tabindex="-1"></a>ti <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="fig-Figure8_ChemostatModelCode-48"><a href="#fig-Figure8_ChemostatModelCode-48" aria-hidden="true" tabindex="-1"></a>tf <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="fig-Figure8_ChemostatModelCode-49"><a href="#fig-Figure8_ChemostatModelCode-49" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(ti, tf, <span class="dv">5</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-50"><a href="#fig-Figure8_ChemostatModelCode-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-51"><a href="#fig-Figure8_ChemostatModelCode-51" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the parameter tuple</span></span>
+<span id="fig-Figure8_ChemostatModelCode-52"><a href="#fig-Figure8_ChemostatModelCode-52" aria-hidden="true" tabindex="-1"></a>Kmax <span class="op">=</span> <span class="fl">0.29</span>     <span class="co"># [1/h]</span></span>
+<span id="fig-Figure8_ChemostatModelCode-53"><a href="#fig-Figure8_ChemostatModelCode-53" aria-hidden="true" tabindex="-1"></a>Ks <span class="op">=</span> <span class="fl">1.36E-2</span>    <span class="co"># [mg/mL]</span></span>
+<span id="fig-Figure8_ChemostatModelCode-54"><a href="#fig-Figure8_ChemostatModelCode-54" aria-hidden="true" tabindex="-1"></a>Y <span class="op">=</span> <span class="fl">0.96</span>        <span class="co"># dimensionless</span></span>
+<span id="fig-Figure8_ChemostatModelCode-55"><a href="#fig-Figure8_ChemostatModelCode-55" aria-hidden="true" tabindex="-1"></a>V <span class="op">=</span> <span class="fl">300.</span>        <span class="co"># [mL]</span></span>
+<span id="fig-Figure8_ChemostatModelCode-56"><a href="#fig-Figure8_ChemostatModelCode-56" aria-hidden="true" tabindex="-1"></a>F <span class="op">=</span> <span class="dv">72</span>          <span class="co"># [mL/h]</span></span>
+<span id="fig-Figure8_ChemostatModelCode-57"><a href="#fig-Figure8_ChemostatModelCode-57" aria-hidden="true" tabindex="-1"></a>C0 <span class="op">=</span> <span class="fl">1.E-2</span>      <span class="co"># [mg/mL]</span></span>
+<span id="fig-Figure8_ChemostatModelCode-58"><a href="#fig-Figure8_ChemostatModelCode-58" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (Kmax, Ks, Y, V, F, C0)</span>
+<span id="fig-Figure8_ChemostatModelCode-59"><a href="#fig-Figure8_ChemostatModelCode-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-60"><a href="#fig-Figure8_ChemostatModelCode-60" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="fig-Figure8_ChemostatModelCode-61"><a href="#fig-Figure8_ChemostatModelCode-61" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f, (ti, tf), yi, t_eval<span class="op">=</span>t, args<span class="op">=</span>p)</span>
+<span id="fig-Figure8_ChemostatModelCode-62"><a href="#fig-Figure8_ChemostatModelCode-62" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="fig-Figure8_ChemostatModelCode-63"><a href="#fig-Figure8_ChemostatModelCode-63" aria-hidden="true" tabindex="-1"></a>C <span class="op">=</span> sol.y[<span class="dv">1</span>]</span>
+<span id="fig-Figure8_ChemostatModelCode-64"><a href="#fig-Figure8_ChemostatModelCode-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_ChemostatModelCode-65"><a href="#fig-Figure8_ChemostatModelCode-65" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the solution</span></span>
+<span id="fig-Figure8_ChemostatModelCode-66"><a href="#fig-Figure8_ChemostatModelCode-66" aria-hidden="true" tabindex="-1"></a>plt.plot(t, N, color<span class="op">=</span><span class="st">'green'</span>, label<span class="op">=</span><span class="st">'N'</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-67"><a href="#fig-Figure8_ChemostatModelCode-67" aria-hidden="true" tabindex="-1"></a>plt.plot(t, C, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'C'</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-68"><a href="#fig-Figure8_ChemostatModelCode-68" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t'</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-69"><a href="#fig-Figure8_ChemostatModelCode-69" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'N , C'</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-70"><a href="#fig-Figure8_ChemostatModelCode-70" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-Figure8_ChemostatModelCode-71"><a href="#fig-Figure8_ChemostatModelCode-71" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'chemostat.png'</span>)</span>
+<span id="fig-Figure8_ChemostatModelCode-72"><a href="#fig-Figure8_ChemostatModelCode-72" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8_ChemostatModelCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: :Adaptation of the dynamical systems code for the chemostat problem.
+</figcaption>
+</figure>
+</div>
+<div id="fig-chemostat-state-functions-graph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-chemostat-state-functions-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/chemostat.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-chemostat-state-functions-graph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: The dimensionless cell density and nutrient concentration as functions of time.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="numerical-solution-of-2nd-order-differential-equations" class="level2">
+<h2 class="anchored" data-anchor-id="numerical-solution-of-2nd-order-differential-equations">Numerical Solution of 2nd-Order Differential Equations</h2>
+<p>Many scientific and engineering systems can be modeled with second-order differential equations. One reason this is the case is that Newton’s second law is really a second-order differential equation.</p>
+<p><span id="eq-Newtons2ndLaw"><span class="math display">\[F_{net} = ma_x = m\frac{d^2x}{dt^2} \tag{14}\]</span></span></p>
+<p>We can solve such an equation numerically without being expert mathematicians by using our ability to solve a first-order equation numerically, as done in our dynamical systems models. We can make use of the dynamical systems approach to numerical solution by using a nice trick to turn a second-order differential equation into two first-order differential equations.</p>
+<p>The key will be to define a new set of variables that produce a new model that is simply related to the old second-order differential equation model. We will learn how to define the new variables by considering a specific example. <a href="#eq-2ndOrderDE" class="quarto-xref">Equation&nbsp;<span>15</span></a> defines a second-order differential equation.</p>
+<p><span id="eq-2ndOrderDE"><span class="math display">\[\frac{d^2y\left(t\right)}{dt^2} + q\left(t\right)\frac{dy\left(t\right)}{dt} = r\left(t\right) \tag{15}\]</span></span></p>
+<p>where we assume that the functions <span class="math inline">\(q\left(t\right)\)</span> and <span class="math inline">\(r\left(t\right)\)</span> are known. Define a new set of variables <span class="math inline">\(y_0\left(t\right)\)</span> and <span class="math inline">\(y_1\left(t\right)\)</span> as follows</p>
+<p><span id="eq-defOfNewStateVariables"><span class="math display">\[\begin{array}{left} y_0 = y \\ y_1 = \frac{dy}{dt} \\  \end{array} \tag{16}\]</span></span></p>
+<p>The rate of change of <span class="math inline">\(y_1\left(t\right)\)</span> can be obtained from the original second-order differential equation:</p>
+<p><span id="eq-RateOfChangeOfy1"><span class="math display">\[\frac{d^2y\left(t\right)}{dt^2} = r\left(t\right)- q\left(t\right)\frac{dy\left(t\right)}{dt}\Rightarrow \frac{dy_1\left(t\right)}{dt} = r\left(t\right)- q\left(t\right)y_1\left(t\right) \tag{17}\]</span></span></p>
+<p>This is due to the second derivative of <em>y</em> being equal to the first derivative of <em>y<sub>1</sub></em>. So, <a href="#eq-2ndOrderDE" class="quarto-xref">Equation&nbsp;<span>15</span></a> can be replaced by the following set of first-order differential equations:</p>
+<p><span id="eq-Equation8_FirstOrderSystem"><span class="math display">\[\begin{array}{left} \frac{dy_0\left(t\right)}{dt} = y_1\left(t\right) \\ \frac{dy_1\left(t\right)}{dt} = r- qy_1\left(t\right) \\  \end{array} \tag{18}\]</span></span></p>
+<p>If we solve this system numerically, then we will have also solved <a href="#eq-2ndOrderDE" class="quarto-xref">Equation&nbsp;<span>15</span></a> for <em>y(t)</em>, since that is just the new variable <em>y<sub>0</sub></em>.</p>
+</section>
+<section id="newtons-2nd-law-problems" class="level2">
+<h2 class="anchored" data-anchor-id="newtons-2nd-law-problems">Newton’s 2nd Law Problems</h2>
+<p>Let’s look at performing a numerical solution to a specific problem: a mass attached to a spring. This is a good testing problem since it can be solved exactly without performing the numerical solution. This will allow us to verify our numerical approach.</p>
+<p><a href="#fig-BlockSpring" class="quarto-xref">Figure&nbsp;<span>6</span></a> shows the scenario: a block of mass 0.15 [kg] is attached to a spring with spring constant of 20 [N/m]. The mass is stretched a distance <em>x<sub>0</sub></em> = 0.10 [m] and released from rest. The state variable <em>x</em> will be the position of the mass measured from the spring’s unstretched position.</p>
+<div id="fig-BlockSpring" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BlockSpring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/Figure8_BlockSpring.png" class="img-fluid figure-img" style="width:60.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BlockSpring-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Mass attached to a spring and given an initial stretch.
+</figcaption>
+</figure>
+</div>
+<p>We can create a model of the object’s motion by using Newton’s second law and Hooke’s law for the spring force, which is the only force in the x direction.</p>
+<p><span id="eq-Equation8_NewtonsSecondLaw"><span class="math display">\[F_{net} = m\frac{d^2x}{dt^2} \tag{19}\]</span></span></p>
+<p><span id="eq-Equation8_HookesLaw"><span class="math display">\[F_s = - kx \tag{20}\]</span></span></p>
+<p>Combining these equations leads to our model for <em>x</em>:</p>
+<p><span id="eq-Equation8_2ndLawForSpring"><span class="math display">\[\frac{d^2x\left(t\right)}{dt^2} = - \frac{k}{m}x\left(t\right) \tag{21}\]</span></span></p>
+<p>Now we apply our trick to turn the second-order differential equation into two first-order equations. We define new state variables <span class="math inline">\(y_0\left(t\right)\)</span> and <span class="math inline">\(y_1\left(t\right)\)</span>:</p>
+<p><span id="eq-Equation8_FirstOrderSystemForSpringModel"><span class="math display">\[\begin{array}{left} y_0 = x \\ y_1 = \frac{dy_0}{dt} \\  \end{array} \tag{22}\]</span></span></p>
+<p>The rate equations for our new state variables are</p>
+<p><span id="eq-Equation8_FirstOrderSystemforSpringModelFinal"><span class="math display">\[\begin{array}{left} \frac{dy_0}{dt} = y_1 \\ \frac{dy_1}{dt} = - \frac{k}{m}y_0 = - \frac{20\left[N/ m\right]}{0.15\left[kg\right]}y_0 \\  \end{array} \tag{23}\]</span></span></p>
+<p>with the initial conditions</p>
+<p><span class="math display">\[y_0\left(0\right) = x_0 = 0.10\left[m\right]\text{ , }y_1\left(0\right) = 0\]</span></p>
+<p>The model is now in a form that can be solved numerically using our Dynamical Systems Template adapted to this model. <a href="#fig-Figure8_block-spring-model-numerical-soln-code" class="quarto-xref">Figure&nbsp;<span>7</span></a> shows the code that will solve this model numerically. <a href="#fig-Figure8_SpringSimulationGraph" class="quarto-xref">Figure&nbsp;<span>8</span></a> shows the graphical output produced by the code.</p>
+<div id="fig-Figure8_block-spring-model-numerical-soln-code" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8_block-spring-model-numerical-soln-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure8_block-spring-model-numerical-soln-code"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure8_block-spring-model-numerical-soln-code-1"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-2"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Ideal Spring Simulation</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-3"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-4"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 2.20.2022.1</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-5"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-6"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-6" aria-hidden="true" tabindex="-1"></a><span class="co">    This program implements a dynamical systems model of the</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-7"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-7" aria-hidden="true" tabindex="-1"></a><span class="co">    one-dimensional ideal spring (Hooke's Law).</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-8"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-8" aria-hidden="true" tabindex="-1"></a><span class="co">Version History:</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-9"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-9" aria-hidden="true" tabindex="-1"></a><span class="co">    2.20.2022.1: base</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-10"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-11"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-11" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-12"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-12" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-13"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-14"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-15"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-16"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-16" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-17"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-18"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that defines the rhs of the differential equation system</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-19"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-20"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-20" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y, m, k):</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-21"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   y = a list that contains the system state</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-22"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-23"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       is to be calculated.</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-24"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-24" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   k = a parameter needed for the model - force constant</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-25"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   m = a paramteter needed for the model - mass</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-26"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-27"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-27" aria-hidden="true" tabindex="-1"></a><span class="co">#   Unpack the state of the system</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-28"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-28" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>]  <span class="co"># x</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-29"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-29" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> y[<span class="dv">1</span>]  <span class="co"># vx</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-30"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-31"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-31" aria-hidden="true" tabindex="-1"></a><span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-32"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-32" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> y1</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-33"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-33" aria-hidden="true" tabindex="-1"></a>    dy1dt <span class="op">=</span> <span class="op">-</span>(k<span class="op">/</span>m)<span class="op">*</span>y0</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-34"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-35"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt, dy1dt]</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-36"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-37"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-38"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-39"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-40"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-40" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="fl">0.10</span>, <span class="fl">0.0</span>]</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-41"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-41" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-42"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-42" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-43"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-43" aria-hidden="true" tabindex="-1"></a>ti <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-44"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-44" aria-hidden="true" tabindex="-1"></a>tf <span class="op">=</span> <span class="fl">2.0</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-45"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-45" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(ti, tf, <span class="dv">100</span>)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-46"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-47"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-47" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the parameter tuple</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-48"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-48" aria-hidden="true" tabindex="-1"></a>m <span class="op">=</span> <span class="fl">0.15</span>  <span class="co"># mass in [kg]</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-49"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-49" aria-hidden="true" tabindex="-1"></a>k <span class="op">=</span> <span class="fl">20.0</span>  <span class="co"># force constant in [N/m]</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-50"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-50" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (m, k)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-51"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-51" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-52"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-53"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-53" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-54"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-54" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f, (ti, tf), yi, t_eval<span class="op">=</span>t, args<span class="op">=</span>p)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-55"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-55" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-56"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-56" aria-hidden="true" tabindex="-1"></a>vx <span class="op">=</span> sol.y[<span class="dv">1</span>]</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-57"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-58"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-58" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-59"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the solution</span></span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-60"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-60" aria-hidden="true" tabindex="-1"></a>plt.plot(t, x, color<span class="op">=</span><span class="st">'green'</span>, label<span class="op">=</span><span class="st">'x'</span>)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-61"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-61" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [s]'</span>)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-62"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-62" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'x [m]'</span>)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-63"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-63" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'idealSpring.png'</span>)</span>
+<span id="fig-Figure8_block-spring-model-numerical-soln-code-64"><a href="#fig-Figure8_block-spring-model-numerical-soln-code-64" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8_block-spring-model-numerical-soln-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: :Python code for solving the spring problem using the dynamical system numerical solution method.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Figure8_SpringSimulationGraph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8_SpringSimulationGraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/Figure8_SpringSimulationGraph.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8_SpringSimulationGraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Graph produced by the spring program.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="computational-problem-solving-modeling-the-zombie-apocalypse" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solving-modeling-the-zombie-apocalypse">Computational Problem Solving: Modeling the Zombie Apocalypse</h2>
+<p>We now return to the problem of modeling the Zombie Apocalypse introduced at the beginning of the chapter.</p>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>The zombie problem we will model is one where it is an infectious disease that requires contact between a susceptible person and an undead individual. We will use a recently published academic study of this type of zombie by infectious disease scientists to help us develop a model <span class="citation" data-cites="MunzEtAl_WHENZOMBIESATTACK_2009">(<a href="../../bibliography.html#ref-MunzEtAl_WHENZOMBIESATTACK_2009" role="doc-biblioref">Munz et al., 2009</a>)</span>. The population of humans and zombies is assumed to be composed of three compartments:</p>
+<ul>
+<li><p>Susceptibles (S)</p></li>
+<li><p>Zombie (Z)</p></li>
+<li><p>Removed (R)</p></li>
+</ul>
+<p>Assumptions we will make include</p>
+<ol type="1">
+<li><p>The susceptible population can die of natural causes.</p></li>
+<li><p>The susceptible population can increase due to natural growth (birth).</p></li>
+<li><p>The removed compartment contains humans who have died from natural causes and from fatal zombie encounters.</p></li>
+<li><p>Members of the removed compartment can resurrect as zombies.</p></li>
+<li><p>The zombie compartment can increase due to non-fatal susceptible-zombie interactions (infection) or from resurrection from the removed compartment.</p></li>
+</ol>
+<p><a href="#fig-SZRModelCompartments" class="quarto-xref">Figure&nbsp;<span>9</span></a> shows the compartmental model hypothesized by Munz, et al. <span class="citation" data-cites="MunzEtAl_WHENZOMBIESATTACK_2009">(<a href="../../bibliography.html#ref-MunzEtAl_WHENZOMBIESATTACK_2009" role="doc-biblioref">Munz et al., 2009</a>)</span>. <a href="#tbl-Table8p3" class="quarto-xref">Table&nbsp;<span>3</span></a> lists the state variables and parameters used in the model.</p>
+<div id="fig-SZRModelCompartments" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-SZRModelCompartments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/zombie_SIR_model.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SZRModelCompartments-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Compartmental model for the zombie disease.
+</figcaption>
+</figure>
+</div>
+<div id="tbl-Table8p3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table8p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Variables and model parameters for the SZR model.
+</figcaption>
+<div aria-describedby="tbl-Table8p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 77%">
+<col style="width: 18%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Variable or Model Parameter</strong></th>
+<th style="text-align: center;"><strong>Symbol</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Susceptible Population</td>
+<td style="text-align: center;">S</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Zombie Population</td>
+<td style="text-align: center;">Z</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Removed Population</td>
+<td style="text-align: center;">R</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Constant Birth Rate for Susceptibles</td>
+<td style="text-align: center;">P</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Natural Death rate for Susceptibles</td>
+<td style="text-align: center;">d</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rate at which Susceptible-Zombie encounters produce Zombies</td>
+<td style="text-align: center;">b</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Rate at which Susceptible-Zombie encounters produce dead Zombies</td>
+<td style="text-align: center;">a</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Rate at which Removed individuals resurrect as Zombies</td>
+<td style="text-align: center;">r</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="design" class="level3">
+<h3 class="anchored" data-anchor-id="design">Design</h3>
+<p>Defining the dynamical systems model for our zombie infection requires hypothesizing rate equations for each of the state variables. The compartmental model diagram shown in <a href="#fig-SZRModelCompartments" class="quarto-xref">Figure&nbsp;<span>9</span></a> suggest the following rate equations.</p>
+<p><span id="eq-Equation8_SRateEquation"><span class="math display">\[\frac{dS}{dt} = P- bSZ- dS  \tag{24}\]</span></span></p>
+<p><span id="eq-Equation8_ZRateEquation"><span class="math display">\[\frac{dZ}{dt} = bSZ + rR- aSZ \tag{25}\]</span></span></p>
+<p><span id="eq-Equation8_RRateEquation"><span class="math display">\[\frac{dR}{dt} = dS + aSZ- rR \tag{26}\]</span></span></p>
+<p>We can use the dynamical systems template from Figure 7.7 to perform a numerical solution of this system. The code implementation will be facilitated by making the following notation change.</p>
+<p><span id="eq-Equation8_ZombieModelNotationChange"><span class="math display">\[\begin{array}{l} S\rightarrow y_0 \\ Z\rightarrow y_1 \\ R\rightarrow y_2 \\  \end{array} \tag{27}\]</span></span></p>
+<p>The rate equations <a href="#eq-Equation8_SRateEquation" class="quarto-xref">Equation&nbsp;<span>24</span></a> - <a href="#eq-Equation8_RRateEquation" class="quarto-xref">Equation&nbsp;<span>26</span></a> become</p>
+<p><span id="eq-Equation8_y0Rate"><span class="math display">\[\frac{dy_0}{dt} = P- by_0y_1- dy_0 \tag{28}\]</span></span></p>
+<p><span id="eq-Equation8_y1Rate"><span class="math display">\[\frac{dy_1}{dt} = by_0y_1 + ry_2- ay_0y_1 \tag{29}\]</span></span></p>
+<p><span id="eq-Equation8_y2Rate"><span class="math display">\[\frac{dy_2}{dt} = dy_0 + ay_0y_1- ry_2 \tag{30}\]</span></span></p>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p>Performing a numerical solution for the model described by <a href="#eq-Equation8_y0Rate" class="quarto-xref">Equation&nbsp;<span>28</span></a> - <a href="#eq-Equation8_y2Rate" class="quarto-xref">Equation&nbsp;<span>30</span></a> is straightforward. We must add one more rate calculation in the Python f function and pass the required model parameters. The revised code is in <a href="#fig-Figure8_SZR-model-code" class="quarto-xref">Figure&nbsp;<span>10</span></a> and in the code file SZRModel.py. The units for the compartment populations is arbitrary. The initial conditions must specify a nonzero number for the zombie compartment for there to be any infection activity.</p>
+<div id="fig-Figure8_SZR-model-code" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8_SZR-model-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure8_SZR-model-code"><pre class="sourceCode python numberlines code-with-copy"><code class="sourceCode python"><span id="fig-Figure8_SZR-model-code-1"><a href="#fig-Figure8_SZR-model-code-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_SZR-model-code-2"><a href="#fig-Figure8_SZR-model-code-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: SZR Model</span></span>
+<span id="fig-Figure8_SZR-model-code-3"><a href="#fig-Figure8_SZR-model-code-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure8_SZR-model-code-4"><a href="#fig-Figure8_SZR-model-code-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 8.28.2022.1</span></span>
+<span id="fig-Figure8_SZR-model-code-5"><a href="#fig-Figure8_SZR-model-code-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure8_SZR-model-code-6"><a href="#fig-Figure8_SZR-model-code-6" aria-hidden="true" tabindex="-1"></a><span class="co">    This program implements a dynamical systems model of a</span></span>
+<span id="fig-Figure8_SZR-model-code-7"><a href="#fig-Figure8_SZR-model-code-7" aria-hidden="true" tabindex="-1"></a><span class="co">    zombie infection based on a three compartment model.</span></span>
+<span id="fig-Figure8_SZR-model-code-8"><a href="#fig-Figure8_SZR-model-code-8" aria-hidden="true" tabindex="-1"></a><span class="co">Version History:</span></span>
+<span id="fig-Figure8_SZR-model-code-9"><a href="#fig-Figure8_SZR-model-code-9" aria-hidden="true" tabindex="-1"></a><span class="co">    8.28.2022.1: base</span></span>
+<span id="fig-Figure8_SZR-model-code-10"><a href="#fig-Figure8_SZR-model-code-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-11"><a href="#fig-Figure8_SZR-model-code-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure8_SZR-model-code-12"><a href="#fig-Figure8_SZR-model-code-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> scipy.integrate <span class="im">as</span> si</span>
+<span id="fig-Figure8_SZR-model-code-13"><a href="#fig-Figure8_SZR-model-code-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure8_SZR-model-code-14"><a href="#fig-Figure8_SZR-model-code-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-Figure8_SZR-model-code-15"><a href="#fig-Figure8_SZR-model-code-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-16"><a href="#fig-Figure8_SZR-model-code-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a function that defines the rhs of the differential equation system</span></span>
+<span id="fig-Figure8_SZR-model-code-17"><a href="#fig-Figure8_SZR-model-code-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-18"><a href="#fig-Figure8_SZR-model-code-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> f(t, y, P, b, d, a, r):</span>
+<span id="fig-Figure8_SZR-model-code-19"><a href="#fig-Figure8_SZR-model-code-19" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   y = a list that contains the system state</span></span>
+<span id="fig-Figure8_SZR-model-code-20"><a href="#fig-Figure8_SZR-model-code-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   t = the time for which the right-hand-side of the system equations</span></span>
+<span id="fig-Figure8_SZR-model-code-21"><a href="#fig-Figure8_SZR-model-code-21" aria-hidden="true" tabindex="-1"></a>    <span class="co">#       is to be calculated.</span></span>
+<span id="fig-Figure8_SZR-model-code-22"><a href="#fig-Figure8_SZR-model-code-22" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   a1 = a parameter needed for the model</span></span>
+<span id="fig-Figure8_SZR-model-code-23"><a href="#fig-Figure8_SZR-model-code-23" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   a2 = a paramteter needed for the model</span></span>
+<span id="fig-Figure8_SZR-model-code-24"><a href="#fig-Figure8_SZR-model-code-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-25"><a href="#fig-Figure8_SZR-model-code-25" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Unpack the state of the system</span></span>
+<span id="fig-Figure8_SZR-model-code-26"><a href="#fig-Figure8_SZR-model-code-26" aria-hidden="true" tabindex="-1"></a>    y0 <span class="op">=</span> y[<span class="dv">0</span>]  <span class="co"># S</span></span>
+<span id="fig-Figure8_SZR-model-code-27"><a href="#fig-Figure8_SZR-model-code-27" aria-hidden="true" tabindex="-1"></a>    y1 <span class="op">=</span> y[<span class="dv">1</span>]  <span class="co"># Z</span></span>
+<span id="fig-Figure8_SZR-model-code-28"><a href="#fig-Figure8_SZR-model-code-28" aria-hidden="true" tabindex="-1"></a>    y2 <span class="op">=</span> y[<span class="dv">2</span>]  <span class="co"># R</span></span>
+<span id="fig-Figure8_SZR-model-code-29"><a href="#fig-Figure8_SZR-model-code-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-30"><a href="#fig-Figure8_SZR-model-code-30" aria-hidden="true" tabindex="-1"></a>    <span class="co">#   Calculate the rates of change (the derivatives)</span></span>
+<span id="fig-Figure8_SZR-model-code-31"><a href="#fig-Figure8_SZR-model-code-31" aria-hidden="true" tabindex="-1"></a>    dy0dt <span class="op">=</span> P <span class="op">-</span> b<span class="op">*</span>y0<span class="op">*</span>y1 <span class="op">-</span> d<span class="op">*</span>y0</span>
+<span id="fig-Figure8_SZR-model-code-32"><a href="#fig-Figure8_SZR-model-code-32" aria-hidden="true" tabindex="-1"></a>    dy1dt <span class="op">=</span> b<span class="op">*</span>y0<span class="op">*</span>y1 <span class="op">+</span> r<span class="op">*</span>y2 <span class="op">-</span> a<span class="op">*</span>y0<span class="op">*</span>y1</span>
+<span id="fig-Figure8_SZR-model-code-33"><a href="#fig-Figure8_SZR-model-code-33" aria-hidden="true" tabindex="-1"></a>    dy2dt <span class="op">=</span> d<span class="op">*</span>y0 <span class="op">+</span> a<span class="op">*</span>y0<span class="op">*</span>y1 <span class="op">-</span> r<span class="op">*</span>y2</span>
+<span id="fig-Figure8_SZR-model-code-34"><a href="#fig-Figure8_SZR-model-code-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-35"><a href="#fig-Figure8_SZR-model-code-35" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> [dy0dt, dy1dt, dy2dt]</span>
+<span id="fig-Figure8_SZR-model-code-36"><a href="#fig-Figure8_SZR-model-code-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-37"><a href="#fig-Figure8_SZR-model-code-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-38"><a href="#fig-Figure8_SZR-model-code-38" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure8_SZR-model-code-39"><a href="#fig-Figure8_SZR-model-code-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-40"><a href="#fig-Figure8_SZR-model-code-40" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the initial conditions</span></span>
+<span id="fig-Figure8_SZR-model-code-41"><a href="#fig-Figure8_SZR-model-code-41" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> [<span class="dv">100</span>, <span class="fl">0.1</span>, <span class="fl">0.0</span>]</span>
+<span id="fig-Figure8_SZR-model-code-42"><a href="#fig-Figure8_SZR-model-code-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-43"><a href="#fig-Figure8_SZR-model-code-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the time grid</span></span>
+<span id="fig-Figure8_SZR-model-code-44"><a href="#fig-Figure8_SZR-model-code-44" aria-hidden="true" tabindex="-1"></a>ti <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="fig-Figure8_SZR-model-code-45"><a href="#fig-Figure8_SZR-model-code-45" aria-hidden="true" tabindex="-1"></a>tf <span class="op">=</span> <span class="fl">30.0</span></span>
+<span id="fig-Figure8_SZR-model-code-46"><a href="#fig-Figure8_SZR-model-code-46" aria-hidden="true" tabindex="-1"></a>t <span class="op">=</span> np.linspace(ti, tf, <span class="dv">100</span>)</span>
+<span id="fig-Figure8_SZR-model-code-47"><a href="#fig-Figure8_SZR-model-code-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-48"><a href="#fig-Figure8_SZR-model-code-48" aria-hidden="true" tabindex="-1"></a><span class="co"># Define the parameter tuple</span></span>
+<span id="fig-Figure8_SZR-model-code-49"><a href="#fig-Figure8_SZR-model-code-49" aria-hidden="true" tabindex="-1"></a>P <span class="op">=</span> <span class="fl">0.1</span></span>
+<span id="fig-Figure8_SZR-model-code-50"><a href="#fig-Figure8_SZR-model-code-50" aria-hidden="true" tabindex="-1"></a>b <span class="op">=</span> <span class="fl">9.5e-3</span></span>
+<span id="fig-Figure8_SZR-model-code-51"><a href="#fig-Figure8_SZR-model-code-51" aria-hidden="true" tabindex="-1"></a>d <span class="op">=</span> <span class="fl">1.e-4</span></span>
+<span id="fig-Figure8_SZR-model-code-52"><a href="#fig-Figure8_SZR-model-code-52" aria-hidden="true" tabindex="-1"></a>a <span class="op">=</span> <span class="fl">5e-3</span></span>
+<span id="fig-Figure8_SZR-model-code-53"><a href="#fig-Figure8_SZR-model-code-53" aria-hidden="true" tabindex="-1"></a>r <span class="op">=</span> <span class="fl">1.e-4</span></span>
+<span id="fig-Figure8_SZR-model-code-54"><a href="#fig-Figure8_SZR-model-code-54" aria-hidden="true" tabindex="-1"></a>p <span class="op">=</span> (P, b, d, a, r)</span>
+<span id="fig-Figure8_SZR-model-code-55"><a href="#fig-Figure8_SZR-model-code-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-56"><a href="#fig-Figure8_SZR-model-code-56" aria-hidden="true" tabindex="-1"></a><span class="co"># Solve the DE</span></span>
+<span id="fig-Figure8_SZR-model-code-57"><a href="#fig-Figure8_SZR-model-code-57" aria-hidden="true" tabindex="-1"></a>sol <span class="op">=</span> si.solve_ivp(f, (ti, tf), yi, t_eval<span class="op">=</span>t, args<span class="op">=</span>p)</span>
+<span id="fig-Figure8_SZR-model-code-58"><a href="#fig-Figure8_SZR-model-code-58" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> sol.y[<span class="dv">0</span>]</span>
+<span id="fig-Figure8_SZR-model-code-59"><a href="#fig-Figure8_SZR-model-code-59" aria-hidden="true" tabindex="-1"></a>Z <span class="op">=</span> sol.y[<span class="dv">1</span>]</span>
+<span id="fig-Figure8_SZR-model-code-60"><a href="#fig-Figure8_SZR-model-code-60" aria-hidden="true" tabindex="-1"></a>R <span class="op">=</span> sol.y[<span class="dv">2</span>]</span>
+<span id="fig-Figure8_SZR-model-code-61"><a href="#fig-Figure8_SZR-model-code-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure8_SZR-model-code-62"><a href="#fig-Figure8_SZR-model-code-62" aria-hidden="true" tabindex="-1"></a><span class="co"># Plot the solution</span></span>
+<span id="fig-Figure8_SZR-model-code-63"><a href="#fig-Figure8_SZR-model-code-63" aria-hidden="true" tabindex="-1"></a>plt.plot(t, S, color<span class="op">=</span><span class="st">'green'</span>, label<span class="op">=</span><span class="st">'S'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-64"><a href="#fig-Figure8_SZR-model-code-64" aria-hidden="true" tabindex="-1"></a>plt.plot(t, Z, color<span class="op">=</span><span class="st">'red'</span>, linewidth<span class="op">=</span><span class="dv">3</span>, label<span class="op">=</span><span class="st">'Z'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-65"><a href="#fig-Figure8_SZR-model-code-65" aria-hidden="true" tabindex="-1"></a>plt.plot(t, R, color<span class="op">=</span><span class="st">'blue'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, label<span class="op">=</span><span class="st">'R'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-66"><a href="#fig-Figure8_SZR-model-code-66" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-67"><a href="#fig-Figure8_SZR-model-code-67" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'S , Z , R'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-68"><a href="#fig-Figure8_SZR-model-code-68" aria-hidden="true" tabindex="-1"></a>plt.legend()</span>
+<span id="fig-Figure8_SZR-model-code-69"><a href="#fig-Figure8_SZR-model-code-69" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'SZRModel.png'</span>)</span>
+<span id="fig-Figure8_SZR-model-code-70"><a href="#fig-Figure8_SZR-model-code-70" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8_SZR-model-code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: :Code for the SZR model.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="testing" class="level3">
+<h3 class="anchored" data-anchor-id="testing">Testing</h3>
+<p>When the code in <a href="#fig-Figure8_SZR-model-code" class="quarto-xref">Figure&nbsp;<span>10</span></a> is executed with the model parameter choices given in lines 49-53 and with the initial conditions in line 41, the result is shown in <a href="#fig-SZRModel-results" class="quarto-xref">Figure&nbsp;<span>11</span></a>. We see that the susceptible population (uninfected humans) eventually goes to a small number close to zero and the number of zombies and removed become constant. This behavior is consistent with many zombie movies and television shows, which tend to show zombies wiping out most of the human population. This provides some evidence that our model and numerical implementation of its solution are correct.</p>
+<div id="fig-SZRModel-results" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-SZRModel-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/SZRModel.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SZRModel-results-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Result of running the SZR model code.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="exercises" class="level2">
+<h2 class="anchored" data-anchor-id="exercises">Exercises</h2>
+<p>1. True/False: The compartments that are used in a compartmental model must correspond to actual physical containers.</p>
+<p>2. True/False: A Newton’s second law problem cannot be solved numerically using the dynamical systems template developed in Chapter 7 since Newton’s second law yields a second-order differential equation rather than just a first-order equation. (Explain your answer.)</p>
+<p>3. Replace the following second-order differential equation with two first-order equations.</p>
+<p><span class="math display">\[\frac{d^2x}{dt^2} + at^2\frac{dx}{dt} = e^{- bt}\]</span></p>
+<p>4. A chemostat is used to provide a continuous supply of <em>Pseudomonas aeruginosa</em> bacteria for a research project. The following parameters are used for modeling the chemostat <span class="citation" data-cites="RobinsonEtAl_CellularReporoductionExtracellular_1984">(<a href="../../bibliography.html#ref-RobinsonEtAl_CellularReporoductionExtracellular_1984" role="doc-biblioref">Robinson et al., 1984</a>)</span>:</p>
+<p><span class="math display">\[\begin{array}{l} K_{\max} = 0.40\left[\text{h}^{\text{-1}}\right] \\ K_s = 2.0 \times 10^{- 3}\left[\frac{mg}{mL}\right] \\ Y = 0.30\left[\frac{\text{mg cell}}{\text{mg Gl}}\right] \\ V = 500.\left[\text{mL}\right] \\ F = 75\left[\frac{\text{mL}}{\text{h}}\right] \\ C_0 = 1.0 \times 10^{- 2}\left[\frac{\text{mg}}{\text{mL}}\right] \\  \end{array}\]</span></p>
+<p>Glucose is used as the nutrient in this reactor. When the chemostat achieves steady-state, the dimensionless state variable values are</p>
+<p><span class="math display">\[N* = 11.7\text{ , }C* = 0.599\]</span></p>
+<p>Using the dimensional constants defined by <a href="#eq-Equation8.9" class="quarto-xref">Equation&nbsp;<span>9</span></a>, find the actual steady-state values for the cell concentration, in (mg/mL), and the glucose concentration, in (mg/mL), in the chemostat vessel.</p>
+</section>
+<section id="program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-modification-problems">Program Modification Problems</h2>
+<p>1. Consider a large ball dropped from rest from a height. It will experience the force of gravity and an air drag force as it falls. The net force on the ball will be</p>
+<p><span class="math display">\[F_{\text{net}} =  - mg + kv_y^2\]</span></p>
+<p>You need to develop a model for the ball’s motion as it drops. After developing the equations describing the model, create a Python program that solves for the position of the ball as it drops. Use the following data:</p>
+<p>m = 0.220 [kg]</p>
+<p>k = 3.7x10<sup>-2</sup>[Ns<sup>2</sup>/m<sup>2</sup>]</p>
+<p>y(0) = 12 [m]</p>
+<p>The program should create a graph of the ball’s position up to the time that it hits the ground. Also, include a calculation of the position as a function of time for the constant acceleration case (no air drag). You can start with the code in <a href="#fig-Figure8_block-spring-model-numerical-soln-code" class="quarto-xref">Figure&nbsp;<span>7</span></a>, which is in the code file idealSpring.py.</p>
+<p>2. Consider the chemostat model in its dimensionless form, <a href="#eq-Equation8.11" class="quarto-xref">Equation&nbsp;<span>11</span></a> and <a href="#eq-Equation8.12" class="quarto-xref">Equation&nbsp;<span>12</span></a>. The parameter <em>a<sub>1</sub></em> is easily changed by the person running the reactor by adjusting the flow rate, <em>F</em>. Using the chemostat code in chemostat_dimensionless.py, explore how changing the a1 parameter affects the steady-state concentration of bacteria, N*, and the time it takes to achieve the steady-state. Note that if a1 gets too low, corresponding to a high flow rate, the bacteria concentration goes down to a number close to zero, indicating the bacteria is getting washed out of the reactor.</p>
+<p>Create a table of <em>a<sub>1</sub></em>, steady-state value of <em>N*,</em> and time to steady-state columns. Put this table in a text file. Write a short program to create a plot of the steady-state value of <em>N*</em> versus <em>a<sub>1</sub></em>. Write another program to create a plot of time to steady-state versus <em>a<sub>1</sub></em>.</p>
+</section>
+<section id="program-development-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-development-problems">Program Development Problems</h2>
+<p>1. Develop a dynamical systems model for an object attached to a spring that also experiences a damping force from motion in a viscous liquid. The figure below shows the scenario.</p>
+<div id="fig-Figure8_dampedOscillatorSetUp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure8_dampedOscillatorSetUp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch08/Figures/Figure8_DampedOscillatorSetup.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure8_dampedOscillatorSetUp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: Damped oscillator set-up.
+</figcaption>
+</figure>
+</div>
+<p>Assume that the spring force is given by Hooke’s law.</p>
+<p><span class="math display">\[F_s =  - ky\left(t\right)\]</span></p>
+<p>Assume that the damping force is proportional to the object’s velocity.</p>
+<p><span class="math display">\[F_d =  - cv_y\]</span></p>
+<p>You can ignore the gravitational force for this analysis. Use the following values for the model parameters.</p>
+<p><span class="math display">\[\begin{array}{l}
+    m = 0\ldotp 150\left[\text{kg}\right]   \\
+    k = 40\ldotp 0\left[\text{N/m}\right]   \\
+    c = 1\ldotp 50\left[\text{Ns/m}\right]  
+\end{array}\]</span></p>
+<p>For the initial conditions, assume that the spring is stretched 15 [cm] and released from rest. This gives</p>
+<p><span class="math display">\[\begin{array}{cc}
+     &amp; y\left(0\right) = 0.15\left[\text{m}\right] \\
+     &amp; v_y\left(0\right) = 0.0\left[\text{m/s}\right]
+\end{array}\]</span></p>
+<p>You should use Newton’s second law to find the differential equation for the object’s acceleration. Convert the 2<sup>nd</sup> order differential equation into two first-order equations. Perform a numerical solution of the two-state variable model. Create a plot of the object’s position as a function of time for <span class="math inline">\(0 \leq t \leq 1.5\left[\text{s}\right]\)</span>. Properly label the graph.</p>
+<p>2. The SZR model introduced in Chapter 8 for modeling the zombie infection suggested that humans would always lose the battle and essentially become extinct. Zombie stories often will offer a little more hope for human survival. Can we create another model that might include this possibility? Munz, et al.&nbsp;say yes. They introduce another compartment, the infected population, I, and also allow that zombies can be cured of their disease. They hypothesize the following rate equations for the four compartments:</p>
+<p><span class="math display">\[\begin{array}{l}
+    \frac{dS}{dt} = P- bSZ- dS + cZ      \\
+                                         \\
+    \frac{dI}{dt} = bSZ- \rho I- dI      \\
+                                         \\
+    \frac{dZ}{dt} = \rho I + rR- aSZ- cZ \\
+                                         \\
+    \frac{dR}{dt} = dS + dI + aSZ- rR
+\end{array}\]</span></p>
+<p>Develop a program that performs a numerical solution of this revised model, which we will call the SIZR model. Since the model has seven parameters <span class="math inline">\((P, b, d, c, \rho, r, c)\)</span>, exploring its behavior is complicated. Start with a set of model parameters that are close to those used in the SZRmodel.py code shown in <a href="#fig-Figure8_SZR-model-code" class="quarto-xref">Figure&nbsp;<span>10</span></a>. Assume that there is no cure so that <em>c=0</em>. The initial set of model parameters are</p>
+<p><span class="math display">\[P = 0.1\text{ , }b = 9.5e - 3\text{ , }d = 1.e - 4\text{ , }c = 0\text{ , }\rho  = 3.0e - 1\text{ , }a = 5.0e - 3\text{ , }r = 1.0e - 4\]</span></p>
+<p>The initial conditions are</p>
+<p><span class="math display">\[S\left(0\right) = 100\text{ , }I\left(0\right) = 0\text{ , }Z\left(0\right) =0.1 \text{ , }R\left(0\right) = 0\]</span></p>
+<p>You should find that humans, the S compartment, still get wiped out, but introducing the I compartment delays the time required. Next, explore the effect of a nonzero c parameter value. A good range to explore is <span class="math inline">\(0 \leq c \leq 0.015\)</span>. Calculate the compartment populations for <span class="math inline">\(0 \leq t \leq 100\)</span>.</p>
+<p>Write an essay that describes the four steps in our problem-solving strategy. In the Analysis section, provide a figure that illustrates the relationships between the four compartments implied by the rate equations given above.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Centers for Disease Control and Prevention (U.S.) &amp; Office of Public Health Preparedness and Response. (2011). <em>Preparedness 101; zombie pandemic</em>. https://stacks.cdc.gov/view/cdc/6023</p>
+<p>Edelstein-Keshet, L. (2005). <em>Mathematical Models in Biology</em>. Society for Industrial and Applied Mathematics. https://doi.org/10.1137/1.9780898719147</p>
+<p>Kay, G., &amp; Brugués, A. (2012). <em>Zombie Movies: The Ultimate Guide</em> (Second Edition, Second edition). Chicago Review Press.</p>
+<p>Munz, P., Hudea, I., Imad, J., &amp; Smith, H. L. (2009). WHEN ZOMBIES ATTACK!: MATHEMATICAL MODELLING OF AN OUTBREAK OF ZOMBIE INFECTION. In J. M. Tchuenche &amp; C. Chiyaka (Eds.), <em>Infectious Disease Modelling Research Progress</em> (pp.&nbsp;133–150).</p>
+<p>Robinson, J. A., Trulear, M. G., &amp; Characklis, W. G. (1984). Cellular reporoduction and extracellular polymer formation by Pseudomonas aeruginosa in continuous culture. <em>Biotechnology and Bioengineering</em>, <em>26</em>(12), 1409–1417. https://doi.org/10.1002/bit.260261203</p>
+<p>Wikipedia Contributors. (2022). List of zombie films. In <em>Wikipedia</em>. https://en.wikipedia.org/w/index.php?title=List_of_zombie_films&amp;oldid=1104193295</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-Edelstein-Keshet_MathematicalModelsBiology_2005" class="csl-entry" role="listitem">
+Edelstein-Keshet, L. (2005). <em>Mathematical <span>Models</span> in <span>Biology</span></em>. <span>Society for Industrial and Applied Mathematics</span>. <a href="https://doi.org/10.1137/1.9780898719147">https://doi.org/10.1137/1.9780898719147</a>
+</div>
+<div id="ref-MunzEtAl_WHENZOMBIESATTACK_2009" class="csl-entry" role="listitem">
+Munz, P., Hudea, I., Imad, J., &amp; Smith, H. L. (2009). <span>WHEN ZOMBIES ATTACK</span>!: <span>MATHEMATICAL MODELLING OF AN OUTBREAK OF ZOMBIE INFECTION</span>. In J. M. Tchuenche &amp; C. Chiyaka (Eds.), <em>Infectious <span>Disease Modelling Research Progress</span></em> (pp. 133–150).
+</div>
+<div id="ref-RobinsonEtAl_CellularReporoductionExtracellular_1984" class="csl-entry" role="listitem">
+Robinson, J. A., Trulear, M. G., &amp; Characklis, W. G. (1984). Cellular reporoduction and extracellular polymer formation by <span>Pseudomonas</span> aeruginosa in continuous culture. <em>Biotechnology and Bioengineering</em>, <em>26</em>(12), 1409–1417. <a href="https://doi.org/10.1002/bit.260261203">https://doi.org/10.1002/bit.260261203</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="pagination-link" aria-label="Dynamical Systems Modeling I">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="pagination-link" aria-label="Stochastic Models and Simulations">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

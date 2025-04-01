@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Computational Thinking and Problem Solving – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch03/Ch03_ControlStructures.html" rel="next">
+<link href="../../chapters/Ch01/Ch01_Introduction.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch02/Ch02_ComputationalThinking.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#elements-of-problem-solving" id="toc-elements-of-problem-solving" class="nav-link active" data-scroll-target="#elements-of-problem-solving">Elements of Problem Solving</a>
+  <ul class="collapse">
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design">Design</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
+  <li><a href="#example" id="toc-example" class="nav-link" data-scroll-target="#example">Example</a></li>
+  </ul></li>
+  <li><a href="#basic-elements-of-python" id="toc-basic-elements-of-python" class="nav-link" data-scroll-target="#basic-elements-of-python">Basic Elements of Python</a>
+  <ul class="collapse">
+  <li><a href="#literals" id="toc-literals" class="nav-link" data-scroll-target="#literals">Literals</a></li>
+  <li><a href="#variables-and-identifiers" id="toc-variables-and-identifiers" class="nav-link" data-scroll-target="#variables-and-identifiers">Variables and Identifiers</a></li>
+  <li><a href="#keywords" id="toc-keywords" class="nav-link" data-scroll-target="#keywords">Keywords</a></li>
+  <li><a href="#operators" id="toc-operators" class="nav-link" data-scroll-target="#operators">Operators</a></li>
+  <li><a href="#expressions" id="toc-expressions" class="nav-link" data-scroll-target="#expressions">Expressions</a></li>
+  <li><a href="#data-types" id="toc-data-types" class="nav-link" data-scroll-target="#data-types">Data Types</a></li>
+  <li><a href="#syntax" id="toc-syntax" class="nav-link" data-scroll-target="#syntax">Syntax</a></li>
+  <li><a href="#comment-statements" id="toc-comment-statements" class="nav-link" data-scroll-target="#comment-statements">Comment Statements</a></li>
+  </ul></li>
+  <li><a href="#basic-input-and-output" id="toc-basic-input-and-output" class="nav-link" data-scroll-target="#basic-input-and-output">Basic Input and Output</a></li>
+  <li><a href="#ch02-exercises" id="toc-ch02-exercises" class="nav-link" data-scroll-target="#ch02-exercises">Exercises</a></li>
+  <li><a href="#ch02-program-modification-problems" id="toc-ch02-program-modification-problems" class="nav-link" data-scroll-target="#ch02-program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Computational Thinking and Problem Solving</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="elements-of-problem-solving" class="level2">
+<h2 class="anchored" data-anchor-id="elements-of-problem-solving">Elements of Problem Solving</h2>
+<p>When faced with a difficult problem that must be solved, we often feel bewildered about how to even get started. While there is no single strategy that can guarantee success, we now understand some systematic approaches to problem solving that can usually get us started.</p>
+<p>George Polya, author of <em>How to Solve It</em> <span class="citation" data-cites="Polya_HowSolveIt_1971">(<a href="../../bibliography.html#ref-Polya_HowSolveIt_1971" role="doc-biblioref">Polya, 1971</a>)</span>, was a pioneer in the area of heuristics, the formal study of problem-solving. The book <em>How to Solve</em> <em>It</em> was addressed to teachers of mathematics with the hope of helping them teach problem-solving to mathematics students, but the model presented in the book is now widely used as a starting point in many other areas of knowledge besides mathematics. The model he presents will be our starting point in developing a general strategy for developing problem solutions that can be used by a computer.</p>
+<p>The Polya model consists of four steps:</p>
+<ol type="1">
+<li>Understand the problem</li>
+<li>Plan the solution</li>
+<li>Carry out the plan</li>
+<li>Look back at the solution</li>
+</ol>
+<p>We will reformulate the Polya model to better match development of computer programs. Our working problem-solving model for solving computational problems will have the following general steps:</p>
+<ol type="1">
+<li><p>Analysis: Analyze the problem</p></li>
+<li><p>Design: Describe the data and develop algorithms</p></li>
+<li><p>Implementation: Represent data using programming language data structures and implement the algorithms with specific programming language code</p></li>
+<li><p>Testing: Test and debug the code using test data</p></li>
+</ol>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>The analysis stage of problem-solving seeks to gain a fuller understanding of the problem so that possible paths towards a solution can be described. To assist in the analysis of a problem try the following:</p>
+<ul>
+<li><p>Restate the problem in your own words.</p></li>
+<li><p>Represent the problem using pictures and diagrams.</p></li>
+<li><p>List the things you know and the things you do not know that are relevant to the problem.</p></li>
+<li><p>Define the goal of your problem solution. Describe what a successful solution would look like.</p></li>
+</ul>
+</section>
+<section id="design" class="level3">
+<h3 class="anchored" data-anchor-id="design">Design</h3>
+<p>One of the fundamental methods for designing an algorithm is decomposition: breaking the problem into smaller parts. Decomposition is one of the pillars of computational thinking. The big problem is replaced by a series of smaller problems, each one being more tractable. Sometimes the subproblems are still too complex and decomposition can be applied to them too.</p>
+<p>Another element of design is to recognize what kind of data that you have to facilitate a solution and how that data can be described precisely. This process can be characterized as abstraction and data representation.</p>
+<p>Ultimately, a major part of design is to develop a specific algorithm for the solution. If you are really stumped by how to get started with your algorithm design, it can be helpful to replace the original problem with a related problem that is easier to solve. After solving the easier problem, you may find that elements of the solution can be incorporated into the original problem solution design. Sometimes you might solve several related problems each of which is easier to solve. Then you can look for patterns in your solutions that might apply to the original problem.</p>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p>The design phase of problem-solving focuses on general descriptions of data representations and algorithms. When the solution requires a computer program, those general design descriptions must be made specific by coding them using a programming language, such as Python. Solution steps described using a flowchart or pseudocode representation will need to be translated into specific Python statements, and data will need to make use of existing data types and structures present in Python or new data structures that can be constructed within the Python language. Performing these steps is the implementation of the problem solution.</p>
+</section>
+<section id="testing" class="level3">
+<h3 class="anchored" data-anchor-id="testing">Testing</h3>
+<p>Any problem solution must be evaluated for correctness. When the solution is a computer program such an evaluation can become quite involved. A program that executes without syntax errors is not necessarily providing the output required by the problem solution. This output must be compared with the expectations provided in the analysis phase of our problem-solving strategy. We will discuss some specific ways of testing later once we acquire some additional understanding of coding Python programs.</p>
+</section>
+<section id="example" class="level3">
+<h3 class="anchored" data-anchor-id="example">Example</h3>
+<p>We will use a physics problem to illustrate using our problem-solving strategy.</p>
+<p>Problem Statement: A baseball is hit with an initial velocity of 40.0 [m/s] at an angle of 20w.r.t. the ground. The ball is 1.2 [m] above the ground when it is hit. How far does the ball travel before hitting the ground?</p>
+<p><strong>Analysis</strong>: We will start by making some simplifying assumptions.</p>
+<ul>
+<li><p>The ball will be modeled as a single particle, so any rotational effects will be ignored.</p></li>
+<li><p>The effects of air resistance will be ignored, so the trajectory can be assumed to be in a single plane.</p></li>
+</ul>
+<p>These assumptions imply the use of abstraction to focus on an initial understanding of the situation. Next, we will draw a picture to fix the geometry, shown in <a href="#fig-Fig2.1" class="quarto-xref">Figure&nbsp;<span>1</span></a>.</p>
+<div id="fig-Fig2.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.1.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Geometry for the baseball problem.
+</figcaption>
+</figure>
+</div>
+<p>Using information from the problem statement, we can specify given information.</p>
+<p><span class="math display">\[
+x_0 = 0
+\]</span></p>
+<p><span class="math display">\[
+y_0 = 1\ldotp 2\left[\text{m}\right]
+\]</span></p>
+<p><span class="math display">\[
+v_0 = 40.0\left[\text{m/s}\right]
+\]</span></p>
+<p><span id="eq-Eq2.1"><span class="math display">\[
+\theta_0 = 20\text{°}
+\tag{1}\]</span></span></p>
+<p><span class="math display">\[
+v_{0x} = v_0\cos \left(\theta_0\right) = 40.0\left[\text{m/s}\right]\cos \left(20\text{°}\right) = 37.5\left[\text{m/s}\right]
+\]</span></p>
+<p><span class="math display">\[
+v_{0y} = v_0\sin \left(\theta_0\right) = 40.0\left[\text{m/s}\right]\sin \left(20\text{°}\right) = 13.7\left[\text{m/s}\right]
+\]</span></p>
+<p>As part of our analysis, we can describe physics laws that might be applicable.</p>
+<p>Kinematic Equations for Constant Acceleration:</p>
+<p><span id="eq-Eq2.2"><span class="math display">\[
+    x = x_0 + v_{0x}t \tag{2}\]</span></span></p>
+<p><span id="eq-Eq2.3"><span class="math display">\[
+    y = y_0 + v_{0y}t- \frac{1}{2}gt^2 \tag{3}\]</span></span></p>
+<p>The solution to the problem will be the value of <em>R</em>, which is the value of <span class="math inline">\(x\)</span> when <span class="math inline">\(y=0\)</span>.</p>
+<p><strong>Design</strong>: We can express the plan for calculating <em>R</em>:</p>
+<ol type="1">
+<li><p>Put the knowns into <a href="#eq-Eq2.2" class="quarto-xref">Equation&nbsp;<span>2</span></a> and <a href="#eq-Eq2.3" class="quarto-xref">Equation&nbsp;<span>3</span></a></p></li>
+<li><p>Solve <a href="#eq-Eq2.3" class="quarto-xref">Equation&nbsp;<span>3</span></a> for <span class="math inline">\(t\)</span> when <span class="math inline">\(y=0\)</span>. Call this time <span class="math inline">\(T\)</span>.</p></li>
+<li><p>Substitute the value of <span class="math inline">\(T\)</span> obtained into <a href="#eq-Eq2.2" class="quarto-xref">Equation&nbsp;<span>2</span></a> and calculate <span class="math inline">\(x\)</span>.</p></li>
+</ol>
+<p><strong>Implementation</strong>: The Design plan requires some algebra, which can be done by using the quadratic formula on <a href="#eq-Eq2.3" class="quarto-xref">Equation&nbsp;<span>3</span></a>. The result is</p>
+<p><span class="math display">\[T = 2.88\left[\text{s}\right]\Rightarrow R = 108\left[\text{m}\right]\]</span></p>
+<p><strong>Testing</strong>: For this problem solution, testing the solution involves determining whether the value we found is sensible. A distance of 108 [m] is 354 [ft], which is less than the typical distance from home plate to the stadium edge for a professional baseball stadium (~400 [ft]).</p>
+<p>Both <strong>Implementation</strong> and <strong>Testing</strong> will look different when the problem involves developing a computer program. We will see many examples of performing these steps as we become more involved in coding.</p>
+</section>
+</section>
+<section id="basic-elements-of-python" class="level2">
+<h2 class="anchored" data-anchor-id="basic-elements-of-python">Basic Elements of Python</h2>
+<p>We will be using the Python programming language to develop our skills in computational science. Python was released in 1991 by its primary author, Guido van Rossum, who named the language after one of his favorite television shows, <em>Monty Pythons Flying Circus</em>, a comedy series produced by the BBC. Python has gone through many revisions since its introduction. We will use version 3.6 since the Google Colab platform currently supports it.</p>
+<p>Here we introduce a few of the basic elements of the Python programming language that will enable us to start implementing our own programs. In particular, we will cover</p>
+<ul>
+<li>Literals</li>
+<li>Variables and Identifiers</li>
+<li>Operators</li>
+<li>Expressions</li>
+<li>Data Types</li>
+<li>Syntax</li>
+</ul>
+<p>Extensive documentation for the Python programming language is provided online <span class="citation" data-cites="PythonSoftwareFoundation_Python3615Documentation_2021">(<a href="../../bibliography.html#ref-PythonSoftwareFoundation_Python3615Documentation_2021" role="doc-biblioref">Python Software Foundation, 2021</a>)</span>.</p>
+<section id="literals" class="level3">
+<h3 class="anchored" data-anchor-id="literals">Literals</h3>
+<p>One dictionary definition of the word “literal” is “taken at face value” and programming languages use a similar definition: a literal is a sequence of characters that stand for itself. We will consider numeric literals and string literals. These will form building blocks for writing code.</p>
+<p>A numeric literal is a character sequence containing only the digits 0-9, a + or – sign, possibly a decimal point, and possibly the letter e, which will indicate scientific notation. A numeric literal with a decimal point is called a <strong>floating-point value</strong>. A numeric literal without a decimal point is called an <strong>integer value</strong>. One additional numerical literal is the <strong>complex value</strong>. It is written as the sum of the real part and imaginary part. The imaginary part is indicated using the character j. Here is an example:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>c <span class="op">=</span> <span class="fl">3.0</span> <span class="op">+</span> <span class="ot">4.0j</span>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Commas are not used in numeric literals. <a href="#tbl-Table2.1" class="quarto-xref">Table&nbsp;<span>1</span></a> gives examples of numeric literals.</p>
+<div id="tbl-Table2.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Examples of numeric literals.
+</figcaption>
+<div aria-describedby="tbl-Table2.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;">Integer Values</th>
+<th style="text-align: center;">Floating-point Values</th>
+<th style="text-align: center;">Complex Values</th>
+<th style="text-align: center;">Incorrect Values</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">5. , 5.0, +5.0</td>
+<td style="text-align: center;">2.0 + 3.0j</td>
+<td style="text-align: center;">1,500</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">10</td>
+<td style="text-align: center;">15.25</td>
+<td style="text-align: center;">4 – 5j</td>
+<td style="text-align: center;">1,500.00</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">25</td>
+<td style="text-align: center;">15.25</td>
+<td style="text-align: center;">0.56 + 1.7j</td>
+<td style="text-align: center;">+1,500</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">-25</td>
+<td style="text-align: center;">-15.25</td>
+<td style="text-align: center;">-6.0 + 7.0j</td>
+<td style="text-align: center;">-1,500.00</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A numeric literal with no + or – sign in front of it is considered positive.</p>
+<p>Next we consider string literals, usually called “strings”. These are sequences of alphanumeric characters. String values are indicated using matching single quotes or double quotes:</p>
+<p>‘My name is Bob’ , “My name is Bob”</p>
+<p>Note that a blank character can be in a string value. If the string literal contains an apostrophe, then the value should be enclosed by matching double quotes.</p>
+<p>“Bill’s Bookstore”</p>
+<p>A string literal with no characters in it is called the empty string and is indicated with matching single quotes or double quotes enclosing no characters:</p>
+<p>’’ or “”</p>
+</section>
+<section id="variables-and-identifiers" class="level3">
+<h3 class="anchored" data-anchor-id="variables-and-identifiers">Variables and Identifiers</h3>
+<p>An <strong>identifier</strong> is a sequence of characters that is used as a name for a programming element such as a function. The rules for constructing identifiers are</p>
+<p>They may contain letters and digits but cannot begin with a digit.</p>
+<p>They are case-sensitive.</p>
+<p>They cannot contain quotes</p>
+<p>The underscore ’_’ can be used but should be avoided as the first character.</p>
+<p><a href="#tbl-Table2.2" class="quarto-xref">Table&nbsp;<span>2</span></a> gives some examples of identifiers.</p>
+<div id="tbl-Table2.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Examples of identifiers.
+</figcaption>
+<div aria-describedby="tbl-Table2.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Valid Identifiers</strong></th>
+<th style="text-align: left;"><strong>Invalid Identifiers</strong></th>
+<th style="text-align: left;"><strong>Reason</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">gravitationalforce</td>
+<td style="text-align: left;">gravitationalForce’</td>
+<td style="text-align: left;">Cannot contain quotes</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">gravitationalForce</td>
+<td style="text-align: left;">2022_year</td>
+<td style="text-align: left;">Cannot start with a digit</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">gravitational_force</td>
+<td style="text-align: left;">_gravitationalForce V</td>
+<td style="text-align: left;">alid but should be avoided</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>A variable is a name assigned to a value. Python assigns a value to a variable by using the assignment operator, =.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="dv">15</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The variable num now refers to the value 15. Whenever the variable num is used in a Python expression it will be replaced by the value 15. Consider the expression</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>num <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This expression will evaluate to 16 since num actually represents the number 15.</p>
+<p>A variable can be reassigned to a different value at different points in a program.</p>
+</section>
+<section id="keywords" class="level3">
+<h3 class="anchored" data-anchor-id="keywords">Keywords</h3>
+<p>A <strong>keyword</strong> is a predefined identifier that has a reserved specific use in a programming language. Keywords should not be used as a variable name or other user-defined identifier. If you try to do this then there will be a syntax error when the code is executed. <a href="#fig-Fig2.2" class="quarto-xref">Figure&nbsp;<span>2</span></a> shows what happens when you try to use the keyword ‘or’ as a variable.</p>
+<div id="fig-Fig2.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.2.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Incorrect use of keyword identifier.
+</figcaption>
+</figure>
+</div>
+<p><a href="#tbl-Table2.3" class="quarto-xref">Table&nbsp;<span>3</span></a> shows all of the keyword identifiers used in Python 3.6. These identifiers are case-sensitive.</p>
+<div id="tbl-Table2.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Python 3.6 keywords.
+</figcaption>
+<div aria-describedby="tbl-Table2.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">and</th>
+<th style="text-align: left;">del</th>
+<th style="text-align: left;">from</th>
+<th style="text-align: left;">None</th>
+<th style="text-align: left;">TRUE</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">as</td>
+<td style="text-align: left;">elif</td>
+<td style="text-align: left;">global</td>
+<td style="text-align: left;">nonlocal</td>
+<td style="text-align: left;">try</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">assert</td>
+<td style="text-align: left;">else</td>
+<td style="text-align: left;">if</td>
+<td style="text-align: left;">not</td>
+<td style="text-align: left;">while</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">break</td>
+<td style="text-align: left;">except</td>
+<td style="text-align: left;">import</td>
+<td style="text-align: left;">or</td>
+<td style="text-align: left;">with</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">class</td>
+<td style="text-align: left;">FALSE</td>
+<td style="text-align: left;">in</td>
+<td style="text-align: left;">pass</td>
+<td style="text-align: left;">yield</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">continue</td>
+<td style="text-align: left;">finally</td>
+<td style="text-align: left;">is</td>
+<td style="text-align: left;">raise</td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">def</td>
+<td style="text-align: left;">for</td>
+<td style="text-align: left;">lambda</td>
+<td style="text-align: left;">return</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="operators" class="level3">
+<h3 class="anchored" data-anchor-id="operators">Operators</h3>
+<p>An <strong>operator</strong> is a symbol that indicates some kind of operation performed on one or more operands. An operand is a value, such as a number, that the operator acts on. Arithmetic operators such as addition, subtraction, multiplication, and division require two operands and are called binary operators. An operator that requires only one operand, such as negation, is called a unary operator.</p>
+<p>Among the most important operators for scientific and engineering programming are the arithmetic operators shown in <a href="#tbl-Table2.4" class="quarto-xref">Table&nbsp;<span>4</span></a>.</p>
+<div id="tbl-Table2.4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Python arithmetic operators.
+</figcaption>
+<div aria-describedby="tbl-Table2.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Operator</strong></th>
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: left;"><strong>Example</strong></th>
+<th style="text-align: right;"><strong>Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">-x</td>
+<td style="text-align: left;">negation</td>
+<td style="text-align: left;">-100</td>
+<td style="text-align: right;">-100</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x + y</td>
+<td style="text-align: left;">addition</td>
+<td style="text-align: left;">100 + 25</td>
+<td style="text-align: right;">125</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x - y</td>
+<td style="text-align: left;">subtraction</td>
+<td style="text-align: left;">100 - 25</td>
+<td style="text-align: right;">75</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x * y</td>
+<td style="text-align: left;">multiplication</td>
+<td style="text-align: left;">100 * 4</td>
+<td style="text-align: right;">400</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x / y</td>
+<td style="text-align: left;">division</td>
+<td style="text-align: left;">100 / 4</td>
+<td style="text-align: right;">25</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x // y</td>
+<td style="text-align: left;">truncating division</td>
+<td style="text-align: left;">100 // 3</td>
+<td style="text-align: right;">33</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">x ** y</td>
+<td style="text-align: left;">exponentiation</td>
+<td style="text-align: left;">10 ** 3</td>
+<td style="text-align: right;">1000</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">x % y</td>
+<td style="text-align: left;">modulus</td>
+<td style="text-align: left;">50 % 6</td>
+<td style="text-align: right;">2</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Notice that unlike in many programming languages, exponentiation uses the operator ** rather than the caret symbol ^.</p>
+<p>There will be times when programming requires knowing what data type is produced by an operator. Consider division using the / operator. It will always produce a float, even if both operands are integers, as shown in <a href="#fig-Fig2.3" class="quarto-xref">Figure&nbsp;<span>3</span></a>.</p>
+<div id="fig-Fig2.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.3.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Data type produced by division.
+</figcaption>
+</figure>
+</div>
+<p>Now consider truncating division performed by the operator //. If both operands are integers (type int) then the result is an integer. If either operator is a float then the result is a float. Figure <a href="#fig:Fig2.4" data-reference-type="ref" data-reference="fig:Fig2.4">1.6</a> illustrates this behavior with code snippets.</p>
+<div id="fig-Fig2.4" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-Fig2.4" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-Figure2.4a" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-Figure2.4a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.4a.png" id="fig-Figure2.4a" class="img-fluid figure-img" data-ref-parent="fig-Fig2.4">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-Figure2.4a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-Fig2.4" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-Figure2.4b" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-Figure2.4b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.4b.png" id="fig-Figure2.4b" class="img-fluid figure-img" data-ref-parent="fig-Fig2.4">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-Figure2.4b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Data type produced by truncating division.
+</figcaption>
+</figure>
+</div>
+<p>The modulus operator % may be less familiar than the other arithmetic operators. It is a binary operator that returns the remainder after performing division. If the operands are both integers (type int) then result will be an integer, otherwise the result will be a float.</p>
+<div id="fig-Fig2.5" class="quarto-layout-panel">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-Fig2.5" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-Figure2.5a" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-Figure2.5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.4a.png" id="fig-Figure2.5a" class="img-fluid figure-img" data-ref-parent="fig-Fig2.5">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-Figure2.5a-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(a)
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell-subref quarto-layout-cell" data-ref-parent="fig-Fig2.5" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-Figure2.5b" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-subfloat-fig figure">
+<div aria-describedby="fig-Figure2.5b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.4b.png" id="fig-Figure2.5b" class="img-fluid figure-img" data-ref-parent="fig-Fig2.5">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-subfloat-caption quarto-subfloat-fig" id="fig-Figure2.5b-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+(b)
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Result of modulus operator.
+</figcaption>
+</figure>
+</div>
+<p><a href="#tbl-Table2p5" class="quarto-xref">Table&nbsp;<span>5</span></a> shows the cyclic nature of the modulus operator.</p>
+<div id="tbl-Table2p5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Result of modulo 5 modulus operator.
+</figcaption>
+<div aria-describedby="tbl-Table2p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: right;"><strong>Result</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">0 % 5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">1 % 5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">2 % 5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3 % 5</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">4 % 5</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">5 % 5</td>
+<td style="text-align: right;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">6 % 5</td>
+<td style="text-align: right;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">7 % 5</td>
+<td style="text-align: right;">2</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">8 % 5</td>
+<td style="text-align: right;">3</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">9 % 5</td>
+<td style="text-align: right;">4</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">10 % 5</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="expressions" class="level3">
+<h3 class="anchored" data-anchor-id="expressions">Expressions</h3>
+<p>An <strong>expression</strong> is a combination of variables, values, and operators that evaluates to a single value. A <strong>sub-expression</strong> is an expression that is part of a larger expression. We will consider arithmetic expressions here. The following are examples of arithmetic expressions in Python.</p>
+<p><span class="math display">\[1 + 2,3*n + 1,4*\left(n - 1\right)\]</span></p>
+<p>In these expressions, the variable <span class="math inline">\(n\)</span> must have been assigned a value, otherwise, an error will occur.</p>
+<p>To avoid ambiguity about the order in which operators are executed in an expression, Python defines a particular order in which operators are applied. <a href="#tbl-Table2p6" class="quarto-xref">Table&nbsp;<span>6</span></a> gives the operator precedence used by Python.</p>
+<div id="tbl-Table2p6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Python operator precedence. The vertical ordering is from high to low going down.
+</figcaption>
+<div aria-describedby="tbl-Table2p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Operator</strong></th>
+<th style="text-align: left;"><strong>Operation</strong></th>
+<th style="text-align: left;"><strong>Associativity</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">**</td>
+<td style="text-align: left;">exponentiation</td>
+<td style="text-align: left;">right-to-left</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">negation</td>
+<td style="text-align: left;">left-to-right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">* , / , // , %</td>
+<td style="text-align: left;">mult , division, trunc, div, modulo</td>
+<td style="text-align: left;">left-to-right</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">+ , -</td>
+<td style="text-align: left;">addition , subtraction</td>
+<td style="text-align: left;">left-to-right</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The operator associativity refers to the order in which operators are applied when they have the same precedence. Consider the expression</p>
+<p><span class="math display">\[4**3**2\]</span></p>
+<p>Which exponentiation gets evaluated first: <span class="math inline">\(4**3\)</span> or <span class="math inline">\(3**2\)</span>? The right-to-left associativity rule for exponentiation says the <span class="math inline">\(3**2\)</span> operation is performed first.</p>
+<p><span class="math display">\[4**3**2\rightarrow 262144\text{ not 4096}\]</span></p>
+<p>If the operator precedence in this situation had been left-to-right then the result of evaluating this expression would have been 4096.</p>
+<p>Now consider the expression <span class="math display">\[2/3*4\]</span></p>
+<p>Since the / and * operators have the same precedence we use the left-to-right associativity rule to perform</p>
+<p><span class="math display">\[2/ 3\rightarrow 0.6666\text{ then&nbsp;&nbsp;}0.6666*4\rightarrow 2.6667\]</span></p>
+<p>yielding the final value 2.6667.</p>
+<p>A good practice in coding expressions is to use parentheses to enforce a desired precedence rather than relying on the Python-defined precedence rules. Sub-expressions defined by parentheses are evaluated first.</p>
+</section>
+<section id="data-types" class="level3">
+<h3 class="anchored" data-anchor-id="data-types">Data Types</h3>
+<p>The formal definition of data type is a set of literal values, such as numbers or strings, and the operators that can be applied to them, such as addition and subtraction. Python uses several built-in data types. These are shown in <a href="#tbl-Table2p7" class="quarto-xref">Table&nbsp;<span>7</span></a>.</p>
+<div id="tbl-Table2p7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2p7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Python built-in datatypes
+</figcaption>
+<div aria-describedby="tbl-Table2p7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Category</strong></th>
+<th style="text-align: left;"><strong>Associated Python Keyword</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Text Type:</td>
+<td style="text-align: left;">str</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Numeric Types:</td>
+<td style="text-align: left;">int, float, complex</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Sequence Types:</td>
+<td style="text-align: left;">list, tuple, range</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mapping Type:</td>
+<td style="text-align: left;">dict</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Set Types:</td>
+<td style="text-align: left;">set, frozenset</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Boolean Type:</td>
+<td style="text-align: left;">bool</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Binary Types:</td>
+<td style="text-align: left;">bytes, bytearray, memoryview</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">None Type:</td>
+<td style="text-align: left;">NoneType</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>For now, we will focus only on the text and numeric types. Understanding data types can help us avoid problematic operations. For example, division, /, does not apply to strings or mixed string and numeric expressions. The following code will produce an error:</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="st">'This is a string.'</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="st">'This is another string.'</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>s1<span class="op">/</span>s2 <span class="co"># This expression will produce an error.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Similarly</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="st">'This is a string.'</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>s1<span class="op">/</span><span class="dv">2</span> <span class="co"># This expression will produce an error.  </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The built-in function type(v) will tell you the data type of v.</p>
+<div id="fig-Figure2.6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure2.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.6.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure2.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Example of type( ) function use.
+</figcaption>
+</figure>
+</div>
+<p>All programming languages use the concept of data type, but the implementation differs between languages. Some languages such as C, C++, or Java require that the data type of a variable be declared explicitly before the variable can be used in an expression. This is called <strong>static typing</strong>. Other languages, including Python, will assign the data type to a variable automatically when the program is executed based on the value referred to by the variable. This is called <strong>dynamic typing</strong>. The same variable name can be assigned a different data type at different places in the program.</p>
+<p>A complex expression can have sub-expressions or variables of different data types. These are called <strong>mixed-type expressions</strong>. In order for a mixed-type expression to evaluate to a single value, all the components or operands in the expression must be converted to a single type. This procedure can be done automatically by the Python interpreter, called <strong>coercion</strong>, or the programmer can explicitly perform conversions using data type conversion functions, which is called <strong>type conversion</strong>.</p>
+<p>When the Python interpreter performs coercion, it will do so in a way to avoid loss of information. For example in the expression</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="op">+</span> <span class="fl">2.5</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>converting the 1 to 1.0 (int to float) does not result in loss of information but converting 2.5 to 2 (float to int) does. Therefore, the int to float conversion will be done and the final value, 3.5, will be a float. We can perform the type conversions explicitly using type conversion functions. In the above example, explicit type conversion could be done with</p>
+<p><span class="math display">\[\text{float}\left(\text{1}\right) + 2.5\rightarrow 1.0 + 2.5\rightarrow 3.5\]</span></p>
+<div id="tbl-Table2p8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table2p8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;8: Examples of explicit type conversion.
+</figcaption>
+<div aria-describedby="tbl-Table2p8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: left;"><strong>Type Conversion</strong></td>
+<td style="text-align: right;"><strong>Result</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">float(5)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">float(‘5’)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">float(‘A String’)</td>
+<td style="text-align: right;">error</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">int(5.0)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">int(5.2)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">int(‘5’)</td>
+<td style="text-align: right;">5</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">int(‘5.2’)</td>
+<td style="text-align: right;">error</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="syntax" class="level3">
+<h3 class="anchored" data-anchor-id="syntax">Syntax</h3>
+<p><strong>Syntax</strong> refers to the structure of a program and the rules about that structure. All languages have syntax. When discussing human languages such as English, syntax refers to the rules of grammar. We will introduce Python syntax rules as we learn about new elements of the language. The Python interpreter will determine if code has syntax errors and will inform you with an error message. Code that is syntactically correct can still generate a runtime error. For example</p>
+<p>10/0</p>
+<p>is syntactically correct but will generate an error when the expression is evaluated.</p>
+<p>A <strong>semantic error</strong> occurs when the program is syntactically correct and generates no runtime errors, but the output is still incorrect. This means that the programmer has not translated the design of the problem solution into code correctly. Semantic errors will be the most difficult ones to eliminate.</p>
+</section>
+<section id="comment-statements" class="level3">
+<h3 class="anchored" data-anchor-id="comment-statements">Comment Statements</h3>
+<p>Comment statements are added to code to help humans better understand what is happening in the program. Comment statements are ignored by the Python interpreter, yet they remain an important part of documenting the code. There are two methods of inserting comments:</p>
+<ul>
+<li><p>Single line comment.</p></li>
+<li><p>Comment Block</p></li>
+</ul>
+<p>A single line comment is indicated with the # character. Everything after the # on the line is ignored.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># This entire line is ignored</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">5</span> <span class="co"># Everything on this line is ignored after the # character    </span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A comment block is created with triple single quotes or triple double quotes. All lines between a triple single quote or double quote are ignored until another triple single quote or double quote is encountered.</p>
+<p>Single quote block:</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co">comment block line 1</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co">comment block line 2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="co">'''</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Double quote block:</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="co">comment block line 1</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="co">comment block line 2</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span>    </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="basic-input-and-output" class="level2">
+<h2 class="anchored" data-anchor-id="basic-input-and-output">Basic Input and Output</h2>
+<p>When we execute a program interactively, such as in a Jupyter notebook or IPython console, obtaining information from the user and communicating messages to the user will be necessary. The Python built-in functions input and print are simple methods to perform these tasks.</p>
+<p>The input function will request information from the user by printing a message and then waiting for the user to enter something using the keyboard. After hitting enter or return the string entered by the user is returned to the program. For example</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>name <span class="op">=</span> <span class="bu">input</span>(<span class="st">'What is your name?:'</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>will print the string given as the argument of the function, then wait until the user types in something, and then returns what was typed as a string that gets assigned to the variable name. <a href="#fig-Fig2.7" class="quarto-xref">Figure&nbsp;<span>7</span></a> shows how this input request looks in a Jupyter notebook.</p>
+<div id="fig-Fig2.7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.7.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Example of input function use in a notebook.
+</figcaption>
+</figure>
+</div>
+<p>Basic output is achieved with the print function. It will print items in its argument list to the standard output, which will be an output cell in a Jupyter or Colab notebook. Multiple items can be printed by including them as comma separated items in the function argument list. <a href="#fig-Fig2.8" class="quarto-xref">Figure&nbsp;<span>8</span></a> shows an example of this behavior.</p>
+<div id="fig-Fig2.8" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.8.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Example of printing multiple items.
+</figcaption>
+</figure>
+</div>
+<p>The separator between arguments printed out can be specified using the sep keyword argument. The default value is the empty string.</p>
+<div id="fig-Fig2.9" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.9.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: Use of the sep keyword argument.
+</figcaption>
+</figure>
+</div>
+<p>If the program needs to obtain a number from the user using the input function then the string that is returned will need to be converted into the appropriate numerical data type using the corresponding type conversion function. The following shows how to obtain a floating point number from the user.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>float_number <span class="op">=</span> <span class="bu">float</span> ( <span class="bu">input</span> ( <span class="st">'Submit a floating point number:'</span>) )   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>After execution the variable float_number will contain the number submitted and it will be of type float.</p>
+<p>Formatting the printed output of a program can be an important part of the solution. We will discuss here one method for formatting numbers to a specified precision. We will use the built-in format function. Consider the following number.</p>
+<p>n = 3.14159</p>
+<p>Suppose we want to print n out with 2 decimal places. We can do this with the format function, which has the following syntax:</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="bu">format</span>(value, format_specifier)   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where</p>
+<p>format_specifier: ‘[width][.precision]type’</p>
+<ul>
+<li><p>width – total number of characters in the field</p></li>
+<li><p>precision – number of decimal places</p></li>
+<li><p>type –</p>
+<ul>
+<li><p>f – float</p></li>
+<li><p>e – exponential</p></li>
+</ul></li>
+</ul>
+<p>Note that the width and precision fields are optional, which is indicated with the brackets.</p>
+<p>To format the variable n to two decimal places, use the following code.</p>
+<div id="fig-Fig2.10" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig2.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch02/Figures/Figure2.10.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig2.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Example of using the format function.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="ch02-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="ch02-exercises">Exercises</h2>
+<p>1. The Polya general problem solving model is reformulated for computational problems to consist of the following four steps (select the correct ones):</p>
+<ol type="a">
+<li>Analysis</li>
+<li>Design</li>
+<li>Implementation</li>
+<li>Testing</li>
+<li>Debugging</li>
+<li>Flowcharting</li>
+</ol>
+<p>2. Which of the following are correctly formulated numerical literals?</p>
+<ol type="a">
+<li>1,200</li>
+<li>1200</li>
+<li><ol start="1200" type="1">
+<li></li>
+</ol></li>
+<li>1200.0</li>
+</ol>
+<p>3. Which of the following are legal Python variable names?</p>
+<ol type="a">
+<li>3CPO</li>
+<li>n1</li>
+<li>‘number’</li>
+<li>chiefExecutive</li>
+<li>for</li>
+</ol>
+<p>4. What value will the following expression have?</p>
+<p>3 + 8 * (3**2 - 8) / 10</p>
+<ol type="a">
+<li>3.0</li>
+<li>3</li>
+<li>3.8</li>
+<li>4</li>
+</ol>
+<p>5. What is the value produced by each of the following expressions?</p>
+<ol type="a">
+<li>12/5</li>
+<li>12./5.</li>
+<li>12.0//5.0</li>
+<li>12%5</li>
+</ol>
+<p>6. What is the data type of the variable n after the following code has been executed?</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="dv">2</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> n<span class="op">*</span><span class="dv">3</span></span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> n<span class="op">/</span><span class="dv">3</span> </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>7. What is the data type of the variable num after the following statement is executed?</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="bu">input</span>(<span class="st">'Type in a floating point number: '</span>)  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<ol type="a">
+<li>int</li>
+<li>float</li>
+<li>str</li>
+</ol>
+</section>
+<section id="ch02-program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="ch02-program-modification-problems">Program Modification Problems</h2>
+<p>1. The code presented below will request that the user submit a temperature in Fahrenheit and then converts it to a temperature in Celsius and prints out the result.</p>
+<div class="sourceCode" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Temperature Conversion Program (Fahrenheit to Celsius)</span></span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 1.25.2020.1</span></span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program will convert a temperature entered in Fahrenheit</span></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a><span class="co">         to the equivalent temperature in Celsius</span></span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># get temperature in Fahrenheit</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>TF <span class="op">=</span> <span class="bu">float</span>(<span class="bu">input</span>(<span class="st">'Enter degrees Fahrenheit: '</span>))</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a><span class="co"># calc degrees Celsius</span></span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a>TC <span class="op">=</span> (TF <span class="op">-</span> <span class="dv">32</span>) <span class="op">*</span> <span class="dv">5</span> <span class="op">/</span> <span class="dv">9</span></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" aria-hidden="true" tabindex="-1"></a><span class="co"># output degrees Celsius</span></span>
+<span id="cb15-17"><a href="#cb15-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(TF, <span class="st">'degrees Fahrenheit equals'</span>,</span>
+<span id="cb15-18"><a href="#cb15-18" aria-hidden="true" tabindex="-1"></a>       <span class="bu">format</span>(TC, <span class="st">'.1f'</span>), <span class="st">'degrees Celsius'</span>)</span>
+<span id="cb15-19"><a href="#cb15-19" aria-hidden="true" tabindex="-1"></a>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Revise the program to do the following:</p>
+<ul>
+<li><p>Print out a program greeting that describes what the program will do.</p></li>
+<li><p>Requests that the user submit a temperature in Celsius.</p></li>
+<li><p>Prints out the temperature in Fahrenheit with an appropriate message.</p></li>
+</ul>
+<p>2. Create a program that requests a temperature from the user in Fahrenheit and then prints out the temperature in Celsius and Kelvins with appropriate messages. You can start with the code from Program Modification Problem 1.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Polya, G. (1971). <em>How to Solve It: A New Aspect of Mathematical Method</em> (2nd ed.). Princeton University Press.</p>
+<p>Python Software Foundation. (2021). <em>Python 3.6.15 Documentation</em>. https://docs.python.org/3.6/</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-Polya_HowSolveIt_1971" class="csl-entry" role="listitem">
+Polya, G. (1971). <em>How to <span>Solve It</span>: <span>A New Aspect</span> of <span>Mathematical Method</span></em> (2nd ed.). Princeton University Press.
+</div>
+<div id="ref-PythonSoftwareFoundation_Python3615Documentation_2021" class="csl-entry" role="listitem">
+Python Software Foundation. (2021). <em>Python 3.6.15 <span>Documentation</span></em>. <a href="https://docs.python.org/3.6/">https://docs.python.org/3.6/</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch01/Ch01_Introduction.html" class="pagination-link" aria-label="Introduction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="pagination-link" aria-label="Control Structures">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

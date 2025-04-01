@@ -1,0 +1,2377 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Stochastic Models and Simulations – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" rel="next">
+<link href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch09/Ch09_StochasticSimulations.html"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-comparing-betting-strategies-at-the-roulette-wheel" id="toc-motivating-problem-comparing-betting-strategies-at-the-roulette-wheel" class="nav-link active" data-scroll-target="#motivating-problem-comparing-betting-strategies-at-the-roulette-wheel">Motivating Problem: Comparing Betting Strategies at the Roulette Wheel</a></li>
+  <li><a href="#overview-of-monte-carlo-methods" id="toc-overview-of-monte-carlo-methods" class="nav-link" data-scroll-target="#overview-of-monte-carlo-methods">Overview of Monte Carlo Methods</a>
+  <ul class="collapse">
+  <li><a href="#definition" id="toc-definition" class="nav-link" data-scroll-target="#definition">Definition</a></li>
+  <li><a href="#generating-pseudorandom-numbers" id="toc-generating-pseudorandom-numbers" class="nav-link" data-scroll-target="#generating-pseudorandom-numbers">Generating Pseudorandom Numbers</a></li>
+  </ul></li>
+  <li><a href="#random-walks" id="toc-random-walks" class="nav-link" data-scroll-target="#random-walks">Random Walks</a>
+  <ul class="collapse">
+  <li><a href="#definition-1" id="toc-definition-1" class="nav-link" data-scroll-target="#definition-1">Definition</a></li>
+  <li><a href="#one-dimensional-random-walk" id="toc-one-dimensional-random-walk" class="nav-link" data-scroll-target="#one-dimensional-random-walk">One-dimensional Random Walk</a></li>
+  <li><a href="#two-dimensional-random-walk" id="toc-two-dimensional-random-walk" class="nav-link" data-scroll-target="#two-dimensional-random-walk">Two-dimensional Random Walk</a></li>
+  </ul></li>
+  <li><a href="#cellular-automaton-model" id="toc-cellular-automaton-model" class="nav-link" data-scroll-target="#cellular-automaton-model">Cellular Automaton Model</a>
+  <ul class="collapse">
+  <li><a href="#deterministic-cellular-automata" id="toc-deterministic-cellular-automata" class="nav-link" data-scroll-target="#deterministic-cellular-automata">Deterministic Cellular Automata</a></li>
+  <li><a href="#probabilistic-cellular-automata" id="toc-probabilistic-cellular-automata" class="nav-link" data-scroll-target="#probabilistic-cellular-automata">Probabilistic Cellular Automata</a></li>
+  </ul></li>
+  <li><a href="#computational-problem-solving-comparing-betting-strategies-at-the-roulette-wheel" id="toc-computational-problem-solving-comparing-betting-strategies-at-the-roulette-wheel" class="nav-link" data-scroll-target="#computational-problem-solving-comparing-betting-strategies-at-the-roulette-wheel">Computational Problem Solving: Comparing Betting Strategies at the Roulette Wheel</a>
+  <ul class="collapse">
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#design" id="toc-design" class="nav-link" data-scroll-target="#design">Design</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  <li><a href="#testing" id="toc-testing" class="nav-link" data-scroll-target="#testing">Testing</a></li>
+  </ul></li>
+  <li><a href="#program-modification-problems" id="toc-program-modification-problems" class="nav-link" data-scroll-target="#program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#program-development-problems" id="toc-program-development-problems" class="nav-link" data-scroll-target="#program-development-problems">Program Development Problems</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="stochastic-models-and-simulations:cha" class="quarto-section-identifier">Stochastic Models and Simulations</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>One way to categorize mathematical models of natural or engineered systems is to divide them into deterministic models or stochastic models. Deterministic models, such as the dynamical systems models we have considered previously, have no element of chance in their development. The exponential growth model for bacteria is an example. If we know how many bacteria are present at <span class="math inline">\(t=0\)</span> and the growth rate <em>r,</em> then we can predict the number of bacteria precisely for <span class="math inline">\(t&gt;0\)</span> . Using Newton’s Second Law to predict the trajectory of a ball given the physical forces on it is another example. There are no probabilities or uncertainties about our theoretical predications based on these models. Stochastic models, involve an element of probability or randomness in their predictions. Here is a more formal definition.</p>
+<p><strong>Stochastic</strong> or <strong>probabilistic</strong> models use random variables to describe the system. Values for the random variables are based on theoretical or empirical probability distributions.</p>
+<p>One example of a system that is best modeled using a stochastic model is the diffusive motion of individual atoms in a gas, liquid, or solid material for which there will be a probabilistic element. Other examples would include a dynamical systems model for which the model parameters are not known precisely but take on values with some probability.</p>
+<p>If we want to simulate the behavior of a stochastic model, then we must perform numerical experiments that use random numbers selected according to an appropriate probability distribution. Such simulations are called <strong>Monte Carlo simulations</strong>, which we will explore in section 9.1. Random walks are a specific kind of Monte Carlo simulation that can be useful for modeling many systems. Another category of model we will explore in this chapter is cellular automata models. This class of models is not always stochastic in nature, but often is, so we include it here.</p>
+<section id="motivating-problem-comparing-betting-strategies-at-the-roulette-wheel" class="level2">
+<h2 class="anchored" data-anchor-id="motivating-problem-comparing-betting-strategies-at-the-roulette-wheel">Motivating Problem: Comparing Betting Strategies at the Roulette Wheel</h2>
+<p>Let’s suppose you visit Las Vegas and want to play roulette. What kind of betting strategy should you employ so that you do not go broke? We can explore different strategies by using a computer simulation of a roulette wheel game. We want to develop a simulation for the American Roulette wheel shown in <a href="#fig-Figure9_derk-lynn" class="quarto-xref">Figure&nbsp;<span>1</span></a>. Roulette involves a long list of possible bets <span class="citation" data-cites="WikipediaContributors_Roulette_2022">(<a href="../../bibliography.html#ref-WikipediaContributors_Roulette_2022" role="doc-biblioref">Wikipedia Contributors, 2022</a>)</span>, so we will use just a small subset of these and then explore some betting strategies such as the Martingale strategy or Anti-Martingale strategy.</p>
+<div id="fig-Figure9_derk-lynn" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_derk-lynn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/derek-lynn-mD1V-eS1Wb4-unsplash.jpg" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_derk-lynn-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Roulette wheel in a casino for gambling entertainment. Photo by Derek Lynn on Unsplash<span class="citation" data-cites="DerekLynn_RouletteWheelCasino_2020">(<a href="../../bibliography.html#ref-DerekLynn_RouletteWheelCasino_2020" role="doc-biblioref">Derek Lynn, 2020</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="overview-of-monte-carlo-methods" class="level2">
+<h2 class="anchored" data-anchor-id="overview-of-monte-carlo-methods">Overview of Monte Carlo Methods</h2>
+<section id="definition" class="level3">
+<h3 class="anchored" data-anchor-id="definition">Definition</h3>
+<p>Stochastic models involve random variables. The behavior of the model will change depending on the specific values taken by the random variables in the model. Monte Carlo methods involve sampling the possible model behaviors from the set of all possible behaviors, which might by infinite, and then performing a statistical description of the behavior based on the set of samples. More succinctly, a <strong>Monte Carlo simulation</strong> involves repeated random sampling to explore the behavior of a system.</p>
+</section>
+<section id="generating-pseudorandom-numbers" class="level3">
+<h3 class="anchored" data-anchor-id="generating-pseudorandom-numbers">Generating Pseudorandom Numbers</h3>
+<p>To perform Monte Carlo simulations requires that computer programs have access to random numbers. The standard solution to this need is to actually use pseudorandom numbers, which are deterministically created lists of numbers that will pass a variety of statistical tests for lists of actual random numbers.</p>
+<p>The pseudorandom number generators used by early computer programming languages used an algorithm known as a linear congruential generator. This algorithm is based on the following equation <span class="citation" data-cites="PressEtAl_NumericalRecipesArt_1986">(<a href="../../bibliography.html#ref-PressEtAl_NumericalRecipesArt_1986" role="doc-biblioref">Press et al., 1986</a>)</span>.</p>
+<p><span class="math display">\[I_j = \left(aI_{j- 1} + c\right)\mathrm{mod}m\]</span></p>
+<p>The constants a, c, and m are chosen to yield acceptable statistical properties for the sequence <span class="math inline">\(I_0,I_1,I_2,\ldots\)</span>To get the sequence started, the user usually provides a seed number, <em>I<sub>0</sub></em>.</p>
+<p>There are recognized statistical problems with linear congruential generators if long sequences or subsets of sequences are required <span class="citation" data-cites="Entacher_BadSubsequencesWellknown_1998">(<a href="../../bibliography.html#ref-Entacher_BadSubsequencesWellknown_1998" role="doc-biblioref">Entacher, 1998</a>)</span>. Modern numerical packages now use more sophisticated algorithms to produce pseudorandom number sequences including the Mersenne Twistor algorithm <span class="citation" data-cites="MatsumotoNishimura_MersenneTwister623dimensionally_1998">(<a href="../../bibliography.html#ref-MatsumotoNishimura_MersenneTwister623dimensionally_1998" role="doc-biblioref">Matsumoto &amp; Nishimura, 1998</a>)</span> and the permuted congruential generator algorithm <span class="citation" data-cites="ONeill_PCGFamilySimple_2014">(<a href="../../bibliography.html#ref-ONeill_PCGFamilySimple_2014" role="doc-biblioref">O’Neill, 2014</a>)</span>. To understand these more sophisticated algorithms requires the reader have more background in statistics and probability theory than this book assumes, so we will not discuss how they work.</p>
+<p>The Python random module uses the Mersenne Twistor algorithm to generate pseudorandom numbers <span class="citation" data-cites="PythonSoftwareFoundation_RandomGeneratePseudorandom_2022">(<a href="../../bibliography.html#ref-PythonSoftwareFoundation_RandomGeneratePseudorandom_2022" role="doc-biblioref">Python Software Foundation, 2022</a>)</span>. The numpy.random package uses the permuted congruential generator algorithm <span class="citation" data-cites="NumPyDevelopers_RandomGeneratorNumPy_2022">(<a href="../../bibliography.html#ref-NumPyDevelopers_RandomGeneratorNumPy_2022" role="doc-biblioref">NumPy Developers, 2022</a>)</span>.</p>
+<p>The following are the important functions from the random module that we use.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>random.seed(a<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Initializes the random number generator. Any int can be used. If none is provided, then the system time is used. Using the same seed will generate the same sequence of pseudorandom numbers.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>random.randint(a, b)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns a random integer N such that <span class="math inline">\(a \leq N \leq b\)</span>.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>random.random()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns the next random floating point number in the range [0.0, 1.0).</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>random.gauss(mu, sigma)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns a random number selected from the normal distribution, also called the Gaussian distribution. mu is the mean, and sigma is the standard deviation.</p>
+<p>The following code is generally used to set up the random module for use in a program.</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="co"># initialize the generator</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">524287</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>It is a good practice to explicitly set the seed so that a program gives reproducible results. This can be very helpful during the debugging phase of code development.</p>
+<p>Numpy has its own random submodule. In versions before 1.17, the use of the Numpy random functions proceeded in much the same way as with the Python random module.</p>
+<p>Numpy random module functions before Numpy version 1.17:</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>numpy.random.seed(a<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Initializes the random number generator. Any int can be used for the value of a. If none is provided, then the system time is used. Using the same seed will generate the same sequence of pseudorandom numbers.</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>numpy.random.randint(a, b, size<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns a random integer N such that <span class="math inline">\(a \leq N \leq b\)</span>. The size keyword argument can be provided a tuple that specifies the shape of a numpy array of random integers that will be returned.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>numpy.random.random(size<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns the next random floating point number in the range [0.0, 1.0). The size keyword argument can be provided a tuple that specifies the shape of a numpy array of random floats that will be returned.</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>numpy.random.normal(loc<span class="op">=</span><span class="fl">0.0</span>, scale<span class="op">=</span><span class="fl">1.0</span>, size<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Returns a random number selected from the normal distribution, also called the Gaussian distribution. loc is the mean, and scale is the standard deviation. The size keyword argument can be provided a tuple that specifies the shape of a numpy array of random floats selected from the normal distribution that will be returned.</p>
+<p>Starting with Numpy version 1.17, while the functions listed above can still be used, the best use recommendation has changed. The goal of the new version usage is to avoid problems with the seed being unintentionally reset by complex codes. The new approach allows separate copies (instances, to use Object Oriented Programming language) of the random number generator to be created that are independent of random number generators used in other modules. The following code shows how to create a copy of the random number generator.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> numpy.random.default_rng(seed<span class="op">=</span><span class="va">None</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The variable name rng will now refer to a separate copy of the numpy random module with scope restricted to the program unit in which it was defined. You can use any valid Python variable name instead of rng. If a seed number is not provided, then one generated from the computer operating system will be used.</p>
+<p>Here is an example of code in a Jupyter notebook that uses the new Numpy random number generator approach.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters/Ch09/Figures/Figure9_UsingNumpyRandomNmbMod.png" class="img-fluid figure-img" style="width:75.0%"></p>
+<figcaption>Code segment in a Jupyter notebook for using the Numpy random number generator.</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="random-walks" class="level2">
+<h2 class="anchored" data-anchor-id="random-walks">Random Walks</h2>
+<section id="definition-1" class="level3">
+<h3 class="anchored" data-anchor-id="definition-1">Definition</h3>
+<p>A <strong>random walk</strong> is a process in which an object moves away from a starting position at random. Lattice random walks are a simple case of random walks where the object is assumed to move on a regular grid of sites. It is a series of steps taken in random directions. The steps can be considered to be taken in any kind of space that is of interest. In the simplest case, the walk starts at zero and then at each step a +1 or -1 is added to the current position to yield an updated position. The walk would be the list of integers giving the position at each time.</p>
+<p>More generally, a random walk on a lattice envisions the walk occurring on a regular grid such as the one-dimensional grid shown in <a href="#fig-RandomWalkOn1DLattice" class="quarto-xref">Figure&nbsp;<span>2</span></a>. In a lattice random walk, each direction for taking a step is assigned a probability and at each time step the walker chooses a direction according to the assigned probability. <a href="#fig-RandomWalkOn1DLattice" class="quarto-xref">Figure&nbsp;<span>2</span></a> shows one possible series of steps.</p>
+<div id="fig-RandomWalkOn1DLattice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RandomWalkOn1DLattice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/RandomWalkOn1DLattice.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RandomWalkOn1DLattice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Random walk on a one-dimensional lattice.
+</figcaption>
+</figure>
+</div>
+<p>A Monte Carlo simulation of a random walk will execute many separate walks and then perform statistical analyses of whatever property that is of interest.</p>
+</section>
+<section id="one-dimensional-random-walk" class="level3">
+<h3 class="anchored" data-anchor-id="one-dimensional-random-walk">One-dimensional Random Walk</h3>
+<p>Let’s consider a simple situation that would not be described well by a deterministic model. Consider a bar with its entrance in a narrow alley. If someone exits the bar, then they can only move right, left, or stay in place. Now, imagine a man has been consuming alcoholic beverages in the bar for a couple of hours. Needless to say, he is rather intoxicated, so he decides to walk home (at least he knows not to drink and drive!). He leaves the bar, which means stepping into the alley where he can only move left or right. Given his level of intoxication, the man cannot think clearly or even walk in a straight line. He steps erratically left or right with no discernable pattern to his choice. His walk in the alley is random.</p>
+<p>We will not be able to model this man’s walking behavior using a deterministic model, but we can still simulate the man’s motion using a stochastic model and look for possible patterns in his behavior. Models that simulate the behavior of a system based on an element of randomness are called Monte Carlo simulations. We will create a Monte Carlo simulation of the drunk man’s walking behavior called, appropriately enough, the random walk simulation. This type of model can be applied much more generally than simply describing the behavior of an intoxicated man, but this scenario is an easy one to visualize as we develop our understanding of stochastic simulations.</p>
+<p>Recall our general problem-solving strategy:</p>
+<p><strong>Analysis:</strong> Analyze the problem</p>
+<p><strong>Design:</strong> Describe the data and develop algorithms</p>
+<p><strong>Implementation:</strong> Represent data using programming language data structures and implement the algorithms with specific programming language code</p>
+<p><strong>Testing:</strong> Test and debug the code using test data</p>
+<p>Let’s analyze our problem: simulating the random walk of our intoxicated man. We note that the man can only move along the axis, so it is an inherently one-dimensional problem. The man will choose to take a step leftwards or rightwards with equal probability.</p>
+<div id="fig-AlleyForDrunksWalk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-AlleyForDrunksWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/drunkInAlley.png" class="img-fluid figure-img" style="width:65.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-AlleyForDrunksWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Narrow alley for the drunk’s walk. The origin of the axis is at the door to the bar.
+</figcaption>
+</figure>
+</div>
+<p>Now we will move on to designing our model. We will assume the man moves on the x-axis, as shown in <a href="#fig-AlleyForDrunksWalk" class="quarto-xref">Figure&nbsp;<span>3</span></a>. His position at a particular time <em>t</em> is given by his x-coordinate, <em>x(t)</em>. We will make the following simplifying assumptions:</p>
+<ul>
+<li><p>The man attempts a step at equal time intervals.</p></li>
+<li><p>The man chooses to step left or right with equal probability, like a coin toss.</p></li>
+<li><p>All steps have length of 1 spatial unit.</p></li>
+</ul>
+<p>Data structures:</p>
+<p><em>N</em> – total number of steps to simulate</p>
+<p><em>i</em> – the particular step currently being considered</p>
+<p><em>xi</em> – the position at step i</p>
+<p>x_list – a list containing the position at each step</p>
+<p>Here’s an initial pseudocode solution to the simulation:</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre><code>PROGRAM randomWalk1d
+    Initialize the drunk's position at the origin: xi = 0
+    Set up a list to contain the drunk’s position at each step:
+    defines x_list
+    # set up a loop to execute N steps
+    FOR i in the list (0,1,2,...N) DO
+        Generate a random step 
+        Update xi
+        Add xi to x_list 
+    ENDFOR
+    Create a graph of position as a function of time
+ENDPROGRAM</code></pre>
+</div>
+<p>Let us take a more detailed look at the program step</p>
+<p>Generate a random step</p>
+<p>We will implement this step as a function named step(xi) that takes the current position xi and produces the next position, which is returned.</p>
+<p>Here is a pseudocode version of the step(xi) function.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre><code>FUNCTION step
+    INPUT: xi
+    Choose a direction (left or right) at random
+    IF left THEN
+      xi = xi - 1
+    ELSE
+      xi = xi + 1
+    ENDIF
+    OUTPUT: xi
+ENDFUNCTION</code></pre>
+</div>
+<p>We will move on to the Implementation portion of our problem-solving strategy. Let us turn our attention to how we can generate random numbers in Python. The reality is that we cannot generate truly random numbers, but we can generate pseudorandom numbers that can pass tests for randomness as long as we do not try to generate too many of them.</p>
+<p>We will use the Python random module to generate our pseudorandom numbers. We start our use of these functions with an import command:</p>
+<p>import random as rn</p>
+<p>One of the first steps in the main part of our program will be to set up the random number generator by providing a seed. We do this so that we can generate the same sequence of random numbers to aid in debugging the program.</p>
+<p>So, how do we choose the left or right direction at random? We can use the random() function to generate a number between 0 and 1. If the number is less than 0.5 then we choose left for the direction. If the number is greater than or equal to 0.5 then we choose right for the direction. Here’s Python code for the step(xi) function:</p>
+<div class="sourceCode" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi):</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.random()</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">&lt;</span> <span class="fl">0.5</span>:</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>        xi <span class="op">=</span> xi <span class="op">-</span><span class="dv">1</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a>        xi <span class="op">=</span> xi<span class="op">+</span><span class="dv">1</span></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This code assumes the random module was imported and renamed rn by the main program.</p>
+<p>A computer simulation of a random walk must assume a finite lattice size since the available memory for the simulation is finite. This fact means that we must decide how to handle the walker hitting a boundary. In the code being developed here, the step function must deal with the case of xi being on the boundary. There are two approaches to handling this situation. One is to assume reflective boundary conditions, which means that if the walker hits the boundary he just stays there. The other method is to use cyclic boundary conditions, which means that if the walker hits the boundary he actually goes to the other side, as if the x-axis wraps around on itself.</p>
+<p>Let’s implement the reflective boundary conditions. We need to define two more variables:</p>
+<p>lx – the lowest x value</p>
+<p>ux – the highest x value</p>
+<p>Here is the revised step function:</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi,lx,ux):</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.random()</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">&lt;</span> <span class="fl">0.5</span>:</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&gt;</span>lx:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&lt;</span> ux:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>A complete code for performing this one-dimensional simulation is shown in <a href="#fig-1DRandomWalkCode" class="quarto-xref">Figure&nbsp;<span>4</span></a>. The code is in the chapter file randomWalk1d.py. This code produces a plot of the position as a function of time (step number) shown in <a href="#fig-Figure9_x-t1dRandomWalk" class="quarto-xref">Figure&nbsp;<span>5</span></a>. The mean and standard deviation of the position is also calculated in lines 41-43.</p>
+<div id="fig-1DRandomWalkCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1DRandomWalkCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-1DRandomWalkCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-1DRandomWalkCode-1"><a href="#fig-1DRandomWalkCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-1DRandomWalkCode-2"><a href="#fig-1DRandomWalkCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: 1-d Random Walk</span></span>
+<span id="fig-1DRandomWalkCode-3"><a href="#fig-1DRandomWalkCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-1DRandomWalkCode-4"><a href="#fig-1DRandomWalkCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 9.23.2022.1</span></span>
+<span id="fig-1DRandomWalkCode-5"><a href="#fig-1DRandomWalkCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-1DRandomWalkCode-6"><a href="#fig-1DRandomWalkCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">        This program performs a 1-dimensional random</span></span>
+<span id="fig-1DRandomWalkCode-7"><a href="#fig-1DRandomWalkCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">        walk simulation.</span></span>
+<span id="fig-1DRandomWalkCode-8"><a href="#fig-1DRandomWalkCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-1DRandomWalkCode-9"><a href="#fig-1DRandomWalkCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">    9.23.2022.1: base</span></span>
+<span id="fig-1DRandomWalkCode-10"><a href="#fig-1DRandomWalkCode-10" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-1DRandomWalkCode-11"><a href="#fig-1DRandomWalkCode-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-1DRandomWalkCode-12"><a href="#fig-1DRandomWalkCode-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-1DRandomWalkCode-13"><a href="#fig-1DRandomWalkCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-1DRandomWalkCode-14"><a href="#fig-1DRandomWalkCode-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-15"><a href="#fig-1DRandomWalkCode-15" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi,lx,ux):</span>
+<span id="fig-1DRandomWalkCode-16"><a href="#fig-1DRandomWalkCode-16" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-1DRandomWalkCode-17"><a href="#fig-1DRandomWalkCode-17" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.random()</span>
+<span id="fig-1DRandomWalkCode-18"><a href="#fig-1DRandomWalkCode-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">&lt;</span> <span class="fl">0.5</span>:</span>
+<span id="fig-1DRandomWalkCode-19"><a href="#fig-1DRandomWalkCode-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&gt;</span> lx:</span>
+<span id="fig-1DRandomWalkCode-20"><a href="#fig-1DRandomWalkCode-20" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">-</span><span class="dv">1</span></span>
+<span id="fig-1DRandomWalkCode-21"><a href="#fig-1DRandomWalkCode-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-1DRandomWalkCode-22"><a href="#fig-1DRandomWalkCode-22" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&lt;</span> ux:</span>
+<span id="fig-1DRandomWalkCode-23"><a href="#fig-1DRandomWalkCode-23" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi<span class="op">+</span><span class="dv">1</span></span>
+<span id="fig-1DRandomWalkCode-24"><a href="#fig-1DRandomWalkCode-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi</span>
+<span id="fig-1DRandomWalkCode-25"><a href="#fig-1DRandomWalkCode-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-1DRandomWalkCode-26"><a href="#fig-1DRandomWalkCode-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-27"><a href="#fig-1DRandomWalkCode-27" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the grid</span></span>
+<span id="fig-1DRandomWalkCode-28"><a href="#fig-1DRandomWalkCode-28" aria-hidden="true" tabindex="-1"></a>lx <span class="op">=</span> <span class="op">-</span><span class="dv">100</span></span>
+<span id="fig-1DRandomWalkCode-29"><a href="#fig-1DRandomWalkCode-29" aria-hidden="true" tabindex="-1"></a>ux <span class="op">=</span> <span class="dv">100</span></span>
+<span id="fig-1DRandomWalkCode-30"><a href="#fig-1DRandomWalkCode-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-31"><a href="#fig-1DRandomWalkCode-31" aria-hidden="true" tabindex="-1"></a><span class="co"># set up random generator</span></span>
+<span id="fig-1DRandomWalkCode-32"><a href="#fig-1DRandomWalkCode-32" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">524287</span>)</span>
+<span id="fig-1DRandomWalkCode-33"><a href="#fig-1DRandomWalkCode-33" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">200</span></span>
+<span id="fig-1DRandomWalkCode-34"><a href="#fig-1DRandomWalkCode-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-35"><a href="#fig-1DRandomWalkCode-35" aria-hidden="true" tabindex="-1"></a><span class="co"># execute random walk</span></span>
+<span id="fig-1DRandomWalkCode-36"><a href="#fig-1DRandomWalkCode-36" aria-hidden="true" tabindex="-1"></a>xi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-1DRandomWalkCode-37"><a href="#fig-1DRandomWalkCode-37" aria-hidden="true" tabindex="-1"></a>xlist <span class="op">=</span> [xi]</span>
+<span id="fig-1DRandomWalkCode-38"><a href="#fig-1DRandomWalkCode-38" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(N):</span>
+<span id="fig-1DRandomWalkCode-39"><a href="#fig-1DRandomWalkCode-39" aria-hidden="true" tabindex="-1"></a>    xi<span class="op">=</span>step(xi,lx,ux)</span>
+<span id="fig-1DRandomWalkCode-40"><a href="#fig-1DRandomWalkCode-40" aria-hidden="true" tabindex="-1"></a>    xlist.append(xi)</span>
+<span id="fig-1DRandomWalkCode-41"><a href="#fig-1DRandomWalkCode-41" aria-hidden="true" tabindex="-1"></a>xnp <span class="op">=</span> np.array(xlist)</span>
+<span id="fig-1DRandomWalkCode-42"><a href="#fig-1DRandomWalkCode-42" aria-hidden="true" tabindex="-1"></a>xmean <span class="op">=</span> xnp.mean()</span>
+<span id="fig-1DRandomWalkCode-43"><a href="#fig-1DRandomWalkCode-43" aria-hidden="true" tabindex="-1"></a>xsd <span class="op">=</span> np.sqrt(xnp.var()<span class="op">/</span><span class="bu">float</span>(N<span class="op">-</span><span class="dv">1</span>))</span>
+<span id="fig-1DRandomWalkCode-44"><a href="#fig-1DRandomWalkCode-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-45"><a href="#fig-1DRandomWalkCode-45" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot of x - t</span></span>
+<span id="fig-1DRandomWalkCode-46"><a href="#fig-1DRandomWalkCode-46" aria-hidden="true" tabindex="-1"></a>plt.plot(xlist)</span>
+<span id="fig-1DRandomWalkCode-47"><a href="#fig-1DRandomWalkCode-47" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [steps]'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-1DRandomWalkCode-48"><a href="#fig-1DRandomWalkCode-48" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'x'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-1DRandomWalkCode-49"><a href="#fig-1DRandomWalkCode-49" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">'Position - Time'</span>, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="fig-1DRandomWalkCode-50"><a href="#fig-1DRandomWalkCode-50" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'randomwalk1d.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-1DRandomWalkCode-51"><a href="#fig-1DRandomWalkCode-51" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="fig-1DRandomWalkCode-52"><a href="#fig-1DRandomWalkCode-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-1DRandomWalkCode-53"><a href="#fig-1DRandomWalkCode-53" aria-hidden="true" tabindex="-1"></a><span class="co"># print position</span></span>
+<span id="fig-1DRandomWalkCode-54"><a href="#fig-1DRandomWalkCode-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'mean x = '</span>,xmean,<span class="st">' sd = '</span>,xsd)</span>
+<span id="fig-1DRandomWalkCode-55"><a href="#fig-1DRandomWalkCode-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'final position x = '</span>, xlist[<span class="op">-</span><span class="dv">1</span>])</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1DRandomWalkCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: :Python code for the 1D random walk.
+</figcaption>
+</figure>
+</div>
+<table width="100%" border="0">
+<tbody>
+<tr>
+<td>
+<div id="fig-Figure9_x-t1dRandomWalk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_x-t1dRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/randomWalk1d.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_x-t1dRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Plot of position versus time for one simulation.
+</figcaption>
+</figure>
+</div>
+</td>
+<td>
+<div id="fig-Figure9_D-t1DRandomWalk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_D-t1DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/randomwalk1d_D-t.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_D-t1DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Distance-time for a one-dimensional random walk.
+</figcaption>
+</figure>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<p>Another important random walk property to study is how the distance of the walker to the origin varies with time. For a one-dimensional random walk that starts at the origin, the distance to the origin is given by</p>
+<p><span class="math display">\[D = \left|x\right|\]</span></p>
+<p><a href="#fig-Figure9_D-t1DRandomWalk" class="quarto-xref">Figure&nbsp;<span>6</span></a> shows the distance as a function of time for a one-dimensional random walk on a grid defined by <span class="math inline">\(- 1000 &lt; x &lt; 1000\)</span>.</p>
+<p>While the distance appears to increase with time, there is a significant amount of noise in this property. This is a typical result for any measured property in a stochastic simulation just as it is for a measurement taken in a real world experiment. To obtain a better picture of the distance as a function of time we should repeat the experiment, that is the simulation, many times and calculate the mean distance as a function of time where the mean is calculated from our sample of many simulations.</p>
+<p>The key data structure for calculating the mean distance as a function of time is a numpy array that contains the distance to the origin at each time for each of the separate simulations. <a href="#tbl-Table9p1" class="quarto-xref">Table&nbsp;<span>1</span></a> shows the structure of this array.</p>
+<div id="tbl-Table9p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Distance array. N = number of steps in a simulation. S = total number of simulations.
+</figcaption>
+<div aria-describedby="tbl-Table9p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<style type="text/css">
+.tg  {border-collapse:collapse;border-spacing:0;}
+.tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+  font-weight:normal;overflow:hidden;padding:10px 5px;word-break:normal;}
+.tg .tg-0pky{border-color:inherit;text-align:left;vertical-align:top}
+.tg .tg-fymr{border-color:inherit;font-weight:bold;text-align:left;vertical-align:top}
+</style>
+<table class="tg">
+<thead>
+<tr>
+<th class="tg-0pky">
+<span style="font-weight:normal">D11</span>
+</th>
+<th class="tg-0pky">
+<span style="font-weight:normal">D12</span>
+</th>
+<th class="tg-0pky">
+<span style="font-weight:normal">D13</span>
+</th>
+<th class="tg-0pky">
+<span style="font-weight:normal">…</span>
+</th>
+<th class="tg-0pky">
+<span style="font-weight:normal">D1S</span>
+</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="tg-0pky">
+<span style="font-weight:normal">D21</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D22</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D23</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">…</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D2S</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0pky">
+<span style="font-weight:normal">D31</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D32</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D33</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">…</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">D3S</span>
+</td>
+</tr>
+<tr>
+<td class="tg-fymr">
+<span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span>
+</td>
+<td class="tg-fymr">
+<span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span>
+</td>
+<td class="tg-fymr">
+<span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span>
+</td>
+<td class="tg-fymr">
+<span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span>
+</td>
+<td class="tg-fymr">
+<span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span><br><span style="font-weight:bold"> .</span>
+</td>
+</tr>
+<tr>
+<td class="tg-0pky">
+<span style="font-weight:normal">DN1</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">DN2</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">DN3</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">…</span>
+</td>
+<td class="tg-0pky">
+<span style="font-weight:normal">DNS</span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><span class="math display">\[D_{tn} = \text{distance at time }t\text{ for simulation }n\]</span></p>
+<p>The mean distance at any particular time is calculated by averaging over all the columns of the row corresponding to the time of interest. <a href="#fig-MultiSimulationOf1DRandomWalk" class="quarto-xref">Figure&nbsp;<span>7</span></a> shows the revised code that performs repetitions of the simulation and then calculates the mean distance as a function of time. <a href="#fig-Figure9_randomWalk1d_D-t_mean" class="quarto-xref">Figure&nbsp;<span>8</span></a> shows a plot of the mean distance as a function of time (number of steps). Most of the random variation shown in <a href="#fig-Figure9_D-t1DRandomWalk" class="quarto-xref">Figure&nbsp;<span>6</span></a> has disappeared.</p>
+<div id="fig-MultiSimulationOf1DRandomWalk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-MultiSimulationOf1DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-MultiSimulationOf1DRandomWalk"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-MultiSimulationOf1DRandomWalk-1"><a href="#fig-MultiSimulationOf1DRandomWalk-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-2"><a href="#fig-MultiSimulationOf1DRandomWalk-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: 1-d Random Walk - Multi Sims Version</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-3"><a href="#fig-MultiSimulationOf1DRandomWalk-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-4"><a href="#fig-MultiSimulationOf1DRandomWalk-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 9.24.2022.1</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-5"><a href="#fig-MultiSimulationOf1DRandomWalk-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-6"><a href="#fig-MultiSimulationOf1DRandomWalk-6" aria-hidden="true" tabindex="-1"></a><span class="co">        This program performs a 1-dimensional random</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-7"><a href="#fig-MultiSimulationOf1DRandomWalk-7" aria-hidden="true" tabindex="-1"></a><span class="co">        walk simulation. It performs multiple simulations</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-8"><a href="#fig-MultiSimulationOf1DRandomWalk-8" aria-hidden="true" tabindex="-1"></a><span class="co">        and calculates the mean distance to the origin at each time.</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-9"><a href="#fig-MultiSimulationOf1DRandomWalk-9" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-10"><a href="#fig-MultiSimulationOf1DRandomWalk-10" aria-hidden="true" tabindex="-1"></a><span class="co">    9.24.2022.1: base</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-11"><a href="#fig-MultiSimulationOf1DRandomWalk-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-12"><a href="#fig-MultiSimulationOf1DRandomWalk-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-13"><a href="#fig-MultiSimulationOf1DRandomWalk-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-14"><a href="#fig-MultiSimulationOf1DRandomWalk-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-15"><a href="#fig-MultiSimulationOf1DRandomWalk-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-16"><a href="#fig-MultiSimulationOf1DRandomWalk-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-17"><a href="#fig-MultiSimulationOf1DRandomWalk-17" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi, lx, ux):</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-18"><a href="#fig-MultiSimulationOf1DRandomWalk-18" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-19"><a href="#fig-MultiSimulationOf1DRandomWalk-19" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.random()</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-20"><a href="#fig-MultiSimulationOf1DRandomWalk-20" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">&lt;</span> <span class="fl">0.5</span>:</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-21"><a href="#fig-MultiSimulationOf1DRandomWalk-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&gt;</span> lx:</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-22"><a href="#fig-MultiSimulationOf1DRandomWalk-22" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-23"><a href="#fig-MultiSimulationOf1DRandomWalk-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-24"><a href="#fig-MultiSimulationOf1DRandomWalk-24" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&lt;</span> ux:</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-25"><a href="#fig-MultiSimulationOf1DRandomWalk-25" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-26"><a href="#fig-MultiSimulationOf1DRandomWalk-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-27"><a href="#fig-MultiSimulationOf1DRandomWalk-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-28"><a href="#fig-MultiSimulationOf1DRandomWalk-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-29"><a href="#fig-MultiSimulationOf1DRandomWalk-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-30"><a href="#fig-MultiSimulationOf1DRandomWalk-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-31"><a href="#fig-MultiSimulationOf1DRandomWalk-31" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the grid</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-32"><a href="#fig-MultiSimulationOf1DRandomWalk-32" aria-hidden="true" tabindex="-1"></a>lx <span class="op">=</span> <span class="op">-</span><span class="dv">1000</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-33"><a href="#fig-MultiSimulationOf1DRandomWalk-33" aria-hidden="true" tabindex="-1"></a>ux <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-34"><a href="#fig-MultiSimulationOf1DRandomWalk-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-35"><a href="#fig-MultiSimulationOf1DRandomWalk-35" aria-hidden="true" tabindex="-1"></a><span class="co"># set up random generator</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-36"><a href="#fig-MultiSimulationOf1DRandomWalk-36" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">524287</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-37"><a href="#fig-MultiSimulationOf1DRandomWalk-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-38"><a href="#fig-MultiSimulationOf1DRandomWalk-38" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the simulations</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-39"><a href="#fig-MultiSimulationOf1DRandomWalk-39" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">500</span>  <span class="co"># number of steps in a simulation</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-40"><a href="#fig-MultiSimulationOf1DRandomWalk-40" aria-hidden="true" tabindex="-1"></a>S <span class="op">=</span> <span class="dv">5000</span>  <span class="co"># number of simulations</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-41"><a href="#fig-MultiSimulationOf1DRandomWalk-41" aria-hidden="true" tabindex="-1"></a>D_array <span class="op">=</span> np.empty((N <span class="op">+</span> <span class="dv">1</span>, S), dtype<span class="op">=</span><span class="st">'float'</span>)  <span class="co"># distance storage</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-42"><a href="#fig-MultiSimulationOf1DRandomWalk-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-43"><a href="#fig-MultiSimulationOf1DRandomWalk-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> s <span class="kw">in</span> <span class="bu">range</span>(S):</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-44"><a href="#fig-MultiSimulationOf1DRandomWalk-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># execute random walk</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-45"><a href="#fig-MultiSimulationOf1DRandomWalk-45" aria-hidden="true" tabindex="-1"></a>    x0 <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-46"><a href="#fig-MultiSimulationOf1DRandomWalk-46" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> x0</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-47"><a href="#fig-MultiSimulationOf1DRandomWalk-47" aria-hidden="true" tabindex="-1"></a>    D_array[<span class="dv">0</span>, s] <span class="op">=</span> <span class="fl">0.0</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-48"><a href="#fig-MultiSimulationOf1DRandomWalk-48" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-49"><a href="#fig-MultiSimulationOf1DRandomWalk-49" aria-hidden="true" tabindex="-1"></a>        x <span class="op">=</span> step(x, lx, ux)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-50"><a href="#fig-MultiSimulationOf1DRandomWalk-50" aria-hidden="true" tabindex="-1"></a>        D <span class="op">=</span> np.<span class="bu">abs</span>((x <span class="op">-</span> x0))</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-51"><a href="#fig-MultiSimulationOf1DRandomWalk-51" aria-hidden="true" tabindex="-1"></a>        D_array[t, s] <span class="op">=</span> D</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-52"><a href="#fig-MultiSimulationOf1DRandomWalk-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-53"><a href="#fig-MultiSimulationOf1DRandomWalk-53" aria-hidden="true" tabindex="-1"></a><span class="co"># calculate the mean distance at each time step and plot D-t</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-54"><a href="#fig-MultiSimulationOf1DRandomWalk-54" aria-hidden="true" tabindex="-1"></a>DMean <span class="op">=</span> np.mean(D_array, axis<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-55"><a href="#fig-MultiSimulationOf1DRandomWalk-55" aria-hidden="true" tabindex="-1"></a>plt.plot(DMean, linestyle<span class="op">=</span><span class="st">'-'</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-56"><a href="#fig-MultiSimulationOf1DRandomWalk-56" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'t [steps]'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-57"><a href="#fig-MultiSimulationOf1DRandomWalk-57" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'D'</span>, fontsize<span class="op">=</span><span class="dv">14</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-58"><a href="#fig-MultiSimulationOf1DRandomWalk-58" aria-hidden="true" tabindex="-1"></a>titleString <span class="op">=</span> <span class="st">'D-t Mean of '</span> <span class="op">+</span> <span class="bu">str</span>(S) <span class="op">+</span> <span class="st">' Simulations'</span></span>
+<span id="fig-MultiSimulationOf1DRandomWalk-59"><a href="#fig-MultiSimulationOf1DRandomWalk-59" aria-hidden="true" tabindex="-1"></a>plt.title(titleString, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-60"><a href="#fig-MultiSimulationOf1DRandomWalk-60" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'randomWalk1d_D-t_mean.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-MultiSimulationOf1DRandomWalk-61"><a href="#fig-MultiSimulationOf1DRandomWalk-61" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-MultiSimulationOf1DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: :Multi-simulation version of the one-dimensional random walk.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Figure9_randomWalk1d_D-t_mean" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_randomWalk1d_D-t_mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/randomWalk1d_D-t_mean.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_randomWalk1d_D-t_mean-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Mean distance as a function of time from 5000 simulation repetitions.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="two-dimensional-random-walk" class="level3">
+<h3 class="anchored" data-anchor-id="two-dimensional-random-walk">Two-dimensional Random Walk</h3>
+<p>Let’s give our intoxicated walker more room to roam around. We will place him in a large parking lot so that he can move about on a plane, a two-dimensional surface. We want to simulate his trajectory on the parking lot. Our model will be based on some simplifying assumptions, similar to the one-dimensional walk.</p>
+<ul>
+<li><p>The man attempts a step at equal time intervals.</p></li>
+<li><p>The man chooses to step north, south, east, or west with equal probability.</p></li>
+<li><p>All steps have length of 1 spatial unit.</p></li>
+</ul>
+<p>With these assumptions, our walker will roam about on a grid like chess pieces on a game board. The basic algorithm for performing the simulation will be the same as for the one-dimensional case. The major difference will be in the step function. It must now choose one of the four directions at random instead of either right or left. Here is a pseudocode version of the step function.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre><code>FUNCTION step
+    INPUT: xi,yi
+    Pick a random number r, from (1,2,3,4)
+    IF r is 1 THEN
+        Step east by incrementing xi
+    ELIF r is 2 THEN
+        Step west by decreasing xi
+    ELIF r is 3 THEN
+        Step north by increasing yi
+    ELIF r is 4 THEN
+        Step south by decreasing yi
+    ENDIF
+    OUTPUT: xi,yi
+ENDFUNCTION</code></pre>
+</div>
+<p>We must implement boundary conditions since the simulated grid will be finite. This will require minimum and maximum values for both the x and y coordinates. These values will be defined using the variables lx,ux,ly,uy. <a href="#fig-CodeFor2DRandomWalk" class="quarto-xref">Figure&nbsp;<span>9</span></a> gives the Python code for the two-dimensional step function with reflective boundaries. <a href="#fig-Figure9_randomWalk2d" class="quarto-xref">Figure&nbsp;<span>10</span></a> shows an example of the overall trajectory of this random walk.</p>
+<div id="fig-CodeFor2DRandomWalk" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CodeFor2DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-CodeFor2DRandomWalk"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-CodeFor2DRandomWalk-1"><a href="#fig-CodeFor2DRandomWalk-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-CodeFor2DRandomWalk-2"><a href="#fig-CodeFor2DRandomWalk-2" aria-hidden="true" tabindex="-1"></a><span class="co">Title: Random Walk in 2D: base</span></span>
+<span id="fig-CodeFor2DRandomWalk-3"><a href="#fig-CodeFor2DRandomWalk-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-CodeFor2DRandomWalk-4"><a href="#fig-CodeFor2DRandomWalk-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 3-21-2019.1</span></span>
+<span id="fig-CodeFor2DRandomWalk-5"><a href="#fig-CodeFor2DRandomWalk-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: This program performs a random walk on a</span></span>
+<span id="fig-CodeFor2DRandomWalk-6"><a href="#fig-CodeFor2DRandomWalk-6" aria-hidden="true" tabindex="-1"></a><span class="co">         two-dimensional lattice. It uses reflective</span></span>
+<span id="fig-CodeFor2DRandomWalk-7"><a href="#fig-CodeFor2DRandomWalk-7" aria-hidden="true" tabindex="-1"></a><span class="co">         boundary conditions.</span></span>
+<span id="fig-CodeFor2DRandomWalk-8"><a href="#fig-CodeFor2DRandomWalk-8" aria-hidden="true" tabindex="-1"></a><span class="co">version history:</span></span>
+<span id="fig-CodeFor2DRandomWalk-9"><a href="#fig-CodeFor2DRandomWalk-9" aria-hidden="true" tabindex="-1"></a><span class="co">        3-21-2019.1: base</span></span>
+<span id="fig-CodeFor2DRandomWalk-10"><a href="#fig-CodeFor2DRandomWalk-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-11"><a href="#fig-CodeFor2DRandomWalk-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-CodeFor2DRandomWalk-12"><a href="#fig-CodeFor2DRandomWalk-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pylab <span class="im">as</span> plt</span>
+<span id="fig-CodeFor2DRandomWalk-13"><a href="#fig-CodeFor2DRandomWalk-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-CodeFor2DRandomWalk-14"><a href="#fig-CodeFor2DRandomWalk-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-CodeFor2DRandomWalk-15"><a href="#fig-CodeFor2DRandomWalk-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> turtle <span class="im">as</span> trt</span>
+<span id="fig-CodeFor2DRandomWalk-16"><a href="#fig-CodeFor2DRandomWalk-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-17"><a href="#fig-CodeFor2DRandomWalk-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-18"><a href="#fig-CodeFor2DRandomWalk-18" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xi, yi, lx, ux, ly, uy):</span>
+<span id="fig-CodeFor2DRandomWalk-19"><a href="#fig-CodeFor2DRandomWalk-19" aria-hidden="true" tabindex="-1"></a>    <span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-CodeFor2DRandomWalk-20"><a href="#fig-CodeFor2DRandomWalk-20" aria-hidden="true" tabindex="-1"></a>    r <span class="op">=</span> rn.randint(<span class="dv">1</span>, <span class="dv">4</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-21"><a href="#fig-CodeFor2DRandomWalk-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> r <span class="op">==</span> <span class="dv">1</span>:</span>
+<span id="fig-CodeFor2DRandomWalk-22"><a href="#fig-CodeFor2DRandomWalk-22" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go east</span></span>
+<span id="fig-CodeFor2DRandomWalk-23"><a href="#fig-CodeFor2DRandomWalk-23" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&lt;</span> ux:</span>
+<span id="fig-CodeFor2DRandomWalk-24"><a href="#fig-CodeFor2DRandomWalk-24" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="fig-CodeFor2DRandomWalk-25"><a href="#fig-CodeFor2DRandomWalk-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> r <span class="op">==</span> <span class="dv">2</span>:</span>
+<span id="fig-CodeFor2DRandomWalk-26"><a href="#fig-CodeFor2DRandomWalk-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go west</span></span>
+<span id="fig-CodeFor2DRandomWalk-27"><a href="#fig-CodeFor2DRandomWalk-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> xi <span class="op">&gt;</span> lx:</span>
+<span id="fig-CodeFor2DRandomWalk-28"><a href="#fig-CodeFor2DRandomWalk-28" aria-hidden="true" tabindex="-1"></a>            xi <span class="op">=</span> xi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="fig-CodeFor2DRandomWalk-29"><a href="#fig-CodeFor2DRandomWalk-29" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> r <span class="op">==</span> <span class="dv">3</span>:</span>
+<span id="fig-CodeFor2DRandomWalk-30"><a href="#fig-CodeFor2DRandomWalk-30" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go north</span></span>
+<span id="fig-CodeFor2DRandomWalk-31"><a href="#fig-CodeFor2DRandomWalk-31" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> yi <span class="op">&lt;</span> uy:</span>
+<span id="fig-CodeFor2DRandomWalk-32"><a href="#fig-CodeFor2DRandomWalk-32" aria-hidden="true" tabindex="-1"></a>            yi <span class="op">=</span> yi <span class="op">+</span> <span class="dv">1</span></span>
+<span id="fig-CodeFor2DRandomWalk-33"><a href="#fig-CodeFor2DRandomWalk-33" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-CodeFor2DRandomWalk-34"><a href="#fig-CodeFor2DRandomWalk-34" aria-hidden="true" tabindex="-1"></a>        <span class="co"># go south</span></span>
+<span id="fig-CodeFor2DRandomWalk-35"><a href="#fig-CodeFor2DRandomWalk-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> yi <span class="op">&gt;</span> ly:</span>
+<span id="fig-CodeFor2DRandomWalk-36"><a href="#fig-CodeFor2DRandomWalk-36" aria-hidden="true" tabindex="-1"></a>            yi <span class="op">=</span> yi <span class="op">-</span> <span class="dv">1</span></span>
+<span id="fig-CodeFor2DRandomWalk-37"><a href="#fig-CodeFor2DRandomWalk-37" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> xi, yi</span>
+<span id="fig-CodeFor2DRandomWalk-38"><a href="#fig-CodeFor2DRandomWalk-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-39"><a href="#fig-CodeFor2DRandomWalk-39" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-40"><a href="#fig-CodeFor2DRandomWalk-40" aria-hidden="true" tabindex="-1"></a><span class="co"># --Main Program</span></span>
+<span id="fig-CodeFor2DRandomWalk-41"><a href="#fig-CodeFor2DRandomWalk-41" aria-hidden="true" tabindex="-1"></a><span class="co"># set up random generator</span></span>
+<span id="fig-CodeFor2DRandomWalk-42"><a href="#fig-CodeFor2DRandomWalk-42" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">42</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-43"><a href="#fig-CodeFor2DRandomWalk-43" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-44"><a href="#fig-CodeFor2DRandomWalk-44" aria-hidden="true" tabindex="-1"></a><span class="co"># define the grid</span></span>
+<span id="fig-CodeFor2DRandomWalk-45"><a href="#fig-CodeFor2DRandomWalk-45" aria-hidden="true" tabindex="-1"></a>lx <span class="op">=</span> <span class="op">-</span><span class="dv">40</span></span>
+<span id="fig-CodeFor2DRandomWalk-46"><a href="#fig-CodeFor2DRandomWalk-46" aria-hidden="true" tabindex="-1"></a>ux <span class="op">=</span> <span class="dv">40</span></span>
+<span id="fig-CodeFor2DRandomWalk-47"><a href="#fig-CodeFor2DRandomWalk-47" aria-hidden="true" tabindex="-1"></a>ly <span class="op">=</span> <span class="op">-</span><span class="dv">40</span></span>
+<span id="fig-CodeFor2DRandomWalk-48"><a href="#fig-CodeFor2DRandomWalk-48" aria-hidden="true" tabindex="-1"></a>uy <span class="op">=</span> <span class="dv">40</span></span>
+<span id="fig-CodeFor2DRandomWalk-49"><a href="#fig-CodeFor2DRandomWalk-49" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-50"><a href="#fig-CodeFor2DRandomWalk-50" aria-hidden="true" tabindex="-1"></a><span class="co"># set up the simulation</span></span>
+<span id="fig-CodeFor2DRandomWalk-51"><a href="#fig-CodeFor2DRandomWalk-51" aria-hidden="true" tabindex="-1"></a>N <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="fig-CodeFor2DRandomWalk-52"><a href="#fig-CodeFor2DRandomWalk-52" aria-hidden="true" tabindex="-1"></a>xi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-CodeFor2DRandomWalk-53"><a href="#fig-CodeFor2DRandomWalk-53" aria-hidden="true" tabindex="-1"></a>yi <span class="op">=</span> <span class="dv">0</span></span>
+<span id="fig-CodeFor2DRandomWalk-54"><a href="#fig-CodeFor2DRandomWalk-54" aria-hidden="true" tabindex="-1"></a>position_array <span class="op">=</span> np.zeros((N <span class="op">+</span> <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="fig-CodeFor2DRandomWalk-55"><a href="#fig-CodeFor2DRandomWalk-55" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-56"><a href="#fig-CodeFor2DRandomWalk-56" aria-hidden="true" tabindex="-1"></a><span class="co"># execute random walk</span></span>
+<span id="fig-CodeFor2DRandomWalk-57"><a href="#fig-CodeFor2DRandomWalk-57" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, N <span class="op">+</span> <span class="dv">1</span>):</span>
+<span id="fig-CodeFor2DRandomWalk-58"><a href="#fig-CodeFor2DRandomWalk-58" aria-hidden="true" tabindex="-1"></a>    xi, yi <span class="op">=</span> step(xi, yi, lx, ux, ly, uy)</span>
+<span id="fig-CodeFor2DRandomWalk-59"><a href="#fig-CodeFor2DRandomWalk-59" aria-hidden="true" tabindex="-1"></a>    position_array[i, <span class="dv">0</span>] <span class="op">=</span> xi</span>
+<span id="fig-CodeFor2DRandomWalk-60"><a href="#fig-CodeFor2DRandomWalk-60" aria-hidden="true" tabindex="-1"></a>    position_array[i, <span class="dv">1</span>] <span class="op">=</span> yi</span>
+<span id="fig-CodeFor2DRandomWalk-61"><a href="#fig-CodeFor2DRandomWalk-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-62"><a href="#fig-CodeFor2DRandomWalk-62" aria-hidden="true" tabindex="-1"></a>x_array <span class="op">=</span> position_array[:, <span class="dv">0</span>]</span>
+<span id="fig-CodeFor2DRandomWalk-63"><a href="#fig-CodeFor2DRandomWalk-63" aria-hidden="true" tabindex="-1"></a>y_array <span class="op">=</span> position_array[:, <span class="dv">1</span>]</span>
+<span id="fig-CodeFor2DRandomWalk-64"><a href="#fig-CodeFor2DRandomWalk-64" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-CodeFor2DRandomWalk-65"><a href="#fig-CodeFor2DRandomWalk-65" aria-hidden="true" tabindex="-1"></a><span class="co"># create plot</span></span>
+<span id="fig-CodeFor2DRandomWalk-66"><a href="#fig-CodeFor2DRandomWalk-66" aria-hidden="true" tabindex="-1"></a>x0 <span class="op">=</span> x_array[<span class="dv">0</span>]  <span class="co"># initial x</span></span>
+<span id="fig-CodeFor2DRandomWalk-67"><a href="#fig-CodeFor2DRandomWalk-67" aria-hidden="true" tabindex="-1"></a>y0 <span class="op">=</span> y_array[<span class="dv">0</span>]  <span class="co"># initial y</span></span>
+<span id="fig-CodeFor2DRandomWalk-68"><a href="#fig-CodeFor2DRandomWalk-68" aria-hidden="true" tabindex="-1"></a>xf <span class="op">=</span> x_array[<span class="op">-</span><span class="dv">1</span>]  <span class="co"># final x</span></span>
+<span id="fig-CodeFor2DRandomWalk-69"><a href="#fig-CodeFor2DRandomWalk-69" aria-hidden="true" tabindex="-1"></a>yf <span class="op">=</span> y_array[<span class="op">-</span><span class="dv">1</span>]  <span class="co"># final y</span></span>
+<span id="fig-CodeFor2DRandomWalk-70"><a href="#fig-CodeFor2DRandomWalk-70" aria-hidden="true" tabindex="-1"></a>plt.plot(x_array, y_array)</span>
+<span id="fig-CodeFor2DRandomWalk-71"><a href="#fig-CodeFor2DRandomWalk-71" aria-hidden="true" tabindex="-1"></a>plt.plot(x0, y0, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="fig-CodeFor2DRandomWalk-72"><a href="#fig-CodeFor2DRandomWalk-72" aria-hidden="true" tabindex="-1"></a>         markeredgecolor<span class="op">=</span><span class="st">'green'</span>, markerfacecolor<span class="op">=</span><span class="st">'green'</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-73"><a href="#fig-CodeFor2DRandomWalk-73" aria-hidden="true" tabindex="-1"></a>plt.plot(xf, yf, linestyle<span class="op">=</span><span class="st">''</span>, marker<span class="op">=</span><span class="st">'o'</span>, markersize<span class="op">=</span><span class="dv">8</span>,</span>
+<span id="fig-CodeFor2DRandomWalk-74"><a href="#fig-CodeFor2DRandomWalk-74" aria-hidden="true" tabindex="-1"></a>         markeredgecolor<span class="op">=</span><span class="st">'red'</span>, markerfacecolor<span class="op">=</span><span class="st">'red'</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-75"><a href="#fig-CodeFor2DRandomWalk-75" aria-hidden="true" tabindex="-1"></a>plt.xlim(<span class="op">-</span><span class="dv">20</span>, <span class="dv">20</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-76"><a href="#fig-CodeFor2DRandomWalk-76" aria-hidden="true" tabindex="-1"></a>plt.ylim(<span class="op">-</span><span class="dv">20</span>, <span class="dv">20</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-77"><a href="#fig-CodeFor2DRandomWalk-77" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'randomWalk2d.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-CodeFor2DRandomWalk-78"><a href="#fig-CodeFor2DRandomWalk-78" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CodeFor2DRandomWalk-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: :Code for random walk on a 2-d lattice.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Figure9_randomWalk2d" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_randomWalk2d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/randomWalk2d.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_randomWalk2d-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Trajectory of a random walk on a 2-d lattice. Green shows origin. Red shows final position.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="cellular-automaton-model" class="level2">
+<h2 class="anchored" data-anchor-id="cellular-automaton-model">Cellular Automaton Model</h2>
+<p>Cellular automata can be considered as a particular abstract framework for describing the real world, that is, a modelling framework, or as a kind of mathematical object that can be used to build models or investigate computational problems <span class="citation" data-cites="BertoTagliabue_CellularAutomata_2022">(<a href="../../bibliography.html#ref-BertoTagliabue_CellularAutomata_2022" role="doc-biblioref">Berto &amp; Tagliabue, 2022</a>)</span>. We will start with a formal, mathematical definition of a cellular automaton. A cellular automaton model is defined as</p>
+<ul>
+<li><p>a discrete lattice of sites or cells in d dimensions, <em>L</em></p></li>
+<li><p>operating using discrete time steps</p></li>
+<li><p>a discrete set of possible cell values, <em>S</em></p></li>
+<li><p>a defined neighborhood, <em>N</em> of each cell in <em>L</em></p></li>
+<li><p>a transition rule, <span class="math inline">\(\Phi\)</span>, that specifies how the state of a cell will be updated depending on its current value and the values of sites in the neighborhood.</p></li>
+</ul>
+<p>We will consider the cellular automaton to be the collection <span class="math inline">\(〈L,S,N,\Phi 〉\)</span>. A specific example will be defined in the next section, which should make this definition less abstract. Cellular automata have been used to model</p>
+<ul>
+<li><p>computational machines</p></li>
+<li><p>growth of biological systems such as biofilms</p></li>
+<li><p>evolution of life</p></li>
+<li><p>phase transitions in magnetic materials</p></li>
+<li><p>urban development</p></li>
+</ul>
+<p>Cellular automata are often used to show how complex patterns can be the result of simple rules governing the behavior of the system being considered.</p>
+<section id="deterministic-cellular-automata" class="level3">
+<h3 class="anchored" data-anchor-id="deterministic-cellular-automata">Deterministic Cellular Automata</h3>
+<p>We will define a simple one-dimensional cellular automaton. The lattice <em>L</em> is an infinite, one-dimensional set of cells, as shown in <a href="#fig-1DLattice" class="quarto-xref">Figure&nbsp;<span>11</span></a>.</p>
+<div id="fig-1DLattice" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-1DLattice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/1dLattice.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-1DLattice-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: One-dimensional lattice of cells for a cellular automaton.
+</figcaption>
+</figure>
+</div>
+<p>The possible cell values will be <span class="math inline">\(S = \left\{0,1\right\}\)</span>. We will visualize a cell with state 0 as white and state 1 as black. The neighborhood, <em>N</em>, of a cell will be defined as the nearest neighbors of the cell: the cell to the left and the cell to the right. A particular combination of neighbors and center will be symbolized by LCR.</p>
+<p>The transition rule will be a new assignment of the C state based on the current value of the LCR combination. There are eight possible LCR combinations for this class of cellular automata, shown in Table 9.2. There are two possible new values for the C cell given a specific LCR combination. Therefore, there are 2<sup>8</sup> possible transition rules for this class of cellular automata.</p>
+<p>We will enumerate each possibility by an integer from 1 to 256. The transition rule will be given by the binary representation of rule number given by the base 10 integer. For example, Rule 150 has the binary representation 10010110. Each of the eight digits in this representation gives the transition rule a specific LCR combination. <a href="#tbl-Table9p2" class="quarto-xref">Table&nbsp;<span>2</span></a> illustrates how this assignment can be made.</p>
+<div id="tbl-Table9p2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: A specific transition rule (Rule 150) for the class of cellular automata being considered.
+</figcaption>
+<div aria-describedby="tbl-Table9p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: center;"><strong>L</strong></th>
+<th style="text-align: center;"><strong>C</strong></th>
+<th style="text-align: center;"><strong>R</strong></th>
+<th style="text-align: center;"><strong>new C</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">1</td>
+<td style="text-align: center;">1</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+<td style="text-align: center;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Now we must construct a computer simulation of this simple cellular automaton model. We will base the code on one developed by Cyrille Rossant <span class="citation" data-cites="Rossant_IPythonInteractiveComputing_2018">(<a href="../../bibliography.html#ref-Rossant_IPythonInteractiveComputing_2018" role="doc-biblioref">Rossant, 2018</a>)</span>.</p>
+<div id="tbl-Table9p3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Data structures required for the one-dimensional cellular automaton simulation.
+</figcaption>
+<div aria-describedby="tbl-Table9p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 7%">
+<col style="width: 5%">
+<col style="width: 87%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>Variable</strong></th>
+<th><strong>Type</strong></th>
+<th><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>size</td>
+<td>int</td>
+<td>The number of cells in the lattice.</td>
+</tr>
+<tr class="even">
+<td>steps</td>
+<td>int</td>
+<td>The number of time steps to simulate.</td>
+</tr>
+<tr class="odd">
+<td>rule</td>
+<td>int</td>
+<td>The state transition rule given as a decimal number.</td>
+</tr>
+<tr class="even">
+<td>rule_b</td>
+<td>ndarray</td>
+<td>The state transition rule given as a binary number represented in a numpy array.</td>
+</tr>
+<tr class="odd">
+<td>x</td>
+<td>ndarray</td>
+<td>A 2d numpy array where each row gives the state of the cellular automaton at a specific time. The array contains the entire simulated evolution of the automaton.</td>
+</tr>
+<tr class="even">
+<td>LCR_array</td>
+<td>ndarray</td>
+<td>Each column of the array gives the Left, Center, and Right state values for a particular cell in the automaton. Used in step function.</td>
+</tr>
+<tr class="odd">
+<td>xs</td>
+<td>ndarray</td>
+<td>A 1-dim array that gives the cell states for each cell in the automaton at one time. Used in the step function.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Since the cellular automaton is being simulated by a computer, the lattice used to define the automaton must by finite. This means we must specify how the neighbors are defined for the cells all the way on the left and all the way on the right of the lattice. We will use periodic boundary conditions. This means that for the cell all the way on the left, the left neighbor will be the cell all the way on the right of the lattice. For the cell all the way on the right, the right neighbor will be the cell all the way on the left of the lattice. <a href="#fig-Figure9_CA_Code" class="quarto-xref">Figure&nbsp;<span>12</span></a> shows the code contained in the file CA_sim.py for simulating the simple one-dimensional cellular automaton. <a href="#fig-Rule150CA" class="quarto-xref">Figure&nbsp;<span>13</span></a> shows the output from the simulation for a Rule 150 cellular automaton with an initial state comprised of one active cell in the middle of the lattice.</p>
+<div id="fig-Figure9_CA_Code" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_CA_Code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure9_CA_Code"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure9_CA_Code-1"><a href="#fig-Figure9_CA_Code-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_CA_Code-2"><a href="#fig-Figure9_CA_Code-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: 1-d Cellular Automaton Simulation</span></span>
+<span id="fig-Figure9_CA_Code-3"><a href="#fig-Figure9_CA_Code-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: Based on code from Rossant, C. (2018).</span></span>
+<span id="fig-Figure9_CA_Code-4"><a href="#fig-Figure9_CA_Code-4" aria-hidden="true" tabindex="-1"></a><span class="co">        IPython Interactive Computing and Visualization Cookbook—</span></span>
+<span id="fig-Figure9_CA_Code-5"><a href="#fig-Figure9_CA_Code-5" aria-hidden="true" tabindex="-1"></a><span class="co">        Second Edition. Packt Publishing.</span></span>
+<span id="fig-Figure9_CA_Code-6"><a href="#fig-Figure9_CA_Code-6" aria-hidden="true" tabindex="-1"></a><span class="co">        Revisions by C.D. Wentworth</span></span>
+<span id="fig-Figure9_CA_Code-7"><a href="#fig-Figure9_CA_Code-7" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 9.29.2022.1</span></span>
+<span id="fig-Figure9_CA_Code-8"><a href="#fig-Figure9_CA_Code-8" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure9_CA_Code-9"><a href="#fig-Figure9_CA_Code-9" aria-hidden="true" tabindex="-1"></a><span class="co">        This program simulates a one-dimensional deterministic</span></span>
+<span id="fig-Figure9_CA_Code-10"><a href="#fig-Figure9_CA_Code-10" aria-hidden="true" tabindex="-1"></a><span class="co">        cellular automaton.</span></span>
+<span id="fig-Figure9_CA_Code-11"><a href="#fig-Figure9_CA_Code-11" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-Figure9_CA_Code-12"><a href="#fig-Figure9_CA_Code-12" aria-hidden="true" tabindex="-1"></a><span class="co">    9.29.2022.1: base</span></span>
+<span id="fig-Figure9_CA_Code-13"><a href="#fig-Figure9_CA_Code-13" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_CA_Code-14"><a href="#fig-Figure9_CA_Code-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure9_CA_Code-15"><a href="#fig-Figure9_CA_Code-15" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Figure9_CA_Code-16"><a href="#fig-Figure9_CA_Code-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_CA_Code-17"><a href="#fig-Figure9_CA_Code-17" aria-hidden="true" tabindex="-1"></a>u <span class="op">=</span> np.array([[<span class="dv">4</span>], [<span class="dv">2</span>], [<span class="dv">1</span>]])</span>
+<span id="fig-Figure9_CA_Code-18"><a href="#fig-Figure9_CA_Code-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_CA_Code-19"><a href="#fig-Figure9_CA_Code-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> step(xs, rule_b):</span>
+<span id="fig-Figure9_CA_Code-20"><a href="#fig-Figure9_CA_Code-20" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="fig-Figure9_CA_Code-21"><a href="#fig-Figure9_CA_Code-21" aria-hidden="true" tabindex="-1"></a><span class="co">    Compute a single state of an elementary cellular</span></span>
+<span id="fig-Figure9_CA_Code-22"><a href="#fig-Figure9_CA_Code-22" aria-hidden="true" tabindex="-1"></a><span class="co">    automaton.</span></span>
+<span id="fig-Figure9_CA_Code-23"><a href="#fig-Figure9_CA_Code-23" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="fig-Figure9_CA_Code-24"><a href="#fig-Figure9_CA_Code-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the array that gives the LCR state values</span></span>
+<span id="fig-Figure9_CA_Code-25"><a href="#fig-Figure9_CA_Code-25" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for each cell.</span></span>
+<span id="fig-Figure9_CA_Code-26"><a href="#fig-Figure9_CA_Code-26" aria-hidden="true" tabindex="-1"></a>    LCR_array <span class="op">=</span> np.vstack((np.roll(xs, <span class="dv">1</span>), xs,</span>
+<span id="fig-Figure9_CA_Code-27"><a href="#fig-Figure9_CA_Code-27" aria-hidden="true" tabindex="-1"></a>                   np.roll(xs, <span class="op">-</span><span class="dv">1</span>))).astype(np.int8)</span>
+<span id="fig-Figure9_CA_Code-28"><a href="#fig-Figure9_CA_Code-28" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We get the LCR pattern numbers between 0 and 7</span></span>
+<span id="fig-Figure9_CA_Code-29"><a href="#fig-Figure9_CA_Code-29" aria-hidden="true" tabindex="-1"></a>    <span class="co"># for each cell in the automaton.</span></span>
+<span id="fig-Figure9_CA_Code-30"><a href="#fig-Figure9_CA_Code-30" aria-hidden="true" tabindex="-1"></a>    z <span class="op">=</span> np.<span class="bu">sum</span>(LCR_array <span class="op">*</span> u, axis<span class="op">=</span><span class="dv">0</span>).astype(np.int8)</span>
+<span id="fig-Figure9_CA_Code-31"><a href="#fig-Figure9_CA_Code-31" aria-hidden="true" tabindex="-1"></a>    <span class="co"># We get the updated cell states given by the rule.</span></span>
+<span id="fig-Figure9_CA_Code-32"><a href="#fig-Figure9_CA_Code-32" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> rule_b[<span class="dv">7</span> <span class="op">-</span> z]</span>
+<span id="fig-Figure9_CA_Code-33"><a href="#fig-Figure9_CA_Code-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_CA_Code-34"><a href="#fig-Figure9_CA_Code-34" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> generate(rule, size<span class="op">=</span><span class="dv">100</span>, steps<span class="op">=</span><span class="dv">100</span>):</span>
+<span id="fig-Figure9_CA_Code-35"><a href="#fig-Figure9_CA_Code-35" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="fig-Figure9_CA_Code-36"><a href="#fig-Figure9_CA_Code-36" aria-hidden="true" tabindex="-1"></a><span class="co">    Simulate an elementary cellular automaton given</span></span>
+<span id="fig-Figure9_CA_Code-37"><a href="#fig-Figure9_CA_Code-37" aria-hidden="true" tabindex="-1"></a><span class="co">    its rule (number between 0 and 255).</span></span>
+<span id="fig-Figure9_CA_Code-38"><a href="#fig-Figure9_CA_Code-38" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="fig-Figure9_CA_Code-39"><a href="#fig-Figure9_CA_Code-39" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Compute the binary representation of the rule.</span></span>
+<span id="fig-Figure9_CA_Code-40"><a href="#fig-Figure9_CA_Code-40" aria-hidden="true" tabindex="-1"></a>    rule_b <span class="op">=</span> np.array(</span>
+<span id="fig-Figure9_CA_Code-41"><a href="#fig-Figure9_CA_Code-41" aria-hidden="true" tabindex="-1"></a>        [<span class="bu">int</span>(_) <span class="cf">for</span> _ <span class="kw">in</span> np.binary_repr(rule, <span class="dv">8</span>)],</span>
+<span id="fig-Figure9_CA_Code-42"><a href="#fig-Figure9_CA_Code-42" aria-hidden="true" tabindex="-1"></a>        dtype<span class="op">=</span>np.int8)</span>
+<span id="fig-Figure9_CA_Code-43"><a href="#fig-Figure9_CA_Code-43" aria-hidden="true" tabindex="-1"></a>    x <span class="op">=</span> np.zeros((steps, size), dtype<span class="op">=</span>np.int8)</span>
+<span id="fig-Figure9_CA_Code-44"><a href="#fig-Figure9_CA_Code-44" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Define the initial state</span></span>
+<span id="fig-Figure9_CA_Code-45"><a href="#fig-Figure9_CA_Code-45" aria-hidden="true" tabindex="-1"></a>    x[<span class="dv">0</span>, <span class="dv">50</span>] <span class="op">=</span> <span class="dv">1</span></span>
+<span id="fig-Figure9_CA_Code-46"><a href="#fig-Figure9_CA_Code-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Apply the step function iteratively.</span></span>
+<span id="fig-Figure9_CA_Code-47"><a href="#fig-Figure9_CA_Code-47" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(steps <span class="op">-</span> <span class="dv">1</span>):</span>
+<span id="fig-Figure9_CA_Code-48"><a href="#fig-Figure9_CA_Code-48" aria-hidden="true" tabindex="-1"></a>        x[i <span class="op">+</span> <span class="dv">1</span>, :] <span class="op">=</span> step(x[i, :], rule_b)</span>
+<span id="fig-Figure9_CA_Code-49"><a href="#fig-Figure9_CA_Code-49" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> x</span>
+<span id="fig-Figure9_CA_Code-50"><a href="#fig-Figure9_CA_Code-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_CA_Code-51"><a href="#fig-Figure9_CA_Code-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_CA_Code-52"><a href="#fig-Figure9_CA_Code-52" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure9_CA_Code-53"><a href="#fig-Figure9_CA_Code-53" aria-hidden="true" tabindex="-1"></a>rule <span class="op">=</span> <span class="dv">150</span></span>
+<span id="fig-Figure9_CA_Code-54"><a href="#fig-Figure9_CA_Code-54" aria-hidden="true" tabindex="-1"></a>size <span class="op">=</span> <span class="dv">100</span></span>
+<span id="fig-Figure9_CA_Code-55"><a href="#fig-Figure9_CA_Code-55" aria-hidden="true" tabindex="-1"></a>steps <span class="op">=</span> <span class="dv">50</span></span>
+<span id="fig-Figure9_CA_Code-56"><a href="#fig-Figure9_CA_Code-56" aria-hidden="true" tabindex="-1"></a>x <span class="op">=</span> generate(rule, size, steps)</span>
+<span id="fig-Figure9_CA_Code-57"><a href="#fig-Figure9_CA_Code-57" aria-hidden="true" tabindex="-1"></a>plt.matshow(x, cmap<span class="op">=</span>plt.cm.binary)</span>
+<span id="fig-Figure9_CA_Code-58"><a href="#fig-Figure9_CA_Code-58" aria-hidden="true" tabindex="-1"></a>title_string <span class="op">=</span> <span class="st">'Rule '</span> <span class="op">+</span> <span class="bu">str</span>(rule)</span>
+<span id="fig-Figure9_CA_Code-59"><a href="#fig-Figure9_CA_Code-59" aria-hidden="true" tabindex="-1"></a>plt.title(title_string, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="fig-Figure9_CA_Code-60"><a href="#fig-Figure9_CA_Code-60" aria-hidden="true" tabindex="-1"></a>fig_file <span class="op">=</span> <span class="st">'CA_rule'</span> <span class="op">+</span> <span class="bu">str</span>(rule) <span class="op">+</span> <span class="st">'.png'</span></span>
+<span id="fig-Figure9_CA_Code-61"><a href="#fig-Figure9_CA_Code-61" aria-hidden="true" tabindex="-1"></a>plt.savefig(fig_file, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Figure9_CA_Code-62"><a href="#fig-Figure9_CA_Code-62" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_CA_Code-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: :One-dimensional cellular automaton simulation code.
+</figcaption>
+</figure>
+</div>
+<div id="fig-Rule150CA" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Rule150CA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/CA_rule150.png" class="img-fluid figure-img" style="width:100.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Rule150CA-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: This figure shows the 1-d Rule 150 automaton simulated for 50 time steps.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="probabilistic-cellular-automata" class="level3">
+<h3 class="anchored" data-anchor-id="probabilistic-cellular-automata">Probabilistic Cellular Automata</h3>
+<p>The cellular automata considered in the previous section are completely deterministic. Once the transition rule and initial state have been chosen the evolution of the lattice is determined. Repetition of the evolution will always yield the same result. We can introduce randomness in at least two ways:</p>
+<ol type="1">
+<li><p>create a random initial state or</p></li>
+<li><p>establish a transition rule that updates the state of a cell using the neighborhood state and then a new cell state chosen according to a probability distribution.</p></li>
+</ol>
+<p>Probabilistic cellular automata are usually defined using the second method of achieving randomness. We will not discuss coding of a probabilistic cellular automaton simulation here.</p>
+</section>
+</section>
+<section id="computational-problem-solving-comparing-betting-strategies-at-the-roulette-wheel" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solving-comparing-betting-strategies-at-the-roulette-wheel">Computational Problem Solving: Comparing Betting Strategies at the Roulette Wheel</h2>
+<p>We began this chapter with the problem of comparing betting strategies when playing roulette. Let us return to that problem and develop a Monte Carlo simulation approach to solving the problem. We will consider playing American roulette and will restrict the betting types to a small subset of the possible ones.</p>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>American roulette uses a wheel with 38 pockets that include both a 0 and a 00 pocket. The 0 and 00 pockets are green. The other pockets alternate between black and red. There are a large number of possible bets, so we will need to restrict the analysis to a small subset to facilitate the initial solution <span class="citation" data-cites="WikipediaContributors_Roulette_2022">(<a href="../../bibliography.html#ref-WikipediaContributors_Roulette_2022" role="doc-biblioref">Wikipedia Contributors, 2022</a>)</span>. For this initial analysis, we will consider the following types of bets.</p>
+<ol type="1">
+<li><p>Straight/Single: bet on a single number; 35:1 payout</p></li>
+<li><p>Red/Black: bet on either red or black; 1:1 payout</p></li>
+<li><p>Green: bet on green; 17:1 payout</p></li>
+</ol>
+<p>Each pocket of the wheel has numerical value, including 00, and a color. <a href="#tbl-Table9p4" class="quarto-xref">Table&nbsp;<span>4</span></a> gives the sequence of the slots going clockwise around the wheel. We will assume that when the wheel spins, the ball has an equal chance of falling into any one of the 38 pockets. For this initial attempt at simulating roulette, we will assume that each play involves a constant bet and a choice betting type. A game will be defined as a series of plays. For a game, the series of plays will end when the players balance goes below zero or if the balance goes above a specified balance value. Our gambler will continue playing until either they run out of money or until they achieve a specified level of profit.</p>
+<div id="tbl-Table9p4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Layout of the American Roulette wheel, going clockwise.
+</figcaption>
+<div aria-describedby="tbl-Table9p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 21%">
+<col style="width: 13%">
+<col style="width: 13%">
+<col style="width: 3%">
+<col style="width: 21%">
+<col style="width: 13%">
+<col style="width: 13%">
+</colgroup>
+<thead>
+<tr class="header">
+<th><strong>pocket index</strong></th>
+<th><strong>value</strong></th>
+<th><strong>color</strong></th>
+<th></th>
+<th><strong>pocket index</strong></th>
+<th><strong>value</strong></th>
+<th><strong>color</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>0</td>
+<td>0</td>
+<td>green</td>
+<td></td>
+<td>19</td>
+<td>0</td>
+<td>green</td>
+</tr>
+<tr class="even">
+<td>1</td>
+<td>28</td>
+<td>black</td>
+<td></td>
+<td>20</td>
+<td>27</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>2</td>
+<td>9</td>
+<td>red</td>
+<td></td>
+<td>21</td>
+<td>10</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>3</td>
+<td>26</td>
+<td>black</td>
+<td></td>
+<td>22</td>
+<td>25</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>4</td>
+<td>30</td>
+<td>red</td>
+<td></td>
+<td>23</td>
+<td>39</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>5</td>
+<td>11</td>
+<td>black</td>
+<td></td>
+<td>24</td>
+<td>12</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>6</td>
+<td>7</td>
+<td>red</td>
+<td></td>
+<td>25</td>
+<td>8</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>7</td>
+<td>20</td>
+<td>black</td>
+<td></td>
+<td>26</td>
+<td>19</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>8</td>
+<td>32</td>
+<td>red</td>
+<td></td>
+<td>27</td>
+<td>31</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>9</td>
+<td>17</td>
+<td>black</td>
+<td></td>
+<td>28</td>
+<td>18</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>10</td>
+<td>5</td>
+<td>red</td>
+<td></td>
+<td>29</td>
+<td>6</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>11</td>
+<td>22</td>
+<td>black</td>
+<td></td>
+<td>30</td>
+<td>21</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>12</td>
+<td>34</td>
+<td>red</td>
+<td></td>
+<td>31</td>
+<td>33</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>13</td>
+<td>15</td>
+<td>black</td>
+<td></td>
+<td>32</td>
+<td>16</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>14</td>
+<td>3</td>
+<td>red</td>
+<td></td>
+<td>33</td>
+<td>4</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>15</td>
+<td>24</td>
+<td>black</td>
+<td></td>
+<td>34</td>
+<td>23</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>16</td>
+<td>36</td>
+<td>red</td>
+<td></td>
+<td>35</td>
+<td>35</td>
+<td>black</td>
+</tr>
+<tr class="even">
+<td>17</td>
+<td>13</td>
+<td>black</td>
+<td></td>
+<td>36</td>
+<td>14</td>
+<td>red</td>
+</tr>
+<tr class="odd">
+<td>18</td>
+<td>1</td>
+<td>red</td>
+<td></td>
+<td>37</td>
+<td>2</td>
+<td>black</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="design" class="level3">
+<h3 class="anchored" data-anchor-id="design">Design</h3>
+<p>Let us start the design of the algorithm by defining data structures that will be required. We will also create the roulette wheel data from <a href="#tbl-Table9p4" class="quarto-xref">Table&nbsp;<span>4</span></a> as columns in a tab-delimited text file. This file will be named wheel.txt. <a href="#tbl-Table9p5" class="quarto-xref">Table&nbsp;<span>5</span></a> gives a list of data structures that will be required for the roulette simulation.</p>
+<div id="tbl-Table9p5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Data structures for the roulette simulation.
+</figcaption>
+<div aria-describedby="tbl-Table9p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 11%">
+<col style="width: 12%">
+<col style="width: 76%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: center;">Variable</th>
+<th style="text-align: center;">Type</th>
+<th style="text-align: center;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">balance</td>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">This contains the current balance value of the gambler’s purse.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">stop_balance</td>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">The balance value that will stop the game. Assumed to be larger than the starting value</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">bet_amount</td>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">bet_type</td>
+<td style="text-align: center;">str</td>
+<td style="text-align: center;">Specifies whether the gambler is betting on a color (‘black’, ‘red’, green’) or a specific value (‘0’, ‘1’, …, ‘00’)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">number_of_games</td>
+<td style="text-align: center;">int</td>
+<td style="text-align: center;">The number of repeated games to play, which will create the Monte Carlo simulation sample.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">bet_types</td>
+<td style="text-align: center;">dictionary</td>
+<td style="text-align: center;">Associates the payout value with a bet type.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">df</td>
+<td style="text-align: center;">pandas data frame</td>
+<td style="text-align: center;">Contains the wheel information read in from the wheel.txt file.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">values</td>
+<td style="text-align: center;">list</td>
+<td style="text-align: center;">Contains all of the pocket values specified in the order found on the wheel going clockwise.</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">colors</td>
+<td style="text-align: center;">list</td>
+<td style="text-align: center;">Contains all of the pocket colors specified in the order found on the wheel going clockwise.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">balance_series</td>
+<td style="text-align: center;">list</td>
+<td style="text-align: center;">Contains the balance value for each play in a game</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">spin_value</td>
+<td style="text-align: center;">str</td>
+<td style="text-align: center;">Contains the pocket value after a spin of the wheel.</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">spin_color</td>
+<td style="text-align: center;">str</td>
+<td style="text-align: center;">Contains the pocket color after a spin of the wheel.</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The following gives a pseudocode version of the main program for the simulation.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre><code>PROGRAM American_Roulette_Simulation-ConstantBetting
+    Specify gambler’s data (balance, stop_balance, bet_amount, 
+                            bet_type, number_of_games)
+    Initialize the random number generator
+    Define the bet_types dictionary
+    Define the wheel variables (values, colors)
+    FOR g IN list_of_games DO
+        Play a game
+        Create a plot of the balance versus number of plays
+    ENDFOR
+ENDPROGRAM</code></pre>
+</div>
+<p>The Play a game line will require another function, which we name game_constant_bet, and this function will require another function called make_a_play.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre><code>FUNCTION game_constant_bet
+    INPUT: balance, stop_balance, bet_amount, bet_type, bet_types,
+           values, colors
+    balance_series = [balance]
+    WHILE (balance &gt; 0) and (balance &lt; stop_balance) DO
+        balance = make_a_play(balance, bet_amount, bet_type,
+                              bet_types, values, colors)
+        balance_series.append(balance)
+    ENDWHILE
+    OUTPUT: balance_series
+ENDFUNCTION</code></pre>
+</div>
+<p>The function game_constant_bet requires another function make_play.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre data-numbers="none" data-backgroundcolor="\color{light-gray}"><code>FUNCTION make_a_play
+    INPUT: balance, bet_amount, bet_type, bet_types, values, colors
+    Perform a spin of the wheel (defines spin_value, spin_color)
+    IF bet_type == 'black'
+        IF spin_color == 'black'
+            balance = balance + bet_amount*bet_types['black']
+        ELSE
+            balance = balance - bet_amount
+        ENDIF
+    IF bet_type == 'red'
+        IF spin_color == 'red'
+            balance = balance + bet_amount*bet_types['red']
+        ELSE
+            balance = balance - bet_amount
+        ENDIF
+    IF bet_type == 'green'
+        IF spin_color == 'green'
+            balance = balance + bet_amount*bet_types['green']
+        ELSE
+            balance = balance - bet_amount
+        ENDIF
+    ELSE
+        IF spin_value == bet_type
+            balance = balance + bet_amount*bet_types['value']
+        ELSE
+            balance = balance - bet_amount
+        ENDIF
+    ENDIF
+    OUTPUT: balance
+ENDFUNCTION</code></pre>
+</div>
+<p>The function make_a_play requires a function which we call spin.</p>
+<div style="background-color:rgb(241, 242, 243);">
+<pre data-numbers="none" data-backgroundcolor="\color{light-gray}"><code>FUNCTION spin
+    INPUT: values, colors
+    Get a random integer between 0 and 37 (defines i)
+    value = values(i)
+    color = colors(i)
+    OUTPUT: value, color
+ENDFUNCTION</code></pre>
+</div>
+<p>These pseudocode versions of the algorithm should allow an easy translation into Python code.</p>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p><a href="#fig-Figure9_RouletteWithConstantBetCode" class="quarto-xref">Figure&nbsp;<span>14</span></a> gives the Python implementation of the American Roulette with Constant Bet simulation.</p>
+<div id="fig-Figure9_RouletteWithConstantBetCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_RouletteWithConstantBetCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure9_RouletteWithConstantBetCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure9_RouletteWithConstantBetCode-1"><a href="#fig-Figure9_RouletteWithConstantBetCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-2"><a href="#fig-Figure9_RouletteWithConstantBetCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: American Roulette with Constant Bet</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-3"><a href="#fig-Figure9_RouletteWithConstantBetCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-4"><a href="#fig-Figure9_RouletteWithConstantBetCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 9.1.2022.1</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-5"><a href="#fig-Figure9_RouletteWithConstantBetCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-6"><a href="#fig-Figure9_RouletteWithConstantBetCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">        This program performs a Monte Carlo simulation of the</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-7"><a href="#fig-Figure9_RouletteWithConstantBetCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">        American roulette game using a constant bet strategy based</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-8"><a href="#fig-Figure9_RouletteWithConstantBetCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">        either color choice or specific value choice.</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-9"><a href="#fig-Figure9_RouletteWithConstantBetCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-10"><a href="#fig-Figure9_RouletteWithConstantBetCode-10" aria-hidden="true" tabindex="-1"></a><span class="co">    9.1.2022.1: base</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-11"><a href="#fig-Figure9_RouletteWithConstantBetCode-11" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-12"><a href="#fig-Figure9_RouletteWithConstantBetCode-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-13"><a href="#fig-Figure9_RouletteWithConstantBetCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-14"><a href="#fig-Figure9_RouletteWithConstantBetCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-15"><a href="#fig-Figure9_RouletteWithConstantBetCode-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-16"><a href="#fig-Figure9_RouletteWithConstantBetCode-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spin(values,colors):</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-17"><a href="#fig-Figure9_RouletteWithConstantBetCode-17" aria-hidden="true" tabindex="-1"></a><span class="co">#    i = rn.randint(0, 37)</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-18"><a href="#fig-Figure9_RouletteWithConstantBetCode-18" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> rng.integers(low<span class="op">=</span><span class="dv">0</span> , high<span class="op">=</span><span class="dv">37</span> )</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-19"><a href="#fig-Figure9_RouletteWithConstantBetCode-19" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> values[i]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-20"><a href="#fig-Figure9_RouletteWithConstantBetCode-20" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> colors[i]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-21"><a href="#fig-Figure9_RouletteWithConstantBetCode-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> value, color</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-22"><a href="#fig-Figure9_RouletteWithConstantBetCode-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-23"><a href="#fig-Figure9_RouletteWithConstantBetCode-23" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> make_a_play(balance, bet_amount, bet_type, bet_types,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-24"><a href="#fig-Figure9_RouletteWithConstantBetCode-24" aria-hidden="true" tabindex="-1"></a>                values, colors):</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-25"><a href="#fig-Figure9_RouletteWithConstantBetCode-25" aria-hidden="true" tabindex="-1"></a>    spin_value, spin_color <span class="op">=</span> spin(values, colors)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-26"><a href="#fig-Figure9_RouletteWithConstantBetCode-26" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bet_type <span class="op">==</span> <span class="st">'black'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-27"><a href="#fig-Figure9_RouletteWithConstantBetCode-27" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> spin_color <span class="op">==</span> <span class="st">'black'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-28"><a href="#fig-Figure9_RouletteWithConstantBetCode-28" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">+</span> bet_amount<span class="op">*</span>bet_types[<span class="st">'black'</span>]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-29"><a href="#fig-Figure9_RouletteWithConstantBetCode-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-30"><a href="#fig-Figure9_RouletteWithConstantBetCode-30" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">-</span> bet_amount</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-31"><a href="#fig-Figure9_RouletteWithConstantBetCode-31" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bet_type <span class="op">==</span> <span class="st">'red'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-32"><a href="#fig-Figure9_RouletteWithConstantBetCode-32" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> spin_color <span class="op">==</span> <span class="st">'red'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-33"><a href="#fig-Figure9_RouletteWithConstantBetCode-33" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">+</span> bet_amount<span class="op">*</span>bet_types[<span class="st">'red'</span>]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-34"><a href="#fig-Figure9_RouletteWithConstantBetCode-34" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-35"><a href="#fig-Figure9_RouletteWithConstantBetCode-35" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">-</span> bet_amount</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-36"><a href="#fig-Figure9_RouletteWithConstantBetCode-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> bet_type <span class="op">==</span> <span class="st">'green'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-37"><a href="#fig-Figure9_RouletteWithConstantBetCode-37" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> spin_color <span class="op">==</span> <span class="st">'green'</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-38"><a href="#fig-Figure9_RouletteWithConstantBetCode-38" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">+</span> bet_amount<span class="op">*</span>bet_types[<span class="st">'green'</span>]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-39"><a href="#fig-Figure9_RouletteWithConstantBetCode-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-40"><a href="#fig-Figure9_RouletteWithConstantBetCode-40" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">-</span> bet_amount</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-41"><a href="#fig-Figure9_RouletteWithConstantBetCode-41" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-42"><a href="#fig-Figure9_RouletteWithConstantBetCode-42" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> spin_value <span class="op">==</span> bet_type:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-43"><a href="#fig-Figure9_RouletteWithConstantBetCode-43" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">+</span> bet_amount<span class="op">*</span>bet_types[<span class="st">'value'</span>]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-44"><a href="#fig-Figure9_RouletteWithConstantBetCode-44" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-45"><a href="#fig-Figure9_RouletteWithConstantBetCode-45" aria-hidden="true" tabindex="-1"></a>            balance <span class="op">=</span> balance <span class="op">-</span> bet_amount</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-46"><a href="#fig-Figure9_RouletteWithConstantBetCode-46" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> balance</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-47"><a href="#fig-Figure9_RouletteWithConstantBetCode-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-48"><a href="#fig-Figure9_RouletteWithConstantBetCode-48" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> game_constant_bet(balance, stop_balance, bet_amount, bet_type,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-49"><a href="#fig-Figure9_RouletteWithConstantBetCode-49" aria-hidden="true" tabindex="-1"></a>                      bet_types, values, colors):</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-50"><a href="#fig-Figure9_RouletteWithConstantBetCode-50" aria-hidden="true" tabindex="-1"></a>    balance_series <span class="op">=</span> [balance]</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-51"><a href="#fig-Figure9_RouletteWithConstantBetCode-51" aria-hidden="true" tabindex="-1"></a>    <span class="cf">while</span> (balance <span class="op">&gt;</span> <span class="dv">0</span>) <span class="kw">and</span> (balance <span class="op">&lt;</span> stop_balance):</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-52"><a href="#fig-Figure9_RouletteWithConstantBetCode-52" aria-hidden="true" tabindex="-1"></a>        balance <span class="op">=</span> make_a_play(balance, bet_amount, bet_type, bet_types,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-53"><a href="#fig-Figure9_RouletteWithConstantBetCode-53" aria-hidden="true" tabindex="-1"></a>                  values, colors)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-54"><a href="#fig-Figure9_RouletteWithConstantBetCode-54" aria-hidden="true" tabindex="-1"></a>        balance_series.append(balance)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-55"><a href="#fig-Figure9_RouletteWithConstantBetCode-55" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> balance_series</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-56"><a href="#fig-Figure9_RouletteWithConstantBetCode-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-57"><a href="#fig-Figure9_RouletteWithConstantBetCode-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-58"><a href="#fig-Figure9_RouletteWithConstantBetCode-58" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-59"><a href="#fig-Figure9_RouletteWithConstantBetCode-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize gambler's data</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-60"><a href="#fig-Figure9_RouletteWithConstantBetCode-60" aria-hidden="true" tabindex="-1"></a>balance <span class="op">=</span> <span class="dv">1000</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-61"><a href="#fig-Figure9_RouletteWithConstantBetCode-61" aria-hidden="true" tabindex="-1"></a>stop_balance <span class="op">=</span> <span class="dv">1200</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-62"><a href="#fig-Figure9_RouletteWithConstantBetCode-62" aria-hidden="true" tabindex="-1"></a>bet_amount <span class="op">=</span> <span class="dv">10</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-63"><a href="#fig-Figure9_RouletteWithConstantBetCode-63" aria-hidden="true" tabindex="-1"></a>bet_type <span class="op">=</span> <span class="st">'green'</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-64"><a href="#fig-Figure9_RouletteWithConstantBetCode-64" aria-hidden="true" tabindex="-1"></a>number_of_games <span class="op">=</span> <span class="dv">100</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-65"><a href="#fig-Figure9_RouletteWithConstantBetCode-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-66"><a href="#fig-Figure9_RouletteWithConstantBetCode-66" aria-hidden="true" tabindex="-1"></a><span class="co"># Set up the numpy random number generator</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-67"><a href="#fig-Figure9_RouletteWithConstantBetCode-67" aria-hidden="true" tabindex="-1"></a>rng <span class="op">=</span> np.random.default_rng(<span class="dv">314159</span>)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-68"><a href="#fig-Figure9_RouletteWithConstantBetCode-68" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-69"><a href="#fig-Figure9_RouletteWithConstantBetCode-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize the bet type payout</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-70"><a href="#fig-Figure9_RouletteWithConstantBetCode-70" aria-hidden="true" tabindex="-1"></a>bet_types <span class="op">=</span> {<span class="st">'black'</span>: <span class="dv">1</span>, <span class="st">'red'</span>: <span class="dv">1</span>, <span class="st">'green'</span>: <span class="dv">17</span>, <span class="st">'value'</span>: <span class="dv">35</span>  }</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-71"><a href="#fig-Figure9_RouletteWithConstantBetCode-71" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-72"><a href="#fig-Figure9_RouletteWithConstantBetCode-72" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the wheel data</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-73"><a href="#fig-Figure9_RouletteWithConstantBetCode-73" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'wheel.txt'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, header<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-74"><a href="#fig-Figure9_RouletteWithConstantBetCode-74" aria-hidden="true" tabindex="-1"></a>       dtype<span class="op">=</span>{<span class="st">'index'</span>:<span class="bu">int</span>, <span class="st">'value'</span>:<span class="st">'string'</span>, <span class="st">'color'</span>:<span class="st">'string'</span>})</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-75"><a href="#fig-Figure9_RouletteWithConstantBetCode-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-76"><a href="#fig-Figure9_RouletteWithConstantBetCode-76" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert pandas columns to tuples</span></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-77"><a href="#fig-Figure9_RouletteWithConstantBetCode-77" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> <span class="bu">tuple</span>(df[<span class="st">'value'</span>].tolist())</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-78"><a href="#fig-Figure9_RouletteWithConstantBetCode-78" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> <span class="bu">tuple</span>(df[<span class="st">'color'</span>].tolist())</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-79"><a href="#fig-Figure9_RouletteWithConstantBetCode-79" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-80"><a href="#fig-Figure9_RouletteWithConstantBetCode-80" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> g <span class="kw">in</span> <span class="bu">range</span>(number_of_games):</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-81"><a href="#fig-Figure9_RouletteWithConstantBetCode-81" aria-hidden="true" tabindex="-1"></a>    balance_series <span class="op">=</span> game_constant_bet(balance, stop_balance,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-82"><a href="#fig-Figure9_RouletteWithConstantBetCode-82" aria-hidden="true" tabindex="-1"></a>                                       bet_amount, bet_type,</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-83"><a href="#fig-Figure9_RouletteWithConstantBetCode-83" aria-hidden="true" tabindex="-1"></a>                                       bet_types, values, colors)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-84"><a href="#fig-Figure9_RouletteWithConstantBetCode-84" aria-hidden="true" tabindex="-1"></a>    plt.plot(balance_series)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-85"><a href="#fig-Figure9_RouletteWithConstantBetCode-85" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">'play'</span>)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-86"><a href="#fig-Figure9_RouletteWithConstantBetCode-86" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">'balance'</span>)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-87"><a href="#fig-Figure9_RouletteWithConstantBetCode-87" aria-hidden="true" tabindex="-1"></a>title_string <span class="op">=</span> <span class="st">'Constant Bet Strategy: '</span> <span class="op">+</span> bet_type</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-88"><a href="#fig-Figure9_RouletteWithConstantBetCode-88" aria-hidden="true" tabindex="-1"></a>plt.title(title_string, fontsize<span class="op">=</span><span class="dv">18</span>)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-89"><a href="#fig-Figure9_RouletteWithConstantBetCode-89" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'roulette_constantBet_value15_1200.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>)</span>
+<span id="fig-Figure9_RouletteWithConstantBetCode-90"><a href="#fig-Figure9_RouletteWithConstantBetCode-90" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_RouletteWithConstantBetCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Python implementation of the American Roulette with Constant Bet simulation.
+</figcaption>
+</figure>
+</div>
+<p>This code is in the file roulette_constantBet.py.</p>
+</section>
+<section id="testing" class="level3">
+<h3 class="anchored" data-anchor-id="testing">Testing</h3>
+<p>A good strategy for testing the program is to create a series of small programs that test the individual functions. If the individual functions work as expected, then you will have some significant evidence that the overall program works as expected. <a href="#fig-Figure9_TestSpinFunctionCode" class="quarto-xref">Figure&nbsp;<span>15</span></a> shows a short code that will test the spin function. A write statement is inserted into the function to write out some test data to a file. <a href="#tbl-Table9p6" class="quarto-xref">Table&nbsp;<span>6</span></a> shows data generated by this code. The rows are compared with <a href="#tbl-Table9p4" class="quarto-xref">Table&nbsp;<span>4</span></a>. After the test, lines 10-13 are deleted.</p>
+<div id="tbl-Table9p6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table9p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Generated test data from the spin function. A comparison is made with Table 9.4 to determine correctness.
+</figcaption>
+<div aria-describedby="tbl-Table9p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;">pocket index</th>
+<th style="text-align: right;">pocket value</th>
+<th style="text-align: left;">pocket color</th>
+<th style="text-align: left;">correct entry</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">30</td>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">14</td>
+<td style="text-align: right;">3</td>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">16</td>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">31</td>
+<td style="text-align: right;">33</td>
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">28</td>
+<td style="text-align: right;">18</td>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">29</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">9</td>
+<td style="text-align: left;">red</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">31</td>
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">yes</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">26</td>
+<td style="text-align: left;">black</td>
+<td style="text-align: left;">yes</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<div id="fig-Figure9_TestSpinFunctionCode" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure9_TestSpinFunctionCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure9_TestSpinFunctionCode"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure9_TestSpinFunctionCode-1"><a href="#fig-Figure9_TestSpinFunctionCode-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-2"><a href="#fig-Figure9_TestSpinFunctionCode-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program: Test Spin Function</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-3"><a href="#fig-Figure9_TestSpinFunctionCode-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-4"><a href="#fig-Figure9_TestSpinFunctionCode-4" aria-hidden="true" tabindex="-1"></a><span class="co">Version: 9.1.2022.1</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-5"><a href="#fig-Figure9_TestSpinFunctionCode-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary:</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-6"><a href="#fig-Figure9_TestSpinFunctionCode-6" aria-hidden="true" tabindex="-1"></a><span class="co">        This program tests the spin function from the American</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-7"><a href="#fig-Figure9_TestSpinFunctionCode-7" aria-hidden="true" tabindex="-1"></a><span class="co">        Roulette Constant Bet simulation.</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-8"><a href="#fig-Figure9_TestSpinFunctionCode-8" aria-hidden="true" tabindex="-1"></a><span class="co">History:</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-9"><a href="#fig-Figure9_TestSpinFunctionCode-9" aria-hidden="true" tabindex="-1"></a><span class="co">    9.1.2022.1: base</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-10"><a href="#fig-Figure9_TestSpinFunctionCode-10" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-11"><a href="#fig-Figure9_TestSpinFunctionCode-11" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="fig-Figure9_TestSpinFunctionCode-12"><a href="#fig-Figure9_TestSpinFunctionCode-12" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="fig-Figure9_TestSpinFunctionCode-13"><a href="#fig-Figure9_TestSpinFunctionCode-13" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="fig-Figure9_TestSpinFunctionCode-14"><a href="#fig-Figure9_TestSpinFunctionCode-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> random <span class="im">as</span> rn</span>
+<span id="fig-Figure9_TestSpinFunctionCode-15"><a href="#fig-Figure9_TestSpinFunctionCode-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-16"><a href="#fig-Figure9_TestSpinFunctionCode-16" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> spin(values,colors):</span>
+<span id="fig-Figure9_TestSpinFunctionCode-17"><a href="#fig-Figure9_TestSpinFunctionCode-17" aria-hidden="true" tabindex="-1"></a>    i <span class="op">=</span> rn.randint(<span class="dv">0</span>, <span class="dv">37</span>)</span>
+<span id="fig-Figure9_TestSpinFunctionCode-18"><a href="#fig-Figure9_TestSpinFunctionCode-18" aria-hidden="true" tabindex="-1"></a>    value <span class="op">=</span> values[i]</span>
+<span id="fig-Figure9_TestSpinFunctionCode-19"><a href="#fig-Figure9_TestSpinFunctionCode-19" aria-hidden="true" tabindex="-1"></a>    color <span class="op">=</span> colors[i]</span>
+<span id="fig-Figure9_TestSpinFunctionCode-20"><a href="#fig-Figure9_TestSpinFunctionCode-20" aria-hidden="true" tabindex="-1"></a>    <span class="co"># write test data</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-21"><a href="#fig-Figure9_TestSpinFunctionCode-21" aria-hidden="true" tabindex="-1"></a>    write_string <span class="op">=</span> <span class="bu">str</span>(i) <span class="op">+</span> <span class="st">'</span><span class="ch">\t</span><span class="st">'</span> <span class="op">+</span> value <span class="op">+</span> <span class="st">'</span><span class="ch">\t</span><span class="st">'</span> <span class="op">+</span> color <span class="op">+</span> <span class="st">'</span><span class="ch">\n</span><span class="st">'</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-22"><a href="#fig-Figure9_TestSpinFunctionCode-22" aria-hidden="true" tabindex="-1"></a>    out_file.write(write_string)</span>
+<span id="fig-Figure9_TestSpinFunctionCode-23"><a href="#fig-Figure9_TestSpinFunctionCode-23" aria-hidden="true" tabindex="-1"></a>    <span class="co"># end write test data</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-24"><a href="#fig-Figure9_TestSpinFunctionCode-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> value, color</span>
+<span id="fig-Figure9_TestSpinFunctionCode-25"><a href="#fig-Figure9_TestSpinFunctionCode-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-26"><a href="#fig-Figure9_TestSpinFunctionCode-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-27"><a href="#fig-Figure9_TestSpinFunctionCode-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Program</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-28"><a href="#fig-Figure9_TestSpinFunctionCode-28" aria-hidden="true" tabindex="-1"></a>number_of_tests <span class="op">=</span> <span class="dv">10</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-29"><a href="#fig-Figure9_TestSpinFunctionCode-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-30"><a href="#fig-Figure9_TestSpinFunctionCode-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Initialize random number generator</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-31"><a href="#fig-Figure9_TestSpinFunctionCode-31" aria-hidden="true" tabindex="-1"></a>rn.seed(<span class="dv">524287</span>)</span>
+<span id="fig-Figure9_TestSpinFunctionCode-32"><a href="#fig-Figure9_TestSpinFunctionCode-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-33"><a href="#fig-Figure9_TestSpinFunctionCode-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Read in the wheel data</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-34"><a href="#fig-Figure9_TestSpinFunctionCode-34" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">'wheel.txt'</span>, sep<span class="op">=</span><span class="st">'</span><span class="ch">\t</span><span class="st">'</span>, header<span class="op">=</span><span class="dv">1</span>,</span>
+<span id="fig-Figure9_TestSpinFunctionCode-35"><a href="#fig-Figure9_TestSpinFunctionCode-35" aria-hidden="true" tabindex="-1"></a>       dtype<span class="op">=</span>{<span class="st">'index'</span>:<span class="bu">int</span>, <span class="st">'value'</span>:<span class="st">'string'</span>, <span class="st">'color'</span>:<span class="st">'string'</span>})</span>
+<span id="fig-Figure9_TestSpinFunctionCode-36"><a href="#fig-Figure9_TestSpinFunctionCode-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-37"><a href="#fig-Figure9_TestSpinFunctionCode-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Convert pandas columns to tuples</span></span>
+<span id="fig-Figure9_TestSpinFunctionCode-38"><a href="#fig-Figure9_TestSpinFunctionCode-38" aria-hidden="true" tabindex="-1"></a>values <span class="op">=</span> <span class="bu">tuple</span>(df[<span class="st">'value'</span>].tolist())</span>
+<span id="fig-Figure9_TestSpinFunctionCode-39"><a href="#fig-Figure9_TestSpinFunctionCode-39" aria-hidden="true" tabindex="-1"></a>colors <span class="op">=</span> <span class="bu">tuple</span>(df[<span class="st">'color'</span>].tolist())</span>
+<span id="fig-Figure9_TestSpinFunctionCode-40"><a href="#fig-Figure9_TestSpinFunctionCode-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="fig-Figure9_TestSpinFunctionCode-41"><a href="#fig-Figure9_TestSpinFunctionCode-41" aria-hidden="true" tabindex="-1"></a>out_file <span class="op">=</span> <span class="bu">open</span>(<span class="st">'testSpinFunctionData.txt'</span>, <span class="st">'w'</span>)</span>
+<span id="fig-Figure9_TestSpinFunctionCode-42"><a href="#fig-Figure9_TestSpinFunctionCode-42" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> t <span class="kw">in</span> <span class="bu">range</span>(number_of_tests):</span>
+<span id="fig-Figure9_TestSpinFunctionCode-43"><a href="#fig-Figure9_TestSpinFunctionCode-43" aria-hidden="true" tabindex="-1"></a>    value, color <span class="op">=</span> spin(values, colors)</span>
+<span id="fig-Figure9_TestSpinFunctionCode-44"><a href="#fig-Figure9_TestSpinFunctionCode-44" aria-hidden="true" tabindex="-1"></a>out_file.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure9_TestSpinFunctionCode-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Short program to test the spin function.
+</figcaption>
+</figure>
+</div>
+<p>Similar short programs can be used to test the other functions.</p>
+<p>To obtain some initial data for the constant bet strategy we will choose the following initial gambler’s data:</p>
+<pre><code>balance = 1000
+stop_balance = 1200
+bet_amount = 10
+number_of_games = 100</code></pre>
+<p>We will run the simulation for the following bet types: ‘red’, ‘green’, ‘15’, and compare the plots of balance as a function of play. <a href="#fig-RouletteSimRed" class="quarto-xref">Figure&nbsp;<span>16</span></a> – <a href="#fig-RouletteSimValue15" class="quarto-xref">Figure&nbsp;<span>18</span></a> show the results of these simulations. Each simulation is for 100 games. Based on this data, we can say that if you want to make any money on this game with the constant bet strategy you must bet on one of higher payout choices (green or a specific value). Be forewarned though; you will also have a significant chance of quickly losing your purse.</p>
+<div id="fig-RouletteSimRed" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RouletteSimRed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/roulette_constantBet_red_1200.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RouletteSimRed-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Monte Carlo simulation of roulette with a constant bet on red strategy.
+</figcaption>
+</figure>
+</div>
+<div id="fig-RouletteSimGreen" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RouletteSimGreen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/roulette_constantBet_green_1200.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RouletteSimGreen-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: Monte Carlo simulation of roulette with a constant bet on green strategy.
+</figcaption>
+</figure>
+</div>
+<div id="fig-RouletteSimValue15" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RouletteSimValue15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch09/Figures/roulette_constantBet_value15_1200.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RouletteSimValue15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Monte Carlo simulation of roulette with a constant bet on the value 15 strategy.
+</figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-modification-problems">Program Modification Problems</h2>
+<p>1. Starting with the two-dimension random walk code in Ch9ProgModProb1.py, write a program that calculates the distance to the origin of the walker as a function of step number (time). The program should produce a plot of D versus t. You can remove the plot of the actual walk.</p>
+<p>2. Starting with the one-dimensional cellular automata simulation code in Ch9ProgModProb2.py, create a program that assigns an initial state of 1 to several randomly selected cells. Explore the differences in the patterns obtained between the revised program and the original one with initial state of 1 in the middle of the lattice.</p>
+<p>3. Starting with the American Roulette with Constant Bet code in Ch9ProgModProb3.py, create a program to calculate the proportion of games that end with a profit for the bet on green and bet on a specific value bet types.</p>
+</section>
+<section id="program-development-problems" class="level2">
+<h2 class="anchored" data-anchor-id="program-development-problems">Program Development Problems</h2>
+<p>1. Create a program that simulates a two-dimensional random walk repeatedly and calculates the mean distance at each step over the sample of repeated simulations and produces a plot of mean distance as a function of step. The sample size should be large enough so that you get a smooth curve.</p>
+<p>2. Create a program that will simulate the American roulette game using the Martingale strategy that involves doubling the bet value after losing a play. Explore the behavior of this strategy for the different betting types considered in the program American Roulette with Constant Bet contained in the file roulette_constantBet.py.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Berto, F., &amp; Tagliabue, J. (2022). Cellular Automata. In E. N. Zalta (Ed.), <em>The Stanford Encyclopedia of Philosophy</em> (Spring 2022). Metaphysics Research Lab, Stanford University. https://plato.stanford.edu/archives/spr2022/entries/cellular-automata/</p>
+<p>Derek Lynn. (2020). <em>Roulette wheel in a casino for gambling entertainment</em> [Photograph]. https://unsplash.com/photos/mD1V-eS1Wb4</p>
+<p>Entacher, K. (1998). Bad subsequences of well-known linear congruential pseudorandom number generators. <em>ACM Transactions on Modeling and Computer Simulation</em>, <em>8</em>(1), 61–70. https://doi.org/10.1145/272991.273009</p>
+<p>Matsumoto, M., &amp; Nishimura, T. (1998). Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator. <em>ACM Transactions on Modeling and Computer Simulation</em>, <em>8</em>(1), 3–30. https://doi.org/10.1145/272991.272995</p>
+<p>NumPy Developers. (2022). <em>Random Generator—NumPy v1.23 Manual</em>. https://numpy.org/doc/stable/reference/random/generator.html</p>
+<p>O’Neill, M. E. (2014). <em>PCG: A Family of Simple Fast Space-Efficient Statistically Good Algorithms for Random Number Generation</em> (HMC-CS-2014-0905). Harvey Mudd College Computer Science Department. https://www.pcg-random.org/paper.html</p>
+<p>Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (1986). <em>Numerical Recipes: The Art of Scientific Computing</em>. http://www.librarything.com/work/249712/book/225760462</p>
+<p>Python Software Foundation. (2022). <em>Random—Generate pseudo-random numbers—Python 3.10.7 documentation</em>. https://docs.python.org/3/library/random.html</p>
+<p>Rossant, C. (2018). <em>IPython Interactive Computing and Visualization Cookbook—Second Edition</em>. Packt. https://www.packtpub.com/product/ipython-interactive-computing-and-visualization-cookbook-second-edition/9781785888632</p>
+<p>Roulette. (2022). In <em>Wikipedia</em>. https://en.wikipedia.org/w/index.php?title=Roulette&amp;oldid=1106799426</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-BertoTagliabue_CellularAutomata_2022" class="csl-entry" role="listitem">
+Berto, F., &amp; Tagliabue, J. (2022). Cellular <span>Automata</span>. In E. N. Zalta (Ed.), <em>The <span>Stanford Encyclopedia</span> of <span>Philosophy</span></em> (Spring 2022). Metaphysics Research Lab, Stanford University. <a href="https://plato.stanford.edu/archives/spr2022/entries/cellular-automata/">https://plato.stanford.edu/archives/spr2022/entries/cellular-automata/</a>
+</div>
+<div id="ref-DerekLynn_RouletteWheelCasino_2020" class="csl-entry" role="listitem">
+Derek Lynn. (2020). <em>Roulette wheel in a casino for gambling entertainment</em> [Graphic]. <a href="https://unsplash.com/photos/mD1V-eS1Wb4">https://unsplash.com/photos/mD1V-eS1Wb4</a>
+</div>
+<div id="ref-Entacher_BadSubsequencesWellknown_1998" class="csl-entry" role="listitem">
+Entacher, K. (1998). Bad subsequences of well-known linear congruential pseudorandom number generators. <em>ACM Transactions on Modeling and Computer Simulation</em>, <em>8</em>(1), 61–70. <a href="https://doi.org/10.1145/272991.273009">https://doi.org/10.1145/272991.273009</a>
+</div>
+<div id="ref-MatsumotoNishimura_MersenneTwister623dimensionally_1998" class="csl-entry" role="listitem">
+Matsumoto, M., &amp; Nishimura, T. (1998). Mersenne twister: A 623-dimensionally equidistributed uniform pseudo-random number generator. <em>ACM Transactions on Modeling and Computer Simulation</em>, <em>8</em>(1), 3–30. <a href="https://doi.org/10.1145/272991.272995">https://doi.org/10.1145/272991.272995</a>
+</div>
+<div id="ref-NumPyDevelopers_RandomGeneratorNumPy_2022" class="csl-entry" role="listitem">
+NumPy Developers. (2022). <em>Random <span>Generator</span> — <span>NumPy</span> v1.23 <span>Manual</span></em>. <a href="https://numpy.org/doc/stable/reference/random/generator.html">https://numpy.org/doc/stable/reference/random/generator.html</a>
+</div>
+<div id="ref-ONeill_PCGFamilySimple_2014" class="csl-entry" role="listitem">
+O’Neill, M. E. (2014). <em><span>PCG</span>: <span>A Family</span> of <span>Simple Fast Space-Efficient Statistically Good Algorithms</span> for <span>Random Number Generation</span></em> (HMC-CS-2014-0905). Harvey Mudd College Computer Science Department. <a href="https://www.pcg-random.org/paper.html">https://www.pcg-random.org/paper.html</a>
+</div>
+<div id="ref-PressEtAl_NumericalRecipesArt_1986" class="csl-entry" role="listitem">
+Press, W. H., Teukolsky, S. A., Vetterling, W. T., &amp; Flannery, B. P. (1986). <em>Numerical <span>Recipes</span>: <span>The Art</span> of <span>Scientific Computing</span></em>. <a href="http://www.librarything.com/work/249712/book/225760462">http://www.librarything.com/work/249712/book/225760462</a>
+</div>
+<div id="ref-PythonSoftwareFoundation_RandomGeneratePseudorandom_2022" class="csl-entry" role="listitem">
+Python Software Foundation. (2022). <em>Random — <span>Generate</span> pseudo-random numbers — <span>Python</span> 3.10.7 documentation</em>. <a href="https://docs.python.org/3/library/random.html">https://docs.python.org/3/library/random.html</a>
+</div>
+<div id="ref-Rossant_IPythonInteractiveComputing_2018" class="csl-entry" role="listitem">
+Rossant, C. (2018). <em><span>IPython Interactive Computing</span> and <span>Visualization Cookbook</span> - <span>Second Edition</span></em>. Packt Publishing. <a href="https://www.amazon.com/IPython-Interactive-Computing-Visualization-Cookbook/dp/1785888633/?_encoding=UTF8&amp;pd_rd_w=FBfz6&amp;content-id=amzn1.sym.8cf3b8ef-6a74-45dc-9f0d-6409eb523603&amp;pf_rd_p=8cf3b8ef-6a74-45dc-9f0d-6409eb523603&amp;pf_rd_r=TRGJAR2YQD6W7JS9CKZM&amp;pd_rd_wg=7PdJO&amp;pd_rd_r=361fb22c-bf7e-483b-993c-a686ae72e5c8&amp;ref_=pd_gw_ci_mcx_mi">https://www.amazon.com/IPython-Interactive-Computing-Visualization-Cookbook/dp/1785888633/?_encoding=UTF8&amp;pd_rd_w=FBfz6&amp;content-id=amzn1.sym.8cf3b8ef-6a74-45dc-9f0d-6409eb523603&amp;pf_rd_p=8cf3b8ef-6a74-45dc-9f0d-6409eb523603&amp;pf_rd_r=TRGJAR2YQD6W7JS9CKZM&amp;pd_rd_wg=7PdJO&amp;pd_rd_r=361fb22c-bf7e-483b-993c-a686ae72e5c8&amp;ref_=pd_gw_ci_mcx_mi</a>
+</div>
+<div id="ref-WikipediaContributors_Roulette_2022" class="csl-entry" role="listitem">
+Wikipedia Contributors. (2022). Roulette. In <em>Wikipedia</em>. <a href="https://en.wikipedia.org/w/index.php?title=Roulette&amp;oldid=1106799426">https://en.wikipedia.org/w/index.php?title=Roulette&amp;oldid=1106799426</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="pagination-link" aria-label="Dynamical Systems Modeling II">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="pagination-link" aria-label="Fitting Models to Data: The Method of Least Squares">
+        <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Introduction – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch02/Ch02_ComputationalThinking.html" rel="next">
+<link href="../../preface.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch01/Ch01_Introduction.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#defining-computational-science" id="toc-defining-computational-science" class="nav-link active" data-scroll-target="#defining-computational-science">Defining Computational Science</a></li>
+  <li><a href="#examples-of-computational-science-applications" id="toc-examples-of-computational-science-applications" class="nav-link" data-scroll-target="#examples-of-computational-science-applications">Examples of Computational Science Applications</a>
+  <ul class="collapse">
+  <li><a href="#global-climate-change" id="toc-global-climate-change" class="nav-link" data-scroll-target="#global-climate-change">Global Climate Change</a></li>
+  <li><a href="#evolution-of-cosmic-structures" id="toc-evolution-of-cosmic-structures" class="nav-link" data-scroll-target="#evolution-of-cosmic-structures">Evolution of Cosmic Structures</a></li>
+  <li><a href="#designing-the-boeing-777" id="toc-designing-the-boeing-777" class="nav-link" data-scroll-target="#designing-the-boeing-777">Designing the Boeing 777</a></li>
+  </ul></li>
+  <li><a href="#elements-of-computational-thinking" id="toc-elements-of-computational-thinking" class="nav-link" data-scroll-target="#elements-of-computational-thinking">Elements of Computational Thinking</a>
+  <ul class="collapse">
+  <li><a href="#historical-examples-of-computational-thinking" id="toc-historical-examples-of-computational-thinking" class="nav-link" data-scroll-target="#historical-examples-of-computational-thinking">Historical Examples of Computational Thinking</a></li>
+  <li><a href="#uses-of-computational-thinking" id="toc-uses-of-computational-thinking" class="nav-link" data-scroll-target="#uses-of-computational-thinking">Uses of Computational Thinking</a></li>
+  <li><a href="#pillars-of-computational-thinking" id="toc-pillars-of-computational-thinking" class="nav-link" data-scroll-target="#pillars-of-computational-thinking">Pillars of Computational Thinking</a></li>
+  <li><a href="#logical-arguments" id="toc-logical-arguments" class="nav-link" data-scroll-target="#logical-arguments">Logical Arguments</a></li>
+  </ul></li>
+  <li><a href="#mathematical-modeling-in-science-and-engineering" id="toc-mathematical-modeling-in-science-and-engineering" class="nav-link" data-scroll-target="#mathematical-modeling-in-science-and-engineering">Mathematical Modeling in Science and Engineering</a>
+  <ul class="collapse">
+  <li><a href="#deterministic-models" id="toc-deterministic-models" class="nav-link" data-scroll-target="#deterministic-models">Deterministic Models</a></li>
+  <li><a href="#stochastic-models" id="toc-stochastic-models" class="nav-link" data-scroll-target="#stochastic-models">Stochastic Models</a></li>
+  <li><a href="#empirical-models" id="toc-empirical-models" class="nav-link" data-scroll-target="#empirical-models">Empirical Models</a></li>
+  <li><a href="#theory-based-models" id="toc-theory-based-models" class="nav-link" data-scroll-target="#theory-based-models">Theory-based Models</a></li>
+  </ul></li>
+  <li><a href="#introduction-to-textbook-computing-environment" id="toc-introduction-to-textbook-computing-environment" class="nav-link" data-scroll-target="#introduction-to-textbook-computing-environment">Introduction to Textbook Computing Environment</a>
+  <ul class="collapse">
+  <li><a href="#types-of-programming-environments" id="toc-types-of-programming-environments" class="nav-link" data-scroll-target="#types-of-programming-environments">Types of Programming Environments</a></li>
+  <li><a href="#the-google-colab-environment" id="toc-the-google-colab-environment" class="nav-link" data-scroll-target="#the-google-colab-environment">The Google Colab Environment</a></li>
+  </ul></li>
+  <li><a href="#ch01-exercises" id="toc-ch01-exercises" class="nav-link" data-scroll-target="#ch01-exercises">Exercises</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Introduction</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="defining-computational-science" class="level2">
+<h2 class="anchored" data-anchor-id="defining-computational-science">Defining Computational Science</h2>
+<p>Before embarking on our journey to learning how computational science is used to solve scientific and engineering problems, we should first establish more formally what we mean by computational science. When you think of the word “computation,” what comes to mind? Perhaps you recall practicing long division in elementary school, balancing your checkbook, or estimating groceries required for a dinner party. These are instances of equating computation to arithmetic, but the modern conception of computation in science and engineering goes well beyond this concept.</p>
+<p>We will begin our overview of computational science by defining it and showing the breadth of disciplines and enterprises that make use of it to solve problems. Computational science sounds a lot like computer science, but it is a different discipline, although it does involve computer science. Here is a good working definition that we will use:</p>
+<p><em><strong>Computational science</strong> is the development or application of techniques that use computation to solve scientific and engineering problems.</em></p>
+<p>There are certainly other definitions that can be found in the literature, but this definition will work for us.</p>
+<p>Computational science is inherently interdisciplinary, involving concepts and techniques from computer science, mathematics, and a domain-specific science or engineering discipline.</p>
+<p>Traditionally, a scientific discipline involves two reinforcing ways of working: experiment (or observation) and theory. <a href="#fig-Fig1.1" class="quarto-xref">Figure&nbsp;<span>1</span></a> illustrates these two essential aspects of science.</p>
+<div id="fig-Fig1.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig1.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.1.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig1.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Traditional concept of science.
+</figcaption>
+</figure>
+</div>
+<p>The existence of powerful computing technologies has changed the conduct of scientific and engineering work profoundly by allowing large data sets to be studied and realistic models of systems to be simulated. Computation aids both theoretical and experimental work, so that computational science becomes an indispensable third leg of our concept of scientific work, as illustrated in <a href="#fig-Fig1.2" class="quarto-xref">Figure&nbsp;<span>2</span></a>.</p>
+<div id="fig-Fig1.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig1.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.2.png" class="img-fluid figure-img" style="width:75.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig1.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: The modern concept of science.
+</figcaption>
+</figure>
+</div>
+<p>Consider the scientific discipline astronomy. Current observational techniques have created huge amounts of data that include objects located (stars, galaxies, exoplanets, etc.), motion data of each object, intensity of electromagnetic radiation at different wavelengths associated with these objects, and other properties. Table 1 shows the amount of data generated by several observational projects. Note that TB stands for terabyte (10<sup>12</sup>), PB stands for petabyte (10<sup>15</sup>), and EB stands for exabyte (10<sup>18</sup>). We see that each of these individual projects creates enormous amounts of data.</p>
+<div id="tbl-Table1.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table1.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Data volumes of different sky survey projects <span class="citation" data-cites="ZhangZhao_AstronomyBigData_2015">(<a href="../../bibliography.html#ref-ZhangZhao_AstronomyBigData_2015" role="doc-biblioref">Zhang &amp; Zhao, 2015</a>)</span>.
+</figcaption>
+<div aria-describedby="tbl-Table1.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Sky Survey Projects</strong></th>
+<th style="text-align: left;"><strong>Data Volume</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">DPOSS (The Palomar Digital Sky Survey)</td>
+<td style="text-align: left;">3 TB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">2MASS (The Two Micron All-Sky Survey)</td>
+<td style="text-align: left;">10 TB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">GBT (Green Bank Telescope)</td>
+<td style="text-align: left;">20 PB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">GALEX (The Galaxy Evolution Explorer )</td>
+<td style="text-align: left;">30 TB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">SDSS (The Sloan Digital Sky Survey)</td>
+<td style="text-align: left;">40 TB</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SkyMapper Southern Sky Survey</td>
+<td style="text-align: left;">500 TB</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">LSST (The Large Synoptic Survey Telescope)</td>
+<td style="text-align: left;"><em><span class="math inline">\(\sim\)</span><!-- -->200 PB expected</em></td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">SKA (The Square Kilometer Array)</td>
+<td style="text-align: left;"><em><span class="math inline">\(\sim\)</span><!-- -->4.6 EB expected</em></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Cataloging, storing, uncovering systematic errors, and performing exploratory data analysis all require significant computational resources and specialized techniques.</p>
+<p>Another way to think of computational science is that it involves the intersection between computer science, mathematics, and an applied discipline, as illustrated in <a href="#fig-Fig1.3" class="quarto-xref">Figure&nbsp;<span>3</span></a>.</p>
+<div id="fig-Fig1.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig1.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.3.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig1.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Conceptual model of computational science <span class="citation" data-cites="TheShodorEducationFoundation_OverviewComputationalScience_2000">(<a href="../../bibliography.html#ref-TheShodorEducationFoundation_OverviewComputationalScience_2000" role="doc-biblioref">The Shodor Education Foundation, 2000</a>)</span> .
+</figcaption>
+</figure>
+</div>
+<p>Mathematical modeling is a central activity for working physicists and engineers. As other sciences have become more quantitative, mathematical modeling has assumed an increasingly important role in those disciplines as well. This includes areas such as biology and environmental sciences. A significant amount of work in contemporary computational science involves developing and exploring mathematical models using computation. This focus will be important to us throughout this course, so it is worth keeping in mind how modeling connects with other aspects of doing science. <a href="#fig-Fig1.4" class="quarto-xref">Figure&nbsp;<span>4</span></a> illustrates the connections.</p>
+<p>A model starts with experimental data or observations and describes patterns in the data, connecting those patterns with more fundamental theoretical ideas from the area of science being investigated. The process of uncovering patterns typically involves elements of computation such as statistical analysis and visualizations. The outer elements of <a href="#fig-Fig1.4" class="quarto-xref">Figure&nbsp;<span>4</span></a> illustrate key elements of computational science itself: a scientific activity (application) that is facilitated by using mathematics and algorithmic thinking (algorithms), which, in turn, requires computation to fully explore (computing environment).</p>
+<div id="fig-Fig1.4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig1.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.4.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig1.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: The relationships between models, the basic elements of science, and elements of computational science <span class="citation" data-cites="TheShodorEducationFoundation_OverviewComputationalScience_2000">(<a href="../../bibliography.html#ref-TheShodorEducationFoundation_OverviewComputationalScience_2000" role="doc-biblioref">The Shodor Education Foundation, 2000</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="examples-of-computational-science-applications" class="level2">
+<h2 class="anchored" data-anchor-id="examples-of-computational-science-applications">Examples of Computational Science Applications</h2>
+<p>Let’s look at some specific examples of scientific and engineering problems that use computation science.</p>
+<section id="global-climate-change" class="level3">
+<h3 class="anchored" data-anchor-id="global-climate-change">Global Climate Change</h3>
+<p>Climate change is an important topic that impacts many areas of everyday life and promises to have even more profound effects in the future. It is important for us to understand how to describe climate, recognize the important determinants of climate, and develop realistic models that can help us predict the future climate.</p>
+<p>Describing the global climate starts with some basic observational data such as the average surface temperature. <a href="#fig-AverageSurfaceTempAnomaly" class="quarto-xref">Figure&nbsp;<span>5</span></a> shows data on the average surface temperature. Notice that the graph does not directly show the temperature, but rather the temperature anomaly, which is the difference between the actual temperature and the average temperature measured over a specified base time period. Using the temperature anomaly avoids including effects of systematic errors in an individual thermometer.</p>
+<div id="fig-AverageSurfaceTempAnomaly" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-AverageSurfaceTempAnomaly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.5.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-AverageSurfaceTempAnomaly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;5: Average surface temperature anomaly <span class="citation" data-cites="_TemperatureComposite_">(<a href="../../bibliography.html#ref-_TemperatureComposite_" role="doc-biblioref"><em>Temperature <span>Composite</span></em>, n.d.</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Producing just this one graph involved many aspects of computational science.</p>
+<ul>
+<li><p>The individual data sets contain a large number of measurements that must be made available in a user-friendly form.</p></li>
+<li><p>Each data set must undergo statistical analysis to uncover and correct for problems in the data.</p></li>
+<li><p>A moving average is calculated to remove some of the random variation present in the observations. Such smoothing of the data helps to identify trends</p></li>
+<li><p>The graph of the moving average must be generated.</p></li>
+</ul>
+<p>Each of these actions requires computation to accomplish.</p>
+<p>The graph helps us to identify patterns, namely, that average global surface temperature increased from 1910 to 1940, leveled off and decreased slightly between 1940 and 1950, then increased again at a faster rate from 1950 to the present.</p>
+<p>Another way of visualizing the data that requires significant computational work is to show the temperature anomaly in different regions of the earth and follow the geographic distribution over time. <a href="#fig-GeographicDistOfTempAnomaly" class="quarto-xref">Figure&nbsp;<span>6</span></a> shows the result of performing this kind of analysis. The level of the temperature anomaly is indicated by the intensity of the color.</p>
+<div id="fig-GeographicDistOfTempAnomaly" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GeographicDistOfTempAnomaly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.6.png" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GeographicDistOfTempAnomaly-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;6: Geographic distribution of the temperature anomaly <span class="citation" data-cites="NASAsScientificVisualizationStudio_SVSGlobalTemperature_2021">(<a href="../../bibliography.html#ref-NASAsScientificVisualizationStudio_SVSGlobalTemperature_2021" role="doc-biblioref">NASA’s Scientific Visualization Studio, 2021</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Creating visualizations of the temperature data is only the beginning of investigating climate change. Models based on fundamental science including physics, chemistry, and meteorology must be constructed to help us understand the underlying causes for the changes we see. These models typically are mathematically sophisticated and can usually only be explored using numerical calculations performed by a computer.</p>
+</section>
+<section id="evolution-of-cosmic-structures" class="level3">
+<h3 class="anchored" data-anchor-id="evolution-of-cosmic-structures">Evolution of Cosmic Structures</h3>
+<p>Understanding how specific cosmic structures, such as galaxies, evolve over the history of the universe is an important problem of current interest. Observational astronomers can locate and characterize galaxies that have existed since a few million years after the Big Bang. <a href="#fig-GalaxyMorphologies" class="quarto-xref">Figure&nbsp;<span>7</span></a> shows some of the different kinds of galaxies found in the universe. Progress in understanding how the observed distribution of galaxy morphologies has recently been made by using computer simulations based on fundamental astrophysics principles incorporating hydrodynamics and gravitation principles <span class="citation" data-cites="VogelsbergerEtAl_PropertiesGalaxiesReproduced_2014">(<a href="../../bibliography.html#ref-VogelsbergerEtAl_PropertiesGalaxiesReproduced_2014" role="doc-biblioref">Vogelsberger et al., 2014</a>)</span>. The researchers began with a system approximating the state of the universe at 12 million years after the Big Bang.</p>
+<div id="fig-GalaxyMorphologies" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-GalaxyMorphologies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.7.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-GalaxyMorphologies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;7: Three general galaxy morphologies with specific examples of each. <span class="citation" data-cites="Feild_GalaxyTypes_2019">(<a href="../../bibliography.html#ref-Feild_GalaxyTypes_2019" role="doc-biblioref">Feild, 2019</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>The computer simulation over about 13 billion years of evolution was able to show realistic distributions of galaxy morphologies. <a href="#fig-SimulatedGalaxyMorphologies" class="quarto-xref">Figure&nbsp;<span>8</span></a> shows some of the simulated galaxies produced from the simulation.</p>
+<div id="fig-SimulatedGalaxyMorphologies" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-SimulatedGalaxyMorphologies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.8.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SimulatedGalaxyMorphologies-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;8: Simulated galaxy morphologies produce by computer simulation of galactic structure evolution <span class="citation" data-cites="VogelsbergerEtAl_PropertiesGalaxiesReproduced_2014">(<a href="../../bibliography.html#ref-VogelsbergerEtAl_PropertiesGalaxiesReproduced_2014" role="doc-biblioref">Vogelsberger et al., 2014</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="designing-the-boeing-777" class="level3">
+<h3 class="anchored" data-anchor-id="designing-the-boeing-777">Designing the Boeing 777</h3>
+<p>The Boeing 777, shown in <a href="#fig-Boeing777" class="quarto-xref">Figure&nbsp;<span>9</span></a>, is a twin-engine, wide-body, commercial jet that was first introduced in 1994 but is still in production.</p>
+<div id="fig-Boeing777" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Boeing777-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.9.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Boeing777-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;9: . The Boeing 777 commercial jet <span class="citation" data-cites="Koske_UnitedAirlinesB777222_2009">(<a href="../../bibliography.html#ref-Koske_UnitedAirlinesB777222_2009" role="doc-biblioref">Koske, 18 October 2009, 11:52</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>It was a significant achievement of engineering because it was the first airplane to be completely designed using computer-assisted design tools (CAD). This eliminated the need for most full-scale mock-ups. This reduced the time and cost of designing and revising all the systems involved in the aircraft. The CAD system combined significant engineering mechanics knowledge with extremely sophisticated computer graphics to ensure that all parts of the system fit to within required tolerances and could move correctly. The CAD system also had properties of the materials used for parts built in so that stresses and strains could be measured in the simulated system to ensure part failure would not occur. Each system of the plane could be simulated through multiple cycles of revisions with both software and human-based visual checks. Figure <a href="#fig-BoeingCad" class="quarto-xref">Figure&nbsp;<span>10</span></a> shows examples of the visual product from the CAD system.</p>
+<div id="fig-BoeingCad" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BoeingCad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.10.png" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BoeingCad-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;10: Graphics output from the CAD software used for designing the Boeing 777 <span class="citation" data-cites="DietrichEtAl_LargescaleCADModel_2005">(<a href="../../bibliography.html#ref-DietrichEtAl_LargescaleCADModel_2005" role="doc-biblioref">Dietrich et al., 2005</a>)</span>.
+</figcaption>
+</figure>
+</div>
+<p>Every major area of science and engineering now has an established subarea that is focused on developing appropriate computational approaches to problem-solving in the particular discipline. The following is a list of such disciplines:</p>
+<ul>
+<li><p>Computational Biology</p></li>
+<li><p>Computational Chemistry</p></li>
+<li><p>Computational Economics</p></li>
+<li><p>Computational Finance</p></li>
+<li><p>Computational Neuroscience</p></li>
+<li><p>Computational Physics</p></li>
+<li><p>Computational Sociology</p></li>
+</ul>
+</section>
+</section>
+<section id="elements-of-computational-thinking" class="level2">
+<h2 class="anchored" data-anchor-id="elements-of-computational-thinking">Elements of Computational Thinking</h2>
+<p>While the term “computational thinking” is relatively new, having been popularized in 2006 by Jeannette Wing in an opinion piece about computer science education <span class="citation" data-cites="Wing_ComputationalThinking_2006">(<a href="../../bibliography.html#ref-Wing_ComputationalThinking_2006" role="doc-biblioref">Wing, 2006</a>)</span>, but concepts associated with the term have a long history. The ancient Babylonians (1800-1600 BCE) developed tables of reciprocals and multiplications to speed up and systematize arithmetical calculations. They also developed step-by-step procedures (i.e., algorithms) for solving certain classes of algebra problems <span class="citation" data-cites="Knuth_AncientBabylonianAlgorithms_1972">(<a href="../../bibliography.html#ref-Knuth_AncientBabylonianAlgorithms_1972" role="doc-biblioref">Knuth, 1972</a>)</span>. <a href="#fig-BabylonianClayTablet" class="quarto-xref">Figure&nbsp;<span>11</span></a> shows an example of a Babylonian clay tablet specifying the procedure for solving a mathematical problem <span class="citation" data-cites="Amin_BabylonianClayTablet_2019">(<a href="../../bibliography.html#ref-Amin_BabylonianClayTablet_2019" role="doc-biblioref">Amin, 14 March 2019, 11:03:07</a>)</span>.</p>
+<section id="historical-examples-of-computational-thinking" class="level3">
+<h3 class="anchored" data-anchor-id="historical-examples-of-computational-thinking">Historical Examples of Computational Thinking</h3>
+<p>The Ancient Greek astronomer Hipparchus (190-120 BCE), shown in <a href="#fig-Hipparchus" class="quarto-xref">Figure&nbsp;<span>12</span></a>, developed a theoretical framework to predict positions of sun and moon as functions of time. This framework used relationships from spherical trigonometry, and the required calculations used regular trigonometric functions such as cosine and sine. To expedite calculations involving trig functions, Hipparchus developed procedures for producing trigonometric function tables. Such tables remained useful well into the 20<sup>th</sup> century before being replaced by electronic calculators.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-BabylonianClayTablet" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-BabylonianClayTablet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.11.jpg" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-BabylonianClayTablet-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;11: Babylonian clay tablet describing a mathematical procedure <span class="citation" data-cites="Amin_BabylonianClayTablet_2019">(<a href="../../bibliography.html#ref-Amin_BabylonianClayTablet_2019" role="doc-biblioref">Amin, 14 March 2019, 11:03:07</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-Hipparchus" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Hipparchus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.12.jpg" class="img-fluid figure-img" style="width:80.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Hipparchus-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;12: he Greek astronomer Hipparchus <span class="citation" data-cites="NewYorkPublicLibrary/ScienceSource/SciencePhotoLibrary_HipparchusGreekAstronomer_">(<a href="../../bibliography.html#ref-NewYorkPublicLibrary/ScienceSource/SciencePhotoLibrary_HipparchusGreekAstronomer_" role="doc-biblioref">New York Public Library / Science Source / Science Photo Library, n.d.</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>An example of a spherical triangle is shown in <a href="#fig-SphericalTrig" class="quarto-xref">Figure&nbsp;<span>13</span></a>.</p>
+<p>The Persian mathematician Muhammad ibn Musa al-Khwarizmi, shown in <a href="#fig-CommerativeStamp" class="quarto-xref">Figure&nbsp;<span>14</span></a>, wrote an important book published around 800 CE that specified procedures for solving quadratic equations. The Latin translation of his book on the Hindu-Arabic numeral system, <em>Algoritmi de numero Indorum</em>, gave us the term “algorithm”, which will play a significant role in our overview of computational thinking.</p>
+<div>
+
+</div>
+<div class="quarto-layout-panel" data-layout-ncol="2">
+<div class="quarto-layout-row">
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-SphericalTrig" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-SphericalTrig-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.13.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-SphericalTrig-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;13: Example of triangle on a sphere <span class="citation" data-cites="Mercator_SphericalTrigonometry_2013">(<a href="../../bibliography.html#ref-Mercator_SphericalTrigonometry_2013" role="doc-biblioref">Mercator, 2013</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+<div class="quarto-layout-cell" style="flex-basis: 50.0%;justify-content: flex-start;">
+<div id="fig-CommerativeStamp" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CommerativeStamp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.14.png" class="img-fluid figure-img" style="width:70.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CommerativeStamp-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;14: Commemorative Stamp of Muḥammad ibn Mūsā al-Ḵwārizmī <span class="citation" data-cites="unknown_CommemorativeStampMuhammad_1983">(<a href="../../bibliography.html#ref-unknown_CommemorativeStampMuhammad_1983" role="doc-biblioref">unknown, 1983</a>)</span>.
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+</div>
+<p>There is not a universal definition for the term “computational thinking”, yet it is really central to your development as a computational scientist. So, how can you be expected to learn how to do something so important when it cannot be defined? &nbsp;Life is truly unfair. But do not despair; we will look at some elements of computational thinking that most computational scientists will agree are important elements of learning how to approach problems so that they can be solved computationally. &nbsp;Indeed this can be a starting point for our working definition of computational thinking. Here is how Jeannette Wing of Columbia University defines it:</p>
+<blockquote class="blockquote">
+<p>Computational thinking is the thought processes involved in formulating a problem and expressing its solution(s) in such a way that a computer—human or machine—can effectively carry it out (Wing, 2014).</p>
+</blockquote>
+<p>An athlete must train their body to execute physical motions required by the sport. &nbsp;A computational scientist must train their mind to think about problems in a way that allows computers to help solve the problems. &nbsp;Computational thinking is not used only for solving problems with a computer but can provide strategies for solving all sorts of problems. &nbsp;The habits of mind and processes you will learn here can be widely applied.</p>
+</section>
+<section id="uses-of-computational-thinking" class="level3">
+<h3 class="anchored" data-anchor-id="uses-of-computational-thinking">Uses of Computational Thinking</h3>
+<p>Computational thinking is used in many disciplines and activities with significant real-world applications:</p>
+<ul>
+<li><p>Mapping the human genome</p></li>
+<li><p>Predicting the spread of infectious disease</p></li>
+<li><p>Developing methods for weather prediction</p></li>
+<li><p>Predicting the effect of government policies</p></li>
+<li><p>Developing a method of scheduling meetings efficiently in a large organization</p></li>
+</ul>
+</section>
+<section id="pillars-of-computational-thinking" class="level3">
+<h3 class="anchored" data-anchor-id="pillars-of-computational-thinking">Pillars of Computational Thinking</h3>
+<p>The general principles of computational thinking can be represented using four pillars, or principle concepts. They are</p>
+<ul>
+<li><p>Decomposition</p></li>
+<li><p>Pattern Recognition</p></li>
+<li><p>Data Representation and Abstraction (we can shorten this to just Abstraction)</p></li>
+<li><p>Algorithms</p></li>
+</ul>
+<p>Let’s consider each of these pillars.</p>
+<p><strong><em>Decomposition</em></strong> involves breaking a complex problem into smaller, more-manageable sub-problems or parts. Consider the problem of writing a paper for a course. We might break this problem into at least three parts: writing an introduction, writing the main body, and finally writing a conclusion.</p>
+<p>Activity: Consider the problem of cleaning your apartment or house. Apply the process of decomposition to this problem.</p>
+<p><strong><em>Pattern recognition</em></strong> involves finding similarities or shared characteristics within or between problems. If two problems share characteristics, then the same solution can be used to solve both problems.</p>
+<p>Activity: Think of a problem for which you could use computational thinking, describe it, and then describe how you would apply pattern recognition.</p>
+<p>The third pillar of computational thinking is called <strong><em>data representation and abstraction</em></strong>. We will shorten this to just <strong><em>abstraction</em></strong>. The key element of abstraction is to determine the characteristics of a problem that are important and those that can be ignored. Next, we decide on a way to represent the chosen important characteristics. This would be the data representation.</p>
+<p>Example: developing an online book catalog. Important information:</p>
+<ul>
+<li><p>Title</p></li>
+<li><p>Authors</p></li>
+<li><p>ISBN</p></li>
+<li><p>Year of publication</p></li>
+<li><p>Edition</p></li>
+</ul>
+<p>Unimportant information:</p>
+<ul>
+<li><p>Book jacket color</p></li>
+<li><p>Author birthplace</p></li>
+</ul>
+<p>Activity: Think of a problem for which you could use computational thinking, describe it, and then describe how you would apply data representation and abstraction.</p>
+<p>The final pillar of computational thinking is <strong><em>algorithms</em></strong>. We will explore algorithms throughout this course. For now, we define their essential properties as:</p>
+<ol type="1">
+<li><p>A collection of individual steps to be used in solving the problem;</p></li>
+<li><p>Each step must be defined precisely;</p></li>
+<li><p>The steps must be performed sequentially.</p></li>
+</ol>
+<p>We can represent an algorithm using a flow chart.</p>
+<p>The elements of flowcharts include</p>
+<ol type="1">
+<li><p>Terminals: an oval that represents a start or stop.</p>
+<p><img src="../..\chapters//Ch01//Figures//Flowchart/terminal.png" class="img-fluid" style="width:20.0%"></p></li>
+<li><p>Input/Output: a parallelogram that represents the program either getting data input or creating data output.</p>
+<p><img src="../..\chapters//Ch01//Figures//Flowchart/input_output.png" class="img-fluid" style="width:20.0%"></p></li>
+<li><p>Processing: a box that represents executing some action such as performing arithmetic.</p>
+<p><img src="../..\chapters//Ch01//Figures//Flowchart/processing.png" class="img-fluid" style="width:20.0%"></p></li>
+<li><p>Decision: a diamond represents making a decision.</p>
+<p><img src="../..\chapters//Ch01//Figures//Flowchart/decision.png" class="img-fluid" style="width:20.0%"></p></li>
+<li><p>Flow Lines: arrows that indicate the sequence taken by instruction. The arrows are called directed edges by computer scientists.</p>
+<p><img src="../..\chapters//Ch01//Figures//Flowchart/flow_line.png" class="img-fluid" style="width:5.0%"></p></li>
+</ol>
+<p>Another way of representing an algorithm is using pseudocode, which we will explore later.</p>
+</section>
+<section id="logical-arguments" class="level3">
+<h3 class="anchored" data-anchor-id="logical-arguments">Logical Arguments</h3>
+<p>A good starting point for computational thinking is the idea of logical thinking. Logic is a systematic approach to distinguish between incorrect and correct arguments. Logical reasoning starts with premises, which are statements about initial knowns concerning the problem. &nbsp;Premises must be determined to be true or false. If the premises are true then the final step in a logical argument is to reason that a conclusion follows. &nbsp;</p>
+<p><strong>There are two general categories of logical arguments with which we are concerned:</strong> deductive <strong>and</strong> inductive <strong>arguments</strong>. In a deductive argument, once the premises are established to be true then the conclusion will necessarily follow with complete certainty. &nbsp;In an inductive argument the veracity of statements, whether they be premises or a conclusion, can be expressed only with a particular probability rather than with certainty.</p>
+<p>Example of deductive reasoning:</p>
+<ol type="1">
+<li><p>Socrates is a man.</p></li>
+<li><p>All men are mortal.</p></li>
+<li><p>Therefore, Socrates is mortal</p></li>
+</ol>
+<p>Statements 1 and 2 are the premises. &nbsp;If they are both true then the conclusion necessarily follows. &nbsp;</p>
+<p>A deductive argument can fail in two ways:</p>
+<ol type="1">
+<li><p>One or more of the premises could be false, which means that the conclusion is not necessarily true.</p></li>
+<li><p>The conclusion does not necessarily follow from the premises, even if they are all true. &nbsp;There is a logic problem in the argument.</p></li>
+</ol>
+<p>Example of inductive reasoning:</p>
+<p>In an inductive argument there will be an element of probability involved in the truth of premises and conclusion. &nbsp;In an inductive argument we establish that the conclusion is probably true but we cannot say it is true with certainty, as we can with a deductive argument. &nbsp;Here is an example:</p>
+<ul>
+<li><p>90% of the senior class at Belmont High were accepted into college.</p></li>
+<li><p>Robert is a senior at Belmont High</p></li>
+<li><p>Therefore, Robert was accepted into college.</p></li>
+</ul>
+<p>The conclusion is probably true but not necessarily true.</p>
+<p>Computers most easily perform deductive reasoning. &nbsp;In the next Module, we will learn about a particular way of performing deductive arguments called Boolean logic that is implemented in all programming languages, including Python.</p>
+</section>
+</section>
+<section id="mathematical-modeling-in-science-and-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="mathematical-modeling-in-science-and-engineering">Mathematical Modeling in Science and Engineering</h2>
+<p>Modeling is a fundamental element of science and engineering. We can think of a model as a simplified representation of a system of interest. A model could be physical such as letting a basketball represent the sun and a golf ball represent the earth and carry the golf ball around the basketball to illustrate a planetary orbit. Automobile manufacturers historically used clay models of a vehicle to explore how the shape influenced airflow around the vehicle. In science and engineering models are usually represented using mathematics such as representing the position of a planet by its spatial coordinates <span class="math inline">\((r,\theta,\phi)\)</span> in a spherical coordinate system and then representing the orbit by the equation for an ellipse, <a href="#eq-Eq1.1" class="quarto-xref">Equation&nbsp;<span>1</span></a></p>
+<p><span id="eq-Eq1.1"><span class="math display">\[  
+r = \frac{a\left(1- e^2\right)}{1 + e\cos \left(\phi \right)} \tag{1}\]</span></span></p>
+<p>We can usefully classify the kinds of models used in science and engineering into the following categories.</p>
+<ul>
+<li><p>Deterministic</p></li>
+<li><p>Stochastic</p></li>
+<li><p>Empirical</p></li>
+<li><p>Theory-based</p></li>
+</ul>
+<section id="deterministic-models" class="level3">
+<h3 class="anchored" data-anchor-id="deterministic-models">Deterministic Models</h3>
+<p>Deterministic models describe systems in which knowledge of the state at one time will determine the state at subsequent times. There is no element of randomness in the state of the system. An example would be applying Newton’s laws of motion to a rock thrown in the air. Knowing the rock’s position and velocity at one time will allow us to predict the position and velocity at subsequent times. <a href="#fig-RockTrajectory" class="quarto-xref">Figure&nbsp;<span>15</span></a> illustrates this situation.</p>
+<div id="fig-RockTrajectory" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-RockTrajectory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters\Ch01\Figures\Figure1.15.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-RockTrajectory-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;15: Trajectory of a rock ejected from a volcano. <span class="citation" data-cites="PaulPeterUroneRogerHinrichs_TrajectoryRock_2012">(<a href="../../bibliography.html#ref-PaulPeterUroneRogerHinrichs_TrajectoryRock_2012" role="doc-biblioref">Paul Peter Urone &amp; Roger Hinrichs, 2012</a>)</span>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="stochastic-models" class="level3">
+<h3 class="anchored" data-anchor-id="stochastic-models">Stochastic Models</h3>
+<p>Stochastic models involve some element of randomness. When such models are described mathematically, they will involve use of probability theory. An example is modeling the trajectory of smoke coming from a burning candle, as shown in <a href="#fig-CandleSmoke" class="quarto-xref">Figure&nbsp;<span>16</span></a>. The first part of the smoke trajectory after it leaves the wick could be described using a deterministic model, but most of the smoke motion involves an element of randomness, suggesting that a stochastic model would be required.</p>
+<div id="fig-CandleSmoke" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-CandleSmoke-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.16.jpg" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-CandleSmoke-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;16: Candle smoke <span class="citation" data-cites="Wicks_TwelfthNight_2022">(<a href="../../bibliography.html#ref-Wicks_TwelfthNight_2022" role="doc-biblioref">Wicks, 2022</a>)</span>
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="empirical-models" class="level3">
+<h3 class="anchored" data-anchor-id="empirical-models">Empirical Models</h3>
+<p>Empirical models attempt to find the mathematical form relating variables used to describe raw observational data or experimental results. The model is purely descriptive and not interpreted as an explanation of a pattern based on more fundamental principles. For example, suppose we take stroboscopic photographs of a falling ball at equal time intervals, as shown in the photo of <a href="#fig-fallingBallPhotoAndGraph" class="quarto-xref">Figure&nbsp;<span>17</span></a>. If we measure the ball’s position as a function of time from the photograph and make a graph, we will obtain the graph in <a href="#fig-fallingBallPhotoAndGraph" class="quarto-xref">Figure&nbsp;<span>17</span></a>.</p>
+<div id="fig-fallingBallPhotoAndGraph" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-fallingBallPhotoAndGraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.17.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-fallingBallPhotoAndGraph-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;17: (a) Stroboscopic photographs of a falling ball <span class="citation" data-cites="Maggs_FallingBall_2007">(<a href="../../bibliography.html#ref-Maggs_FallingBall_2007" role="doc-biblioref">Maggs, 2007</a>)</span>. (b) Graph of position data.
+</figcaption>
+</figure>
+</div>
+<p>Looking at the graph of the position data taken from strobe photos, we would rule out a linear relationship between <em>y</em> and <em>t</em>. The next type of equation to try would probably be a second-order polynomial, a quadratic. Such a model does fit the data well, as shown by the solid line in the graph.</p>
+</section>
+<section id="theory-based-models" class="level3">
+<h3 class="anchored" data-anchor-id="theory-based-models">Theory-based Models</h3>
+<p>Theory-based models use the more fundamental elements of a scientific theory, such as Newton’s Laws of Motion in physics, to develop the mathematical model of a system. In the example of the dropped ball, described above, we can apply Newton’s Second Law and Newton’s Law of Gravitation to the ball and predict that that relationship between the ball’s position and time should be a second-order polynomial equation, assuming that we ignore the effects of air resistance. We would arrive at the same equation as we hypothesized just on the basis of looking at the data, but the equation now is seen to be implied by the theory called Newton’s Laws of Motion.</p>
+<p>The categories described above are not exclusive of each other. We can have theory-based deterministic models or theory-based stochastic models, for example.</p>
+<p>We will use a variation on our four-step problem-solving strategy discussed in Chapter 2 when developing a mathematical model of a system. Here are the basic steps.</p>
+<ol type="1">
+<li><p>Analyze the problem</p></li>
+<li><p>Formulate a model</p></li>
+<li><p>Solve the model</p></li>
+<li><p>Verify and interpret the model’s solution</p></li>
+<li><p>Report on the model</p></li>
+<li><p>Maintain the model</p></li>
+</ol>
+<p>Our discussion of dynamical systems models will illustrate the use of this strategy.</p>
+</section>
+</section>
+<section id="introduction-to-textbook-computing-environment" class="level2">
+<h2 class="anchored" data-anchor-id="introduction-to-textbook-computing-environment">Introduction to Textbook Computing Environment</h2>
+<p>Many principles of computational science are independent of the programming language used to implement the computations, but it is easier to learn these principles using specific examples that involve a particular programming language. We will use Python as our primary programming language. To enable quick development and application of computational science principles we should establish a working Python programming environment now, so that it can be used immediately.</p>
+<section id="types-of-programming-environments" class="level3">
+<h3 class="anchored" data-anchor-id="types-of-programming-environments">Types of Programming Environments</h3>
+<p>There are several ways to establish a good programming environment that uses Python:</p>
+<ol type="1">
+<li><p>We can download and install a Python distribution, such as the Anaconda Distribution and then use the IPython command line shell that comes with that distribution. This allows the user to execute Python interactively, one code line at a time.Install a Python distribution, such as Anaconda, that comes with a Jupyter server then use Jupyter notebooks to compose executable code and text blocks.</p></li>
+<li><p>Install a Python distribution, such as Anaconda, then use a plain text editor (notepad, gedit, TextEdit) application to compose code and then execute the code from the command line using the appropriate command line console for your operating system.</p></li>
+<li><p>Install a Python distribution, then install an IDE application (PyCharm, Spyder, VSCode) that bundle a smart text editor, an interactive console, and enhanced debugging tools into a nice GUI.</p></li>
+<li><p>Use a cloud computing platform such as CoCalc, pythonanywhere, or Google Colab that allows the user to use Jupyter notebooks without installing any software, except for a browser. The cloud service maintains the Python distribution.</p></li>
+</ol>
+</section>
+<section id="the-google-colab-environment" class="level3">
+<h3 class="anchored" data-anchor-id="the-google-colab-environment">The Google Colab Environment</h3>
+<p>The last method is easiest and quickest to use, so we will focus on it here. The other methods are discussed in the appendix. We will use Google Colab for our example. To use Jupyter notebooks in Colab do the following.</p>
+<ol type="1">
+<li><p>Sign into your Google account.</p></li>
+<li><p>Go to your Google Drive and create a folder that will contain your Colab notebooks, which will be named Colab Notebooks. Open the folder that you just created.</p></li>
+<li><p>Open a new browser tab and goto <a href="https://colab.research.google.com" class="uri">https://colab.research.google.com</a>. You will see the following window showing available file spaces:</p></li>
+</ol>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../..\chapters//Ch01//Figures/Figure1.18.png" class="img-fluid figure-img"></p>
+<figcaption>Initial Google Colab window.</figcaption>
+</figure>
+</div>
+<ol type="1">
+<li><p>Select the examples tab and select the Overview of Colaboratory Features notebook.</p></li>
+<li><p>Read through this notebook to get oriented to the Colab Jupyter notebook features.</p></li>
+</ol>
+<p>Note that there are two kinds of cells in the notebook: text cells and code cells. Code cells contain executable Python code. The cell contents can be executed by selecting the Play icon on the left of the cell or by clicking anywhere in the cell and typing <strong>Shift+Enter</strong>.</p>
+<p>Let’s now create a new Colab notebook from your Google Drive folder.</p>
+<p>Navigate to your Colab notebook folder that you created previously:</p>
+<div id="fig-Figure1.19" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.19-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.19.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure1.19-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;18: Initial Google Colab window.
+</figcaption>
+</figure>
+</div>
+<p>Select</p>
+<ul>
+<li><p>+ New</p></li>
+<li><p>More</p></li>
+<li><p>Google Colaboratory</p></li>
+</ul>
+<div id="fig-Figure1.20" class="quarto-float quarto-figure quarto-figure-center anchored" width="50%">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.20-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.20.png" id="fig-Figure1.20" class="img-fluid figure-img" style="width:50.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.20-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;19
+</figcaption>
+</figure>
+</div>
+<p>You will get a new Colab Jupyter notebook in your folder, as shown in Figure <a href="#fig-Figure1.21" class="quarto-xref">Figure&nbsp;<span>20</span></a>.</p>
+<div id="fig-Figure1.21" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.21-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.21.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure1.21-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;20: New Colab notebook.
+</figcaption>
+</figure>
+</div>
+<p>The new notebook is named Untitled0.ipynb by default. You can change the name as you would any Google Doc file. Leave the ipynb extension since that indicates that the file is a Jupyter notebook file.</p>
+<p>The new notebook starts with one code cell. It is good practice to include documentation in your notebook, so let us put a text cell above the first code cell.</p>
+<p>Place the mouse pointer right above the code cell so that the add code or text buttons appear.</p>
+<p>Choose the <strong>+ Text</strong> option.</p>
+<div id="fig-Figure1.22" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.22-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.22.png" id="fig-Figure1.22" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.22-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;21
+</figcaption>
+</figure>
+</div>
+<p>A text cell will appear above the code cell. Double click in the cell to begin text editing.</p>
+<p>You should see an editing box on the left and a preview of the rendered text on the right.</p>
+<div id="fig-Figure1.23" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.23.png" id="fig-Figure1.23" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.23-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;22
+</figcaption>
+</figure>
+</div>
+<p>You can provide formatting of the text using Markdown syntax. The example below shows how to create a heading. We will discuss Markdown syntax later.</p>
+<div id="fig-Figure1.24" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.24-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.24.png" id="fig-Figure1.24" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.24-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;23
+</figcaption>
+</figure>
+</div>
+<p>After you finish entering any text then click the Close Markdown icon (circled above).</p>
+<p>When you create a Colab notebook you can easily save the file in your Google Drive by selecting</p>
+<p>File &gt; Save</p>
+<p>Colab will also create a temporary folder accessible to the notebook while it is open. You can view the contents of this folder by selecting the File Explorer tool on the left.</p>
+<div id="fig-Figure1.25" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.25-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.25.png" id="fig-Figure1.25" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.25-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;24
+</figcaption>
+</figure>
+</div>
+<p>This folder will disappear when the notebook file is closed, so if your code writes to a file you will want to ensure that the file gets placed where it will not be lost. One way to do this is to connect your Google Drive to the Colab notebook while it is running. This can be done using the Mount Google Drive tool.</p>
+<div id="fig-Figure1.26" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.26.png" id="fig-Figure1.26" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.26-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;25
+</figcaption>
+</figure>
+</div>
+<p>You will now see your Google Drive as a folder in the File Explorer area.</p>
+<div id="fig-Figure1.27" class="quarto-float quarto-figure quarto-figure-center anchored" width="\linewidth">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure1.27-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch01/Figures/Figure1.27.png" id="fig-Figure1.27" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure1.27-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;26
+</figcaption>
+</figure>
+</div>
+<p>Later, we will learn how to write directly to a file in the MyDrive folder using Python code in the notebook.</p>
+</section>
+</section>
+<section id="ch01-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="ch01-exercises">Exercises</h2>
+<p>1. Choose an area of science or engineering that interests you. <a href="#tbl-Table1.2" class="quarto-xref">Table&nbsp;<span>2</span></a> below lists areas that have a well-established record of computational solutions. Perform a web-based search using Google and library search resources to find a specific problem in the area that required computation to solve. Create a bibliography of these sources.</p>
+<div id="tbl-Table1.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table1.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Wikipedia pages for areas of computational science.
+</figcaption>
+<div aria-describedby="tbl-Table1.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;">Computational archaeology</th>
+<th style="text-align: left;">Computational mathematics</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Computational astrophysics</td>
+<td style="text-align: left;">Computational mechanics</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational biology</td>
+<td style="text-align: left;">Computational neuroscience</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational chemistry</td>
+<td style="text-align: left;">Computational particle physics</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational materials science</td>
+<td style="text-align: left;">Computational physics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational economics</td>
+<td style="text-align: left;">Computational sociology</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational electromagnetics</td>
+<td style="text-align: left;">Computational statistics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational engineering</td>
+<td style="text-align: left;">Computational sustainability</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational finance</td>
+<td style="text-align: left;">Computer algebra</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational fluid dynamics</td>
+<td style="text-align: left;">Financial modeling</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational forensics</td>
+<td style="text-align: left;">Geographic information system (GIS)</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational geophysics</td>
+<td style="text-align: left;">High-performance computing</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational history</td>
+<td style="text-align: left;">Machine learning</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational informatics</td>
+<td style="text-align: left;">Network analysis</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational intelligence</td>
+<td style="text-align: left;">Neuroinformatics</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Computational law</td>
+<td style="text-align: left;">Numerical weather prediction</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Computational linguistics</td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>You should create a document that includes the following:</p>
+<ul>
+<li><p>A paragraph that describes the problem.</p></li>
+<li><p>A paragraph that describes why computation was required for solving or investigating the problem.</p></li>
+<li><p>Four (or more) references that give information on the problem. At least two of the references should be peer-reviewed sources such as research journal papers and academic books.</p></li>
+</ul>
+<p>2. Computational science can be thought of as the intersection between a scientific or engineering discipline such as biology, mathematics, and _______________________ .</p>
+<p>3. Computer science is the study of algorithms whereas computational science is the study of how _____________________ can be used to solve scientific problems.</p>
+<p>4. Traditional science would study a system by experimenting with the actual system and developing theories to help understand the system. Computational science adds to this approach by using _____________ to analyze and visualize data and to explore properties of mathematical _____.</p>
+<p>5. Which of the following are considered pillars of Computational Thinking, as defined in this course? (Choose all that are true.)</p>
+<ol type="1">
+<li>algorithms</li>
+<li>arithmatic</li>
+<li>Python</li>
+<li>abstraction</li>
+<li>decomposition</li>
+<li>applied science</li>
+<li>pattern recognition</li>
+</ol>
+<p>6. Algorithms can be represented using</p>
+<ol type="1">
+<li>flowcharts</li>
+<li>graphs</li>
+<li>equations</li>
+<li>mathematical variables</li>
+</ol>
+<p>7. Select the statements below that are true concerning deductive reasoning.</p>
+<ol type="1">
+<li>The conclusion is probably rather than certain.</li>
+<li>The conclusion necessarily follows from the premises.</li>
+<li>An argument could be valid but unsound.</li>
+</ol>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<div class="flushleft">
+<p>Amin, O. S. M. (2019). <em>Babylonian Clay Tablet</em> [Photograph]. Own work. https://commons.wikimedia.org/wiki/File:Clay_tablet,_mathematical,_geometric-algebraic,_similar_to_the_Pythagorean_theorem._From_Tell_al-Dhabba%27i,_Iraq._2003-1595_BCE._Iraq_Museum.jpg</p>
+<p>Dietrich, A., Wald, I., &amp; Slusallek, P. (2005). Large-scale CAD Model Visualization on a Scalable Shared-memory Architecture. In G. Greiner, J. Hornegger, H. Niemann, &amp; M. Stamminger (Eds.), <em>Vision, Modeling, and Visualization 2005</em> (pp.&nbsp;303–310). Akademische Verlagsgesellschaft Aka.</p>
+<p>Feild, A. (2019). <em>Galaxy Types</em>. https://hubblesite.org/contents/media/images/4508-Image.html</p>
+<p>Knuth, D. E. (1972). Ancient Babylonian algorithms. <em>Communications of the ACM</em>, <em>15</em>(7), 671–677. https://doi.org/10.1145/361454.361514</p>
+<p>Koske, K. (2009). <em>United Airlines B777-222 N780UA</em>. United Airlines Boeing 777-222 (N780UA) Uploaded by Altair78. https://commons.wikimedia.org/wiki/File:United_Airlines_B777-222_N780UA.jpg</p>
+<p>Maggs, M. (2007). <em>Falling Ball</em> [Digital]. https://commons.wikimedia.org/wiki/File:Falling_ball.jpg</p>
+<p>Mercator, P. (2013). <em>Spherical trigonometry</em> [Digital]. https://commons.wikimedia.org/wiki/File:Spherical_trigonometry_basic_triangle.svg</p>
+<p>NASA’s Scientific Visualization Studio. (2021, January 14). <em>SVS: Global Temperature Anomalies from 1880 to 2020</em>. NASA Scientific Visualizations Studio. https://svs.gsfc.nasa.gov/4882</p>
+<p>New York Public Library / Science Source / Science Photo Library. (n.d.). <em>Hipparchus, Greek Astronomer and Mathematician</em> [Digital]. https://www.sciencephoto.com/media/1011097/view</p>
+<p><em>Temperature Composite</em>. (n.d.). Skeptical Science. Retrieved January 9, 2022, from https://skepticalscience.com//graphics.php?g=7</p>
+<p>The Shodor Education Foundation. (2000). <em>Overview of Computational Science</em>. ChemViz Curriculum Support Resources. http://www.shodor.org/chemviz/overview/compsci.html</p>
+<p>unknown. (1983). <em>Commemorative Stamp of Muḥammad ibn Mūsā al-Ḵwārizmī</em>. https://commons.wikimedia.org/wiki/File:1983_CPA_5426_(1).png</p>
+<p>Urone, P. P., &amp; Hinrichs, R. (2012). 3.4 Projectile Motion. In <em>College Physics</em>. OpenStax.</p>
+<p>Vogelsberger, M., Genel, S., Springel, V., Torrey, P., Sijacki, D., Xu, D., Snyder, G., Bird, S., Nelson, D., &amp; Hernquist, L. (2014). Properties of galaxies reproduced by a hydrodynamic simulation. <em>Nature</em>, <em>509</em>(7499), 177–182. https://doi.org/10.1038/nature13316</p>
+<p>Wicks, R. (2022). Twelfth night [Digital]. https://unsplash.com/photos/FMARk9s_20s</p>
+<p>Wing, J. M. (2006). Computational thinking. <em>Communications of the ACM</em>, <em>49</em>(3), 33–35. https://doi.org/10.1145/1118178.1118215</p>
+<p>Wing, J. M. (2014, January 10). Computational Thinking Benefits Society. <em>Social Issues in Computing</em>. http://socialissues.cs.toronto.edu/index.html%3Fp=279.html</p>
+<p>Zhang, Y., &amp; Zhao, Y. (2015). Astronomy in the Big Data Era. <em>Data Science Journal</em>, <em>14</em>(0), 11. https://doi.org/10.5334/dsj-2015-011</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-Amin_BabylonianClayTablet_2019" class="csl-entry" role="listitem">
+Amin, O. S. M. (14 March 2019, 11:03:07). <em>Babylonian <span>Clay Tablet</span></em> [Graphic]. <a href="https://commons.wikimedia.org/wiki/File:Clay_tablet,_mathematical,_geometric-algebraic,_similar_to_the_Pythagorean_theorem._From_Tell_al-Dhabba%27i,_Iraq._2003-1595_BCE._Iraq_Museum.jpg">https://commons.wikimedia.org/wiki/File:Clay_tablet,_mathematical,_geometric-algebraic,_similar_to_the_Pythagorean_theorem._From_Tell_al-Dhabba%27i,_Iraq._2003-1595_BCE._Iraq_Museum.jpg</a>
+</div>
+<div id="ref-DietrichEtAl_LargescaleCADModel_2005" class="csl-entry" role="listitem">
+Dietrich, A., Wald, I., &amp; Slusallek, P. (2005). Large-scale <span>CAD Model Visualization</span> on a <span class="nocase">Scalable Shared-memory Architecture</span>. In G. Greiner, J. Hornegger, H. Niemann, &amp; M. Stamminger (Eds.), <em>Vision, <span>Modeling</span>, and <span>Visualization</span> 2005</em> (pp. 303–310). Akademische Verlagsgesellschaft Aka.
+</div>
+<div id="ref-Feild_GalaxyTypes_2019" class="csl-entry" role="listitem">
+Feild, A. (2019). <em>Galaxy <span>Types</span></em> [Graphic]. <a href="https://hubblesite.org/contents/media/images/4508-Image.html">https://hubblesite.org/contents/media/images/4508-Image.html</a>
+</div>
+<div id="ref-Knuth_AncientBabylonianAlgorithms_1972" class="csl-entry" role="listitem">
+Knuth, D. E. (1972). Ancient <span>Babylonian</span> algorithms. <em>Communications of the ACM</em>, <em>15</em>(7), 671–677. <a href="https://doi.org/10.1145/361454.361514">https://doi.org/10.1145/361454.361514</a>
+</div>
+<div id="ref-Koske_UnitedAirlinesB777222_2009" class="csl-entry" role="listitem">
+Koske, K. (18 October 2009, 11:52). <em>United <span>Airlines B777-222 N780UA</span></em> [Graphic]. <a href="https://commons.wikimedia.org/wiki/File:United_Airlines_B777-222_N780UA.jpg">https://commons.wikimedia.org/wiki/File:United_Airlines_B777-222_N780UA.jpg</a>
+</div>
+<div id="ref-Maggs_FallingBall_2007" class="csl-entry" role="listitem">
+Maggs, M. (2007). <em>Falling <span>Ball</span></em> [Graphic]. <a href="https://commons.wikimedia.org/wiki/File:Falling_ball.jpg">https://commons.wikimedia.org/wiki/File:Falling_ball.jpg</a>
+</div>
+<div id="ref-Mercator_SphericalTrigonometry_2013" class="csl-entry" role="listitem">
+Mercator, P. (2013). <em>Spherical trigonometry</em> [Graphic]. <a href="https://commons.wikimedia.org/wiki/File:Spherical_trigonometry_basic_triangle.svg">https://commons.wikimedia.org/wiki/File:Spherical_trigonometry_basic_triangle.svg</a>
+</div>
+<div id="ref-NASAsScientificVisualizationStudio_SVSGlobalTemperature_2021" class="csl-entry" role="listitem">
+NASA’s Scientific Visualization Studio. (2021, January 14). <em><span>SVS</span>: <span>Global Temperature Anomalies</span> from 1880 to 2020</em>. NASA Scientific Visualizations Studio. <a href="https://svs.gsfc.nasa.gov/4882">https://svs.gsfc.nasa.gov/4882</a>
+</div>
+<div id="ref-NewYorkPublicLibrary/ScienceSource/SciencePhotoLibrary_HipparchusGreekAstronomer_" class="csl-entry" role="listitem">
+New York Public Library / Science Source / Science Photo Library. (n.d.). <em>Hipparchus, <span>Greek Astronomer</span> and <span>Mathematician</span></em> [Graphic]. <a href="https://www.sciencephoto.com/media/1011097/view">https://www.sciencephoto.com/media/1011097/view</a>
+</div>
+<div id="ref-PaulPeterUroneRogerHinrichs_TrajectoryRock_2012" class="csl-entry" role="listitem">
+Paul Peter Urone, &amp; Roger Hinrichs. (2012). <em>Trajectory of a rock</em> [Graphic]. <a href="https://openstax.org/books/college-physics/pages/3-4-projectile-motion">https://openstax.org/books/college-physics/pages/3-4-projectile-motion</a>
+</div>
+<div id="ref-_TemperatureComposite_" class="csl-entry" role="listitem">
+<em>Temperature <span>Composite</span></em>. (n.d.). Skeptical Science. Retrieved January 9, 2022, from <a href="https://skepticalscience.com//graphics.php?g=7">https://skepticalscience.com//graphics.php?g=7</a>
+</div>
+<div id="ref-TheShodorEducationFoundation_OverviewComputationalScience_2000" class="csl-entry" role="listitem">
+The Shodor Education Foundation. (2000). <em>Overview of <span>Computational Science</span></em>. ChemViz Curriculum Support Resources. <a href="http://www.shodor.org/chemviz/overview/compsci.html">http://www.shodor.org/chemviz/overview/compsci.html</a>
+</div>
+<div id="ref-unknown_CommemorativeStampMuhammad_1983" class="csl-entry" role="listitem">
+unknown. (1983). <em>Commemorative <span>Stamp</span> of <span>Muḥammad</span> ibn <span>Mūsā</span> al-<span>Ḵwārizmī</span></em> [Graphic]. <a href="https://commons.wikimedia.org/wiki/File:1983_CPA_5426_(1).png">https://commons.wikimedia.org/wiki/File:1983_CPA_5426_(1).png</a>
+</div>
+<div id="ref-VogelsbergerEtAl_PropertiesGalaxiesReproduced_2014" class="csl-entry" role="listitem">
+Vogelsberger, M., Genel, S., Springel, V., Torrey, P., Sijacki, D., Xu, D., Snyder, G., Bird, S., Nelson, D., &amp; Hernquist, L. (2014). Properties of galaxies reproduced by a hydrodynamic simulation. <em>Nature</em>, <em>509</em>(7499, 7499), 177–182. <a href="https://doi.org/10.1038/nature13316">https://doi.org/10.1038/nature13316</a>
+</div>
+<div id="ref-Wicks_TwelfthNight_2022" class="csl-entry" role="listitem">
+Wicks, R. (2022). <em>Twelfth night</em> [Graphic]. <a href="https://unsplash.com/photos/FMARk9s_20s">https://unsplash.com/photos/FMARk9s_20s</a>
+</div>
+<div id="ref-Wing_ComputationalThinking_2006" class="csl-entry" role="listitem">
+Wing, J. M. (2006). Computational thinking. <em>Communications of the ACM</em>, <em>49</em>(3), 33–35. <a href="https://doi.org/10.1145/1118178.1118215">https://doi.org/10.1145/1118178.1118215</a>
+</div>
+<div id="ref-ZhangZhao_AstronomyBigData_2015" class="csl-entry" role="listitem">
+Zhang, Y., &amp; Zhao, Y. (2015). Astronomy in the <span>Big Data Era</span>. <em>Data Science Journal</em>, <em>14</em>(0, 0), 11. <a href="https://doi.org/10.5334/dsj-2015-011">https://doi.org/10.5334/dsj-2015-011</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../preface.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="pagination-link" aria-label="Computational Thinking and Problem Solving">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

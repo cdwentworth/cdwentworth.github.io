@@ -1,0 +1,1811 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.6.42">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Control Structures – Computational Science</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../chapters/Ch04/Ch04_Lists.html" rel="next">
+<link href="../../chapters/Ch02/Ch02_ComputationalThinking.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-bde1a9c17d4c5fbad7829061492aca89.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../chapters/Ch03/Ch03_ControlStructures.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Computational Science</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Welcome</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../acknowledgements.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Acknowledgements</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../preface.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch01/Ch01_Introduction.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Introduction</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch03/Ch03_ControlStructures.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Control Structures</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch04/Ch04_Lists.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch05/Ch05_PrinciplesOfScientificVisualization.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Principles of Scientific Visualization</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch06/Ch06_Functions.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Functions</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch07/Ch07_DynamicalSystemsModeling1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling I</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch08/Ch08_DynamicalSystemsModelingII.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Dynamical Systems Modeling II</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch09/Ch09_StochasticSimulations.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">Stochastic Models and Simulations</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">Fitting Models to Data: The Method of Least Squares</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch11/Ch11_Projects_DynamicalSystems.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">Project Ideas: Dynamical Systems Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../chapters/Ch12/Ch12_Projects_Stochastic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">12</span>&nbsp; <span class="chapter-title">Project Ideas: Stochastic Models</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../bibliography.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Bibliography</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixA/AppA_PythonProgrammingEnvironments.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">Python Programming Environments</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../appendices/AppendixB/AppB_AdvancedPlotting.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">Advanced Plotting with Matplotlib</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#motivating-problem-temperature-conversions" id="toc-motivating-problem-temperature-conversions" class="nav-link active" data-scroll-target="#motivating-problem-temperature-conversions">Motivating Problem: Temperature Conversions</a></li>
+  <li><a href="#definition-of-control-structures" id="toc-definition-of-control-structures" class="nav-link" data-scroll-target="#definition-of-control-structures">Definition of Control Structures</a></li>
+  <li><a href="#boolean-expressions" id="toc-boolean-expressions" class="nav-link" data-scroll-target="#boolean-expressions">Boolean Expressions</a></li>
+  <li><a href="#selection-control-overview" id="toc-selection-control-overview" class="nav-link" data-scroll-target="#selection-control-overview">Selection Control Overview</a></li>
+  <li><a href="#iterative-control-overview" id="toc-iterative-control-overview" class="nav-link" data-scroll-target="#iterative-control-overview">Iterative Control Overview</a></li>
+  <li><a href="#pseudocode" id="toc-pseudocode" class="nav-link" data-scroll-target="#pseudocode">Pseudocode</a></li>
+  <li><a href="#computational-problem-solution-temperature-conversion" id="toc-computational-problem-solution-temperature-conversion" class="nav-link" data-scroll-target="#computational-problem-solution-temperature-conversion">Computational Problem Solution: Temperature Conversion</a>
+  <ul class="collapse">
+  <li><a href="#analysis" id="toc-analysis" class="nav-link" data-scroll-target="#analysis">Analysis</a></li>
+  <li><a href="#ch03-design" id="toc-ch03-design" class="nav-link" data-scroll-target="#ch03-design">Design</a></li>
+  <li><a href="#implementation" id="toc-implementation" class="nav-link" data-scroll-target="#implementation">Implementation</a></li>
+  <li><a href="#ch03-testing" id="toc-ch03-testing" class="nav-link" data-scroll-target="#ch03-testing">Testing</a></li>
+  </ul></li>
+  <li><a href="#ch03-exercises" id="toc-ch03-exercises" class="nav-link" data-scroll-target="#ch03-exercises">Exercises</a></li>
+  <li><a href="#ch03-program-modification-problems" id="toc-ch03-program-modification-problems" class="nav-link" data-scroll-target="#ch03-program-modification-problems">Program Modification Problems</a></li>
+  <li><a href="#ch03-references" id="toc-ch03-references" class="nav-link" data-scroll-target="#ch03-references">References</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="control_structures:cha" class="quarto-section-identifier">Control Structures</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="motivating-problem-temperature-conversions" class="level2 unnumbered">
+<h2 class="unnumbered anchored" data-anchor-id="motivating-problem-temperature-conversions">Motivating Problem: Temperature Conversions</h2>
+<p>Scientists and engineers must use several temperature scales in their work. In the United States, most of the public still uses the Fahrenheit scale, while in scientific research the metric scales Celsius and Kelvin are preferred. Modern thermodynamic science postulates a lowest possible temperature for a physical system, which suggests using temperature scales for which 0 corresponds to this lowest possible temperature. The Kelvin scale is the absolute temperature scale in the metric system. Engineers working in the U.S. must often use the Rankine temperature scale, which associates 0 with absolute zero, but where a temperature difference of one Rankine equals one degree Fahrenheit.</p>
+<p>Given the need for scientists and engineers to use different temperature scales, creating a computer program that can take a temperature given in one scale by a user and convert it to a temperature in another scale is an important problem. We will need additional ways to control the flow of a program to solve this problem, in particular, we must execute different blocks of code depending on which temperature conversion must be done.</p>
+<p>This chapter introduces elements of the programming language that allow for sophisticated program control based on information submitted by the user. We will learn about Boolean expressions and how they are used by the different control structures available in Python.</p>
+</section>
+<section id="definition-of-control-structures" class="level2">
+<h2 class="anchored" data-anchor-id="definition-of-control-structures">Definition of Control Structures</h2>
+<p>Control flow refers to the sequencing of executed statements in a program. A control structure is a type of statement in a programming language that determines the control flow in a program. All programming languages provide the following control structures:</p>
+<ul>
+<li><p>sequential control</p></li>
+<li><p>selection control</p></li>
+<li><p>iterative control</p></li>
+</ul>
+<p><strong>Sequential control</strong> is the execution of statements one after the other. It is what we have used previously. <strong>Selection control</strong> involves executing a different block of code depending on the value of a conditional statement, such as one that evaluates to true or false. <strong>Iterative control</strong> allows for the repetition of a block of statements based on a condition. <a href="#fig-Fig3.1" class="quarto-xref">Figure&nbsp;<span>1</span></a> illustrates these three kinds of control structures.</p>
+<div id="fig-Fig3.1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig3.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch03/Figures/Figure3.1.png" class="img-fluid figure-img" style="width:95.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig3.1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: The three kinds of flow control structures.
+</figcaption>
+</figure>
+</div>
+<p>We see in <a href="#fig-Fig3.1" class="quarto-xref">Figure&nbsp;<span>1</span></a> that sequential control involves executing a statement, then executing the next statement, and so on. Selection control shows the program arriving at a decision point where some kind of condition statement is evaluated, often a true/false kind of statement, then the program flow goes to a different code block depending on the value of the condition. Iterative control shows the program arriving at a decision point where a condition statement is evaluated and as long as the condition is true then a code block gets executed in a loop, and when the condition becomes false the program control continues after the loop.</p>
+</section>
+<section id="boolean-expressions" class="level2">
+<h2 class="anchored" data-anchor-id="boolean-expressions">Boolean Expressions</h2>
+<p>Selection and iterative control often involve a logical expression that evaluates to true or false. Such values are called Boolean data type. Programming languages use Boolean algebra to evaluate expressions involving Boolean variables or values. This type of algebra was developed by the 19<sup>th</sup> century mathematician George Boole . Instead of operations performed on numbers, as is done in traditional algebra, Boolean algebra involves operations performed on True/False values. We will introduce the Boolean (or logical) operators <strong>and</strong>, <strong>or</strong>, and <strong>not</strong>, and learn how to use them to construct complex Boolean expressions, which always evaluate to either True or False.</p>
+<p>In Python, the logical values of true and false are indicated by True and False. The capitalization is important. Also note that the Boolean operators are keywords in Python, so they should not be used as variable names and other identifiers.</p>
+<p>The <strong>and</strong> and <strong>or</strong> operators are binary operators requiring two Boolean variables or values as operands. The <strong>not</strong> operator is a unary operator, which simply turns the logical value to its opposite: True becomes False and False becomes True. The result of Boolean operators is defined by the Boolean Truth Table given in <a href="#tbl-Table3p1" class="quarto-xref">Table&nbsp;<span>1</span></a>.</p>
+<div id="tbl-Table3p1" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;1: Boolean logic truth table.
+</figcaption>
+<div aria-describedby="tbl-Table3p1-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;">x</td>
+<td style="text-align: center;">y</td>
+<td style="text-align: center;">x and y</td>
+<td style="text-align: center;">x or y</td>
+<td style="text-align: center;">not x</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">FALSE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">TRUE</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p><strong>Relational operators</strong> are often involved in Boolean expressions. These operators These operators are used in comparing two values. The Python relational operators are shown in <a href="#tbl-Table3p2" class="quarto-xref">Table&nbsp;<span>2</span></a>.</p>
+<div id="tbl-Table3p2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;2: Python relational operators.
+</figcaption>
+<div aria-describedby="tbl-Table3p2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Operator</strong></td>
+<td style="text-align: left;"><strong>Meaning</strong></td>
+<td style="text-align: center;"><strong>Example</strong></td>
+<td style="text-align: center;"><strong>Result</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">==</td>
+<td style="text-align: left;">equal</td>
+<td style="text-align: center;">15 == 20</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">!=</td>
+<td style="text-align: left;">not equal</td>
+<td style="text-align: center;">15 != 20</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;</td>
+<td style="text-align: left;">less then</td>
+<td style="text-align: center;">15 &lt;20</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&gt;</td>
+<td style="text-align: left;">greater than</td>
+<td style="text-align: center;">15 &gt;20</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;=</td>
+<td style="text-align: left;">less than or equal</td>
+<td style="text-align: center;">15 &lt;= 15</td>
+<td style="text-align: center;">TRUE</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">&gt;=</td>
+<td style="text-align: left;">greater than or equal</td>
+<td style="text-align: center;">15 &gt;= 20</td>
+<td style="text-align: center;">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>The relational operators can be applied to any kind of value that has an ordering, including strings. The ordering of string values follows a dictionary ordering based on a particular way of assigning numbers to a character. Python uses the Unicode Standard <span class="citation" data-cites="UnicodeConsortium_Unicode_2021">(<a href="../../bibliography.html#ref-UnicodeConsortium_Unicode_2021" role="doc-biblioref">Unicode Consortium, 2021</a>)</span> for encoding characters. In this system A is less than B, because the Unicode code for A is 65 and the Unicode code for B is 66. Since the Unicode code for lowercase letters is greater than it is for uppercase letters we have a is greater than B.</p>
+<p>We should be careful to avoid errors in using relational operators coming from not distinguishing between meaningful mathematical expressions and meaningful programming language expressions. Consider the following.</p>
+<p><span id="eq-Equation3.1"><span class="math display">\[\label{eq:Equation3.1}
+    10 &lt;  = \text{num} &lt;  = 20 \tag{1}\]</span></span></p>
+<p>Assume that the variable num represents the number 15. The expression is understood in mathematics to mean</p>
+<p><span id="eq-Equation3.2"><span class="math display">\[\label{eq:Equation3.2}
+\left(10 &lt;  = \text{num}\right)\text{and}\left(\text{num} &lt;  = 20\right) \tag{2}\]</span></span></p>
+<p>which evaluates to True, but most programming languages will not make this implicit assumption. Instead the evaluation will proceed as follows.</p>
+<p><span class="math display">\[10 &lt;  = \text{num} &lt;  = 20\rightarrow \left(10 &lt;  = \text{num}\right) &lt;  = 20\rightarrow \text{True} &lt;  = 20\rightarrow \text{error}\]</span></p>
+<p>The final step yields an error since we are trying to compare two different kinds of data, Boolean and numerical. To avoid this problem, you should use parentheses explicitly, as shown in <a href="#eq-Equation3.2" class="quarto-xref">Equation&nbsp;<span>2</span></a>.</p>
+<p>The Boolean operators must be added to the operator precedence definitions. <a href="#tbl-Table3p3" class="quarto-xref">Table&nbsp;<span>3</span></a> gives the operator precedence order including Boolean operators.</p>
+<div id="tbl-Table3p3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;3: Updated operator precedence table.
+</figcaption>
+<div aria-describedby="tbl-Table3p3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"><strong>Operator</strong></td>
+<td style="text-align: center;"><strong>Operation</strong></td>
+<td style="text-align: center;"><strong>Associativity</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">**</td>
+<td style="text-align: center;">exponentiation</td>
+<td style="text-align: center;">right-to-left</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">-</td>
+<td style="text-align: center;">negation</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">* , / , // , %</td>
+<td style="text-align: center;">mult , division, trunc, div, modulo</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">+ , -</td>
+<td style="text-align: center;">addition , subtraction</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">&lt;,&gt;,&lt;=,&gt;=,!=,==</td>
+<td style="text-align: center;">relational operators</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">not</td>
+<td style="text-align: center;">not</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">and</td>
+<td style="text-align: center;">and</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">or</td>
+<td style="text-align: center;">or</td>
+<td style="text-align: center;">left-to-right</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Parentheses can be used in expressions to help humans reading the code to recognize the desired operator precedence. Consider the expression</p>
+<p><span class="math display">\[1 + 2 &lt; 3 + 4\]</span></p>
+<p>The expression is evaluated using the operator precedence order in <a href="#tbl-Table3p3" class="quarto-xref">Table&nbsp;<span>3</span></a> as</p>
+<p><span class="math display">\[1 + 2 &lt; 3 + 4\rightarrow 3 &lt; 7\rightarrow \text{True}\]</span></p>
+<p>To assist a human reader of the code the operator precedence could be made explicit by writing the expression as</p>
+<p><span class="math display">\[\left(1 + 2\right) &lt; \left(3 + 4\right)\]</span></p>
+<p>Using parentheses in this way is good programming practice.</p>
+</section>
+<section id="selection-control-overview" class="level2">
+<h2 class="anchored" data-anchor-id="selection-control-overview">Selection Control Overview</h2>
+<p>Selection control allows for different blocks of statements to be executed depending on the value of a conditional expression, often a Boolean expression. We will discuss the Python if statement as the primary example of this control structure. Here is the basic form of the if statement:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition:</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>    statement block</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>    statement block</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The condition in this statement must be a Boolean expression, that is one that evaluates to True or False. Also, the else part is optional. Here is a specific example.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> grade <span class="op">&gt;=</span> <span class="dv">70</span>:</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'satisfactory performance'</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'improvement needed'</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>One thing to note about Python syntax is that indentation is important. All statements in a particular statement block must be indented the same amount. To clarify this situation, we must introduce some additional vocabulary. Consider a simplified version of the temperature conversion task. Suppose that the problem is to convert Fahrenheit to Celsius or Celsius to Fahrenheit, depending on what the user specifies. Assume that the user inputs F-C or C-F depending on which conversion must be done. This code will be contained in temp_conversion_type. The temperature to be converted will be in the variable temp_to_convert. The converted temperature will be in the variable converted_temp. <a href="#fig-Fig3.2" class="quarto-xref">Figure&nbsp;<span>2</span></a> introduces some vocabulary to help in discussing control structures.</p>
+<div id="fig-Fig3.2" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Fig3.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="../..\chapters/Ch03/Figures/Figure3.2.png" class="img-fluid figure-img" style="width:90.0%">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Fig3.2-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;2: Control structure vocabulary.
+</figcaption>
+</figure>
+</div>
+<p>The <strong>header</strong> in a control structure is a keyword and ends in a colon. The if statement has two headers. Headers in the same control structure must be indented the same, as seen in <a href="#fig-Fig3.2" class="quarto-xref">Figure&nbsp;<span>2</span></a>. A suite or block is a set of statements following a header. They must all be indented the same. The following code will generate an error.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> temp_conversion_type <span class="op">==</span> <span class="st">'F-C'</span>:</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>        converted_temp <span class="op">=</span> (temp_to_convert <span class="op">-</span> <span class="dv">32</span>)<span class="op">*</span><span class="fl">5.0</span><span class="op">/</span><span class="fl">9.0</span></span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(temp_to_convert,<span class="st">'[F] = '</span>, converted_temp, <span class="st">'[C]'</span>)</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>    converted_temp <span class="op">=</span> temp_to_convert<span class="op">*</span><span class="fl">9.0</span><span class="op">/</span><span class="fl">5.0</span> <span class="op">+</span> <span class="fl">32.0</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(temp_to_convert,<span class="st">'[C] = '</span> , converted_temp, <span class="st">'[F]'</span>)   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The amount of indentation of a code block does not matter, although four spaces has become a convention for Python.</p>
+<p>Multi-way selection can be achieved by using nested if statements or by using the elif header. Nested if statements have the following structure.</p>
+<div id="fig-Figure3.3" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure3.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure3.3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure3.3-1"><a href="#fig-Figure3.3-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition:</span>
+<span id="fig-Figure3.3-2"><a href="#fig-Figure3.3-2" aria-hidden="true" tabindex="-1"></a>    statement block</span>
+<span id="fig-Figure3.3-3"><a href="#fig-Figure3.3-3" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="fig-Figure3.3-4"><a href="#fig-Figure3.3-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> condition:</span>
+<span id="fig-Figure3.3-5"><a href="#fig-Figure3.3-5" aria-hidden="true" tabindex="-1"></a>        statement block</span>
+<span id="fig-Figure3.3-6"><a href="#fig-Figure3.3-6" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.3-7"><a href="#fig-Figure3.3-7" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> condition:</span>
+<span id="fig-Figure3.3-8"><a href="#fig-Figure3.3-8" aria-hidden="true" tabindex="-1"></a>            statement block</span>
+<span id="fig-Figure3.3-9"><a href="#fig-Figure3.3-9" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="fig-Figure3.3-10"><a href="#fig-Figure3.3-10" aria-hidden="true" tabindex="-1"></a>            statement block</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.3-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;3: Multi-way selection with nested if statements.
+</figcaption>
+</figure>
+</div>
+<p>The same flow control is achieved more cleanly using the elif header shown in <a href="#fig-Figure3.4" class="quarto-xref">Figure&nbsp;<span>4</span></a>.</p>
+<div id="fig-Figure3.4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-Figure3.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure3.4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="fig-Figure3.4-1"><a href="#fig-Figure3.4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> condition:</span>
+<span id="fig-Figure3.4-2"><a href="#fig-Figure3.4-2" aria-hidden="true" tabindex="-1"></a>    statement block</span>
+<span id="fig-Figure3.4-3"><a href="#fig-Figure3.4-3" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> condition:</span>
+<span id="fig-Figure3.4-4"><a href="#fig-Figure3.4-4" aria-hidden="true" tabindex="-1"></a>    statement block</span>
+<span id="fig-Figure3.4-5"><a href="#fig-Figure3.4-5" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> condition:</span>
+<span id="fig-Figure3.4-6"><a href="#fig-Figure3.4-6" aria-hidden="true" tabindex="-1"></a>    statement block</span>
+<span id="fig-Figure3.4-7"><a href="#fig-Figure3.4-7" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="fig-Figure3.4-8"><a href="#fig-Figure3.4-8" aria-hidden="true" tabindex="-1"></a>    statement block</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;4: Multi-way selection using the elif header.
+</figcaption>
+</figure>
+</div>
+</section>
+<section id="iterative-control-overview" class="level2">
+<h2 class="anchored" data-anchor-id="iterative-control-overview">Iterative Control Overview</h2>
+<p>Iterative control structures allow a block of code to be repeated based on a condition that appears in the header for the structure. As Figure 3.1 suggests, an iterative control structure appears as a loop due to the repetitive nature of the flow. The first iterative control structure that we will introduce is the while loop, which repeatedly executes a code block based on a Boolean expression. The syntax for a while loop is</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> condition:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>    statement block</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The condition must be a Boolean expression that evaluates to True or False. As long as the condition is true, the block of code will execute. When the condition becomes False, the flow control jumps to the first statement after the while loop. Here is a simple example of using the while loop to achieve iterative control:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>num <span class="op">=</span> <span class="dv">0</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>count <span class="op">=</span> <span class="dv">1</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>number_of_iterations <span class="op">=</span> <span class="bu">int</span>(<span class="bu">input</span>(<span class="st">'Enter the number of iterations:'</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> count <span class="op">&lt;=</span> number_of_iterations:</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    num <span class="op">=</span> num <span class="op">+</span> <span class="dv">1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>All iterative flow control can be achieved with the while loop, but if the number of iterations is known in advance, then another control structure can be used: the for loop. When this structure is used the loop is executed for each element of a given sequence. We will discuss Python sequence data types in the next chapter, but a commonly used example is provided by the range function.</p>
+<p>The range function will produce a sequence of integers that can be used by a for loop. The syntax is</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">range</span>(start, stop, step)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>where</p>
+<p>start - An integer number specifying at which position to start the integer list. Default is 0. Optional</p>
+<p>stop - An integer number specifying at which number to stop. The sequence goes up to but not including this number. Required.</p>
+<p>step - An integer number specifying the increment. Default is 1. Optional.</p>
+<p>Examples:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="bu">range</span>(<span class="dv">2</span>,<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>generates the sequence</p>
+<p>2,3,4</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">range</span>(<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>generates</p>
+<p>0,1,2,3,4</p>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="bu">range</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">2</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>generates</p>
+<p>0,2,4,6,8</p>
+<p>The syntax for a for loop is shown below.</p>
+<div class="sourceCode" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> sequence:</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>    statement block</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The following example uses the range function to generate a sequence of integers that can be used in a for loop.</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>,<span class="dv">6</span>):</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Index value is'</span>,i)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>This for loop will produce the following output</p>
+<pre><code>Index value is 1
+Index value is 2
+Index value is 3
+Index value is 4
+Index value is 5</code></pre>
+</section>
+<section id="pseudocode" class="level2">
+<h2 class="anchored" data-anchor-id="pseudocode">Pseudocode</h2>
+<p>The Design phase of solving a computational problem can be challenging since it is where we must develop the actual algorithm for the solution. By recognizing the key logical structures of programming without concern with syntax details of a specific programming language we can often work through the basic logic of the solution. One method used by software engineers to construct an expression of this logic is writing pseudocode.</p>
+<p>Pseudocode involves using plain language to write out the basic logic of the problem solution using structural conventions of programming languages but not being concerned with specific syntax details. Pseudocode provides a bridge between initial thoughts about a problem solution and an actual working code.</p>
+<p>Structural elements of programming languages that we want to recognize in our pseudocode version of the program include control structures and functions. We will use a particular style of writing the pseudocode that recognizes these structural elements.</p>
+<p>Let’s start with control structures. There three major kinds of program control: sequential, selection, and iterative. Sequential control involves executing a step and then moving on to the next step, one after the other. In our pseudocode we will always begin a step with a capital letter, as in the following:</p>
+<div id="fig-Figure3.5" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.5" class="columns" style="background-color:rgb(241, 242, 243)"><code>Step 1
+Step 2
+Step 3
+.
+.
+.    </code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;5: Sequential control in pseudocode.</figcaption></figure>
+</div>
+<p>Selection control involves executing different blocks of code depending on the value of a Boolean conditional variable. This will involve using an if/else type of structure. Our pseudocode style for indicating a selection control block is to make the keywords IF and ELSE uppercase. We will also indicate the end of the IF/ELSE block with the keyword ENDIF.</p>
+<div id="fig-Figure3.6" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.6" class="columns" style="background-color:rgb(241, 242, 243)"><code>IF condition
+    Step 1
+    Step 2
+ELSE
+    Step 1
+    Step 2
+ENDIF  </code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;6: Selection control in pseudocode.</figcaption></figure>
+</div>
+<p>Iterative control involves setting up a loop, which can be done with the while structure or a for loop. Our pseudocode style will require making the appropriate keyword uppercase. The block will end with the keyword ENDWHILE. Here is how the while structure will be indicated:</p>
+<div id="fig-Figure3.7" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.7" class="columns" style="background-color:rgb(241, 242, 243)"><code>WHILE condition DO
+    Step 1
+    Step 2
+ENDWHILE</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;7: Iterative control in pseudocode. While loop.</figcaption></figure>
+</div>
+<p>The for loop will be written as</p>
+<div id="fig-Figure3.8" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.8" class="columns" style="background-color:rgb(241, 242, 243)"><code>FOR item IN list DO
+    Step 1
+    Step 2
+ENDFOR</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.8-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;8: Iterative control in pseudocode. For loop.</figcaption></figure>
+</div>
+<p>When we use decomposition and abstraction to help solve a computational problem, we often write separate program units to take care of a particular step in the algorithm. In Python, these program units are typically functions. When writing pseudocode and we decide to make a step of the algorithm into a separate function then we will write a pseudocode version of the function as a separate program unit using the FUNCTION keyword. Important parts of writing the pseudocode for a function are to identify the required parameters passed to the function and the data that will be returned to the main program. We will use the following for the pseudocode style.</p>
+<div id="fig-Figure3.9" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.9" class="columns" style="background-color:rgb(241, 242, 243)"><code>FUNCTION function_name 
+    INPUT:parameter1, parameter2
+    Step 1
+    Step 2
+    .
+    .
+    .
+    OUTPUT return_variable1, return_variable2
+ENDFUNCTION</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.9-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;9: Function definition in pseudocode.</figcaption></figure>
+</div>
+<p>We will indicate the main program in our pseudocode using the PROGRAM keyword.</p>
+<div id="fig-Figure3.10" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.10" class="columns" style="background-color:rgb(241, 242, 243)"><code>PROGRAM program_name
+    Step 1
+    Step 2
+    .
+    .
+    .
+ENDPROGRAM</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.10-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;10: Program unit in pseudocode.</figcaption></figure>
+</div>
+<p>As an example of developing a pseudocode version of an algorithm, let us consider the problem of cleaning up the yard of a residential property. We start with a high-level view of the algorithm.</p>
+<div id="fig-Figure3.11" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.11" class="columns" style="background-color:rgb(241, 242, 243)"><code>PROGRAM clean_up_the_yard
+    Inspect the yard for debris, excessive grass height, \
+        unkempt hedges
+    IF there is debris
+        Pick up debris
+    ENDIF
+    IF there is excessive grass height
+        Mow the lawn
+    ENDIF
+    IF there are unkempt hedges
+        Trim the hedges
+    ENDIF
+ENDPROGRAM</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.11-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;11: Highlevel pseudocode version of the clean_up_the_yard algorithm.</figcaption></figure>
+</div>
+<p>Now we will produce a more detailed version of the algorithm, as shown in <a href="#fig-Figure3.12" class="quarto-xref">Figure&nbsp;<span>12</span></a>. Note that for each of the steps listed in the pseudocode of <a href="#fig-Figure3.11" class="quarto-xref">Figure&nbsp;<span>11</span></a> we add additional detailed steps.</p>
+<div id="fig-Figure3.12" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre id="fig-Figure3.12" class="columns" style="background-color:rgb(241, 242, 243)"><code>PROGRAM clean_up_the_yard
+    Inspect the yard for debris, excessive grass height, \
+        unkempt hedges
+    IF there is debris
+        Determine the kind of debris
+        IF debris is mainly leaves
+            Get some 30 gallon yard bags
+            Rake up leaves
+            Put leaves in bags
+        ELSE
+            Get the wheelbarrow
+            WHILE debris remains DO
+                Fill up wheelbarrow
+                Empty wheelbarrow at wood pile
+            ENDWHILE 
+        ENDIF
+    ENDIF
+    IF there is excessive grass height
+        Get the lawn mower
+        Check the gas 
+        IF mower needs gas
+            Fill the gas tank
+        ENDIF
+        WHILE the lawn is not finished DO
+           Mow a lap
+        ENDWHILE  
+    ENDIF
+    IF there are unkempt hedges
+        Get the hedge clippers
+        Trim the hedges
+    ENDIF
+ENDPROGRAM</code></pre>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.12-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;12: A more detailed version of the clean_up_the_yard algorithm.</figcaption></figure>
+</div>
+</section>
+<section id="computational-problem-solution-temperature-conversion" class="level2">
+<h2 class="anchored" data-anchor-id="computational-problem-solution-temperature-conversion">Computational Problem Solution: Temperature Conversion</h2>
+<p>We return to the temperature conversion problem described at the beginning of this chapter. We will develop a program that solves this problem using programming elements developed in the chapter.</p>
+<section id="analysis" class="level3">
+<h3 class="anchored" data-anchor-id="analysis">Analysis</h3>
+<p>The first step in problem analysis is to state the problem precisely and describe how to recognize a successful solution.</p>
+<p>Problem Statement: The program requests that the user submit a temperature including scale used and also requests to which scale the temperature should be converted. The Program should perform some error detection to ensure that the submitted temperature is not below absolute zero on the user chosen scale. The program will print out the converted temperature with appropriate label. Temperature scales that will be used are Celsius, Fahrenheit, and Kelvin. Temperatures should be formatted to show two digits right of the decimal point.</p>
+<p>Part of our analysis is to research physical principles that may be helpful in solving the problem. In this case, we can look up absolute zero for each of the scales being considered. These temperatures are shown in <a href="#tbl-Table3p4" class="quarto-xref">Table&nbsp;<span>4</span></a>.</p>
+<div id="tbl-Table3p4" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;4: Absolute zero for the temperature scales considered.
+</figcaption>
+<div aria-describedby="tbl-Table3p4-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Scale</strong></th>
+<th style="text-align: right;"><strong>Absolute Zero</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">Celsius</td>
+<td style="text-align: right;">-273.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Fahrenheit</td>
+<td style="text-align: right;">-459.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Kelvin</td>
+<td style="text-align: right;">0</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>We continue our background research to find the equation for each of the required conversions. <a href="#eq-Equation3.4" class="quarto-xref">Equation&nbsp;<span>3</span></a> through <a href="#eq-Equation3.9" class="quarto-xref">Equation&nbsp;<span>8</span></a> show the required conversion equations.</p>
+<p><span id="eq-Equation3.4"><span class="math display">\[
+T_C = T_K- 273.15
+\tag{3}\]</span></span></p>
+<p><span id="eq-Equation3.5"><span class="math display">\[
+T_C = \left(T_F- 32\right) \times \frac{5}{9}
+\tag{4}\]</span></span></p>
+<p><span id="eq-Equation3.6"><span class="math display">\[
+T_F = \frac{9}{5} \times T_C + 32
+\tag{5}\]</span></span></p>
+<p><span id="eq-Equation3.7"><span class="math display">\[
+T_F = \left(T_K- 273.15\right) \times \frac{9}{5} + 32
+\tag{6}\]</span></span></p>
+<p><span id="eq-Equation3.8"><span class="math display">\[
+T_K = T_C + 273.15
+\tag{7}\]</span></span></p>
+<p><span id="eq-Equation3.9"><span class="math display">\[
+T_K = \left(T_F- 32\right) \times \frac{5}{9} + 273.15
+\tag{8}\]</span></span></p>
+<p>These equations can be used to generate some test data that will be used to with our program. This allows us to recognize a program that works correctly. <a href="#tbl-Table3p5" class="quarto-xref">Table&nbsp;<span>5</span></a> shows relevant test data.</p>
+<div id="tbl-Table3p5" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;5: Test data for the temperature conversion program.
+</figcaption>
+<div aria-describedby="tbl-Table3p5-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>Submitted Temperature</strong></td>
+<td></td>
+<td style="text-align: right;"><strong>Converted Temperature</strong></td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;"><strong>T</strong></td>
+<td><strong>Scale</strong></td>
+<td style="text-align: right;"><strong>T</strong></td>
+<td><strong>Scale</strong></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-300</td>
+<td>C</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-150</td>
+<td>C</td>
+<td style="text-align: right;">-238</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-150</td>
+<td>C</td>
+<td style="text-align: right;">123.15</td>
+<td>K</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>C</td>
+<td style="text-align: right;">32</td>
+<td>F</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>C</td>
+<td style="text-align: right;">273.15</td>
+<td>K</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-500</td>
+<td>F</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-400</td>
+<td>F</td>
+<td style="text-align: right;">-240</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-400</td>
+<td>F</td>
+<td style="text-align: right;">33.15</td>
+<td>K</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>F</td>
+<td style="text-align: right;">-17.78</td>
+<td>C</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>F</td>
+<td style="text-align: right;">255.37</td>
+<td>K</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-100</td>
+<td>K</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>K</td>
+<td style="text-align: right;">-273.15</td>
+<td>C</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>K</td>
+<td style="text-align: right;">-459.67</td>
+<td>F</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">150</td>
+<td>K</td>
+<td style="text-align: right;">-123.15</td>
+<td>C</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td>K</td>
+<td style="text-align: right;">-189.67</td>
+<td>F</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+<section id="ch03-design" class="level3">
+<h3 class="anchored" data-anchor-id="ch03-design">Design</h3>
+<p>The solution design for our problem should include a description of the algorithm using pseudocode and a list of the required data structures (variable names and types) used in the code. <a href="#tbl-Table3p6" class="quarto-xref">Table&nbsp;<span>6</span></a> shows the required variables for implementing the algorithm for this problem solution. Typically, we would start this table as we begin to think about the algorithm and then add to it as the algorithm develops.</p>
+<div id="tbl-Table3p6" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;6: Required data structures for the algorithm.
+</figcaption>
+<div aria-describedby="tbl-Table3p6-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<colgroup>
+<col style="width: 36%">
+<col style="width: 26%">
+<col style="width: 34%">
+</colgroup>
+<thead>
+<tr class="header">
+<th style="text-align: left;"><strong>Data Structure</strong></th>
+<th style="text-align: left;"><strong>Type</strong></th>
+<th style="text-align: left;"><strong>Description</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">submission_is_incorrect</td>
+<td style="text-align: left;">Boolean variable</td>
+<td style="text-align: left;">specifies whether submitted temperature is above absolute zero</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">submitted_temperature</td>
+<td style="text-align: left;">float variable</td>
+<td style="text-align: left;">temperature submitted by user</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">submitted_scale</td>
+<td style="text-align: left;">string variable</td>
+<td style="text-align: left;">scale for submitted_temperature</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">converted_temperature</td>
+<td style="text-align: left;">float variable</td>
+<td style="text-align: left;">the converted temperature</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">converted_scale</td>
+<td style="text-align: left;">string variable</td>
+<td style="text-align: left;">scale for converted_temperature</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+<p>Python uses a preferred style for creating variable names <span class="citation" data-cites="RossumEtAl_PEP8Style_2022">(<a href="../../bibliography.html#ref-RossumEtAl_PEP8Style_2022" role="doc-biblioref">Rossum et al., 2022</a>)</span>. This style recommends that variable names (and function names) be all lower case with individual words in the name separated by an underscore. We should note that other programming languages use different style conventions and companies that use Python for software development will sometimes have a different style guide. We will use the PEP 8 recommended style in this book.</p>
+<p>After starting the list of required data structures (variable names, in this case), we write out a high-level pseudocode version of the algorithm, as shown in <a href="#fig-Figure3.13" class="quarto-xref">Figure&nbsp;<span>13</span></a>.</p>
+<div id="fig-Figure3.13" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<pre><code>PROGRAM temperature_conversion
+    Print a program greeting
+    submission_is_incorrect = True
+    WHILE submission_is_incorrect DO
+        Request that the user submit a temperature to convert 
+            (defines submitted_temperature)
+        Request that the user submit the scale of submitted 
+          temperature (defines submitted_scale)
+        Check whether submitted_temperature is above absolute zero
+        IF submitted_temperature is above absolute zero 
+            submission_is_incorrect = False
+        ENDIF
+    ENDWHILE
+    submission_is_incorrect = True
+    WHILE submission_is_incorrect DO
+        Request that the user submit a scale for the conversion 
+         (defines convertedScale)
+        IF convertedScale is okay
+            submission_is_incorrect = False
+        ENDIF
+    ENDWHILE
+    Calculate converted_temperature
+    Print out converted_temperature
+ENDPROGRAM</code></pre>
+Pseudocode version of the problem solution algorithm.
+
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig quarto-uncaptioned" id="fig-Figure3.13-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;13</figcaption></figure>
+</div>
+<p>Note that the while loops implement our error detection for submitted input.</p>
+</section>
+<section id="implementation" class="level3">
+<h3 class="anchored" data-anchor-id="implementation">Implementation</h3>
+<p>We will now create a Python code implementation of each part. The program greeting and first while loop that checks for a correct temperature submission is shown in <a href="#fig-Figure3.14" class="quarto-xref">Figure&nbsp;<span>14</span></a> Note that the program code starts with a brief documentation comment, which includes a few key items such as the author, a version number, and a brief summary of what the program does. This is a good step towards providing documentation for the program. In addition to the iterative control structure (while loop), this section uses the mult-way selection structure (if elif).</p>
+<div id="fig-Figure3.14" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure3.14" style="background-color:rgb(241, 242, 243)"><pre class="sourceCode python columns code-with-copy"><code class="sourceCode python"><span id="fig-Figure3.14-1"><a href="#fig-Figure3.14-1" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure3.14-2"><a href="#fig-Figure3.14-2" aria-hidden="true" tabindex="-1"></a><span class="co">Program Name: Temperature Scale Conversion</span></span>
+<span id="fig-Figure3.14-3"><a href="#fig-Figure3.14-3" aria-hidden="true" tabindex="-1"></a><span class="co">Author: C.D. Wentworth</span></span>
+<span id="fig-Figure3.14-4"><a href="#fig-Figure3.14-4" aria-hidden="true" tabindex="-1"></a><span class="co">version: 6.23.2022.1</span></span>
+<span id="fig-Figure3.14-5"><a href="#fig-Figure3.14-5" aria-hidden="true" tabindex="-1"></a><span class="co">Summary: Temperature Conversion Program with Input error checking of </span></span>
+<span id="fig-Figure3.14-6"><a href="#fig-Figure3.14-6" aria-hidden="true" tabindex="-1"></a><span class="co">         temperatures. This version accepts a user-defined temperature in </span></span>
+<span id="fig-Figure3.14-7"><a href="#fig-Figure3.14-7" aria-hidden="true" tabindex="-1"></a><span class="co">         Celsius, Fahrenheit, or Kelvin and converts the temperature </span></span>
+<span id="fig-Figure3.14-8"><a href="#fig-Figure3.14-8" aria-hidden="true" tabindex="-1"></a><span class="co">         to a user selected scale.</span></span>
+<span id="fig-Figure3.14-9"><a href="#fig-Figure3.14-9" aria-hidden="true" tabindex="-1"></a><span class="co">"""</span></span>
+<span id="fig-Figure3.14-10"><a href="#fig-Figure3.14-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Display program greeting</span></span>
+<span id="fig-Figure3.14-11"><a href="#fig-Figure3.14-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Welcome to the Temperature Scale Conversion Program!'</span>)</span>
+<span id="fig-Figure3.14-12"><a href="#fig-Figure3.14-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'This program will request that the user submit a temperture.'</span>)</span>
+<span id="fig-Figure3.14-13"><a href="#fig-Figure3.14-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Next, it requests the converted scale.'</span>)</span>
+<span id="fig-Figure3.14-14"><a href="#fig-Figure3.14-14" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">'Finally, it prints out the converted temperature.'</span>)</span>
+<span id="fig-Figure3.14-15"><a href="#fig-Figure3.14-15" aria-hidden="true" tabindex="-1"></a>submission_is_incorrect <span class="op">=</span> <span class="va">True</span></span>
+<span id="fig-Figure3.14-16"><a href="#fig-Figure3.14-16" aria-hidden="true" tabindex="-1"></a>scale_request <span class="op">=</span> <span class="st">"'C' for Celsius, 'F' for Fahrenheit, 'K' for Kelvin"</span></span>
+<span id="fig-Figure3.14-17"><a href="#fig-Figure3.14-17" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> submission_is_incorrect:</span>
+<span id="fig-Figure3.14-18"><a href="#fig-Figure3.14-18" aria-hidden="true" tabindex="-1"></a>    submitted_temperature <span class="op">=</span> <span class="bu">float</span>(<span class="bu">input</span>(<span class="st">'Submit a temperature to convert: '</span>))</span>
+<span id="fig-Figure3.14-19"><a href="#fig-Figure3.14-19" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">'Specify the scale of your submitted temperature: '</span>)</span>
+<span id="fig-Figure3.14-20"><a href="#fig-Figure3.14-20" aria-hidden="true" tabindex="-1"></a>    submitted_scale <span class="op">=</span> <span class="bu">input</span>(scale_request)</span>
+<span id="fig-Figure3.14-21"><a href="#fig-Figure3.14-21" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((submitted_scale <span class="op">==</span><span class="st">'C'</span>) <span class="kw">and</span> (submitted_temperature<span class="op">&gt;=-</span><span class="fl">273.15</span>)):</span>
+<span id="fig-Figure3.14-22"><a href="#fig-Figure3.14-22" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.14-23"><a href="#fig-Figure3.14-23" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ((submitted_scale <span class="op">==</span> <span class="st">'F'</span>) <span class="kw">and</span> (submitted_temperature<span class="op">&gt;=-</span><span class="fl">459.67</span>)):</span>
+<span id="fig-Figure3.14-24"><a href="#fig-Figure3.14-24" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.14-25"><a href="#fig-Figure3.14-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ((submitted_scale <span class="op">==</span> <span class="st">'K'</span>) <span class="kw">and</span> (submitted_temperature<span class="op">&gt;=</span><span class="dv">0</span>)):</span>
+<span id="fig-Figure3.14-26"><a href="#fig-Figure3.14-26" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.14-27"><a href="#fig-Figure3.14-27" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.14-28"><a href="#fig-Figure3.14-28" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Incorrect submitted temperature. Try again.'</span>)</span>
+<span id="fig-Figure3.14-29"><a href="#fig-Figure3.14-29" aria-hidden="true" tabindex="-1"></a>        </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.14-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;14: Program greeting and temperature request.</figcaption></figure>
+</div>
+<p>Next, we code the program part that requests that the user submit a temperature scale for the converted temperature. The while loop provides for some user input error detection.</p>
+<div id="fig-Figure3.15" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure3.15" style="background-color:rgb(241, 242, 243)"><pre class="sourceCode python columns code-with-copy"><code class="sourceCode python"><span id="fig-Figure3.15-1"><a href="#fig-Figure3.15-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="op">&amp;</span><span class="co">#39;What scale should be used for the converted temperature?&amp;#39;)</span></span>
+<span id="fig-Figure3.15-2"><a href="#fig-Figure3.15-2" aria-hidden="true" tabindex="-1"></a>converted_scale <span class="op">=</span> <span class="bu">input</span>(scale_request)</span>
+<span id="fig-Figure3.15-3"><a href="#fig-Figure3.15-3" aria-hidden="true" tabindex="-1"></a>submission_is_incorrect <span class="op">=</span> <span class="va">True</span></span>
+<span id="fig-Figure3.15-4"><a href="#fig-Figure3.15-4" aria-hidden="true" tabindex="-1"></a><span class="cf">while</span> submission_is_incorrect:</span>
+<span id="fig-Figure3.15-5"><a href="#fig-Figure3.15-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> ((submitted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;C&amp;#39;) and </span></span>
+<span id="fig-Figure3.15-6"><a href="#fig-Figure3.15-6" aria-hidden="true" tabindex="-1"></a>        (converted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;F&amp;#39; or converted_scale == &amp;#39;K&amp;#39;)):</span></span>
+<span id="fig-Figure3.15-7"><a href="#fig-Figure3.15-7" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.15-8"><a href="#fig-Figure3.15-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ((submitted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;F&amp;#39;) and </span></span>
+<span id="fig-Figure3.15-9"><a href="#fig-Figure3.15-9" aria-hidden="true" tabindex="-1"></a>          (converted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;C&amp;#39; or converted_scale == &amp;#39;K&amp;#39;)):</span></span>
+<span id="fig-Figure3.15-10"><a href="#fig-Figure3.15-10" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.15-11"><a href="#fig-Figure3.15-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> ((submitted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;K&amp;#39;) and </span></span>
+<span id="fig-Figure3.15-12"><a href="#fig-Figure3.15-12" aria-hidden="true" tabindex="-1"></a>          (converted_scale <span class="op">==</span> <span class="op">&amp;</span><span class="co">#39;C&amp;#39; or converted_scale == &amp;#39;F&amp;#39;)):</span></span>
+<span id="fig-Figure3.15-13"><a href="#fig-Figure3.15-13" aria-hidden="true" tabindex="-1"></a>        submission_is_incorrect <span class="op">=</span> <span class="va">False</span></span>
+<span id="fig-Figure3.15-14"><a href="#fig-Figure3.15-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.15-15"><a href="#fig-Figure3.15-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="op">&amp;</span><span class="co">#39;There is a problem with your submission.&amp;#39;)</span></span>
+<span id="fig-Figure3.15-16"><a href="#fig-Figure3.15-16" aria-hidden="true" tabindex="-1"></a>        converted_scale <span class="op">=</span> <span class="bu">input</span>(scale_request) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.15-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;15: Converted temperature scale request.</figcaption></figure>
+</div>
+<p>Finally, we code the actual temperature conversion calculation and print out the result.</p>
+<div id="fig-Figure3.16" class="columns quarto-float quarto-figure quarto-figure-center anchored" style="background-color:rgb(241, 242, 243)">
+<figure class="quarto-float quarto-float-fig figure"><div aria-describedby="fig-Figure3.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<div class="sourceCode" id="fig-Figure3.16" style="background-color:rgb(241, 242, 243)"><pre class="sourceCode python columns code-with-copy"><code class="sourceCode python"><span id="fig-Figure3.16-1"><a href="#fig-Figure3.16-1" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> submitted_scale <span class="op">==</span> <span class="st">'C'</span>:</span>
+<span id="fig-Figure3.16-2"><a href="#fig-Figure3.16-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> converted_scale <span class="op">==</span> <span class="st">'F'</span>:</span>
+<span id="fig-Figure3.16-3"><a href="#fig-Figure3.16-3" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Celsius to Fahrenheit</span></span>
+<span id="fig-Figure3.16-4"><a href="#fig-Figure3.16-4" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> submitted_temperature<span class="op">*</span><span class="fl">9.0</span><span class="op">/</span><span class="fl">5.0</span> <span class="op">+</span> <span class="fl">32.0</span></span>
+<span id="fig-Figure3.16-5"><a href="#fig-Figure3.16-5" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.16-6"><a href="#fig-Figure3.16-6" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Celsius to Kelvin</span></span>
+<span id="fig-Figure3.16-7"><a href="#fig-Figure3.16-7" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> submitted_temperature <span class="op">+</span> <span class="fl">273.15</span></span>
+<span id="fig-Figure3.16-8"><a href="#fig-Figure3.16-8" aria-hidden="true" tabindex="-1"></a><span class="cf">elif</span> submitted_scale <span class="op">==</span> <span class="st">'F'</span>:</span>
+<span id="fig-Figure3.16-9"><a href="#fig-Figure3.16-9" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> converted_scale <span class="op">==</span> <span class="st">'C'</span>:</span>
+<span id="fig-Figure3.16-10"><a href="#fig-Figure3.16-10" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Fahrenheit to Celsius</span></span>
+<span id="fig-Figure3.16-11"><a href="#fig-Figure3.16-11" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> (submitted_temperature <span class="op">-</span> <span class="fl">32.0</span>)<span class="op">*</span><span class="fl">5.</span><span class="op">/</span><span class="fl">9.</span></span>
+<span id="fig-Figure3.16-12"><a href="#fig-Figure3.16-12" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.16-13"><a href="#fig-Figure3.16-13" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Fahrenheit to Kelvin</span></span>
+<span id="fig-Figure3.16-14"><a href="#fig-Figure3.16-14" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> (submitted_temperature <span class="op">-</span> <span class="fl">32.0</span>)<span class="op">*</span><span class="fl">5.0</span><span class="op">/</span><span class="fl">9.0</span> <span class="op">+</span> <span class="fl">273.15</span></span>
+<span id="fig-Figure3.16-15"><a href="#fig-Figure3.16-15" aria-hidden="true" tabindex="-1"></a><span class="cf">else</span>:</span>
+<span id="fig-Figure3.16-16"><a href="#fig-Figure3.16-16" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> converted_scale <span class="op">==</span> <span class="st">'C'</span>:</span>
+<span id="fig-Figure3.16-17"><a href="#fig-Figure3.16-17" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Kelvin to Celsius</span></span>
+<span id="fig-Figure3.16-18"><a href="#fig-Figure3.16-18" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> submitted_temperature <span class="op">-</span> <span class="fl">273.15</span></span>
+<span id="fig-Figure3.16-19"><a href="#fig-Figure3.16-19" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="fig-Figure3.16-20"><a href="#fig-Figure3.16-20" aria-hidden="true" tabindex="-1"></a>        <span class="co"># convert Kelvin to Fahrenheit</span></span>
+<span id="fig-Figure3.16-21"><a href="#fig-Figure3.16-21" aria-hidden="true" tabindex="-1"></a>        converted_temperature <span class="op">=</span> (submitted_temperature <span class="op">-</span> <span class="fl">273.15</span>)<span class="op">*</span><span class="fl">9.0</span><span class="op">/</span><span class="fl">5.0</span> <span class="op">+</span> <span class="fl">32.0</span></span>
+<span id="fig-Figure3.16-22"><a href="#fig-Figure3.16-22" aria-hidden="true" tabindex="-1"></a><span class="co"># print out the result</span></span>
+<span id="fig-Figure3.16-23"><a href="#fig-Figure3.16-23" aria-hidden="true" tabindex="-1"></a>s1 <span class="op">=</span> <span class="bu">format</span>(submitted_temperature,<span class="st">'.2f'</span>)</span>
+<span id="fig-Figure3.16-24"><a href="#fig-Figure3.16-24" aria-hidden="true" tabindex="-1"></a>s2 <span class="op">=</span> <span class="bu">format</span>(converted_temperature,<span class="st">'.2f'</span>)</span>
+<span id="fig-Figure3.16-25"><a href="#fig-Figure3.16-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(s1,submitted_scale,<span class="st">' is '</span>, s2,converted_scale)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div><figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-Figure3.16-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">Figure&nbsp;16: Temperature calculation part.</figcaption></figure>
+</div>
+</section>
+<section id="ch03-testing" class="level3">
+<h3 class="anchored" data-anchor-id="ch03-testing">Testing</h3>
+<p><a href="#tbl-Table3p5" class="quarto-xref">Table&nbsp;<span>5</span></a> gives some test data to use with the program. We reproduce that table below <a href="#tbl-Table3p7" class="quarto-xref">Table&nbsp;<span>7</span></a> and add a column giving the actual program output. Since the output column matches the expected converted temperature column we have some evidence that the program runs correctly.</p>
+<div id="tbl-Table3p7" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-tbl figure">
+<figcaption class="quarto-float-caption-top quarto-float-caption quarto-float-tbl" id="tbl-Table3p7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Table&nbsp;7: Test data with program output.
+</figcaption>
+<div aria-describedby="tbl-Table3p7-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th style="text-align: right;"><strong>Submitted Temperature</strong></th>
+<th></th>
+<th style="text-align: right;"><strong>Converted Temperature</strong></th>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;"><strong>T</strong></td>
+<td><strong>Scale</strong></td>
+<td style="text-align: right;"><strong>T</strong></td>
+<td><strong>Scale</strong></td>
+<td><strong>Program Output</strong></td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-300</td>
+<td>C</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+<td>error detected</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-150</td>
+<td>C</td>
+<td style="text-align: right;">-238</td>
+<td>F</td>
+<td>-238</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-150</td>
+<td>C</td>
+<td style="text-align: right;">123.15</td>
+<td>K</td>
+<td>123.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>C</td>
+<td style="text-align: right;">32</td>
+<td>F</td>
+<td>32</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>C</td>
+<td style="text-align: right;">273.15</td>
+<td>K</td>
+<td>273.15</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-500</td>
+<td>F</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+<td>error detected</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-400</td>
+<td>F</td>
+<td style="text-align: right;">-240</td>
+<td>C</td>
+<td>-240</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">-400</td>
+<td>F</td>
+<td style="text-align: right;">33.15</td>
+<td>K</td>
+<td>33.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>F</td>
+<td style="text-align: right;">-17.78</td>
+<td>C</td>
+<td>-17.78</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>F</td>
+<td style="text-align: right;">255.37</td>
+<td>K</td>
+<td>255.37</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">-100</td>
+<td>K</td>
+<td style="text-align: right;">Error</td>
+<td></td>
+<td>error detected</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">0</td>
+<td>K</td>
+<td style="text-align: right;">-273.15</td>
+<td>C</td>
+<td>-273.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">0</td>
+<td>K</td>
+<td style="text-align: right;">-459.67</td>
+<td>F</td>
+<td>-459.67</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">150</td>
+<td>K</td>
+<td style="text-align: right;">-123.15</td>
+<td>C</td>
+<td>-123.15</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">150</td>
+<td>K</td>
+<td style="text-align: right;">-189.67</td>
+<td>F</td>
+<td>-189.67</td>
+</tr>
+</tbody>
+</table>
+</div>
+</figure>
+</div>
+</section>
+</section>
+<section id="ch03-exercises" class="level2">
+<h2 class="anchored" data-anchor-id="ch03-exercises">Exercises</h2>
+<p>1. Describe the three kinds of program flow control.</p>
+<p>2. What is the value of each of the following Boolean expressions?</p>
+<ol type="a">
+<li>10 &gt;= 20</li>
+<li>10 != 20</li>
+<li>(10 &gt;= 20) and (10 != 20)</li>
+<li>(10 &gt;= 20) or (10 != 20)</li>
+<li>‘Jim’&lt;‘Mike’</li>
+<li>12*2 == 8*3</li>
+</ol>
+<p>3. Correct the indentation in the following code block so that it will execute without an error.</p>
+<div class="columns" style="background-color:rgb(241, 242, 243)">
+<div class="sourceCode" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>    score <span class="op">=</span> <span class="dv">81</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> score <span class="op">&gt;=</span> <span class="dv">90</span>:</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Your score indicates outstanding work.'</span>)</span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> score <span class="op">&gt;=</span><span class="dv">80</span>:</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Your score indicates good work.'</span>)</span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a>          <span class="bu">print</span>(<span class="st">'You can resubmit your work.'</span>)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a>    <span class="cf">elif</span> score <span class="op">&gt;=</span><span class="dv">70</span>:</span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Your work is adequate.'</span>)</span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Try to improve your score.'</span>)</span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Your work needs improvement.'</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Please try again.'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>4. Develop an algorithm, and pseudocode implementation of it, for the problem of cleaning an apartment with multiple bedrooms. Produce two versions: a high-level version with not many details, and then a more detailed version.</p>
+</section>
+<section id="ch03-program-modification-problems" class="level2">
+<h2 class="anchored" data-anchor-id="ch03-program-modification-problems">Program Modification Problems</h2>
+<p>1. In this exercise you are given a program (shown below) that obtains two integers from the user and then prints a message depending on whether the integers are both zero or not. You must change the code so that it tests whether both integers are zero, one is zero and one is non-zero, or both are non-zero and prints an appropriate message.</p>
+<pre><code>[ language=Python , numbers=none , backgroundcolor=\color{light-gray}]  </code></pre>
+<div class="columns" style="background-color:rgb(241, 242, 243)">
+<div class="sourceCode" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="co">    Program Name: Chapter 3 Prog Mod Prob 1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="co">    Author: C.D. Wentworth</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="co">    version: 6.23.2022.1</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="co">    Summary: This program requests that the user</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="co">             submit two integers and then</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="co">             determines whether one is zero or</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="co">             not and then prints a message.</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Ask user for two integers</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a>    i1 <span class="op">=</span> <span class="bu">input</span>(<span class="st">'type in an integer '</span>)</span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a>    i1 <span class="op">=</span> <span class="bu">int</span>(i1)</span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a>    i2 <span class="op">=</span> <span class="bu">input</span>(<span class="st">'type in another integer '</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a>    i2 <span class="op">=</span> <span class="bu">int</span>(i2)</span>
+<span id="cb16-15"><a href="#cb16-15" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> i1 <span class="op">==</span> <span class="dv">0</span> <span class="kw">or</span> i2 <span class="op">==</span> <span class="dv">0</span>:</span>
+<span id="cb16-16"><a href="#cb16-16" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'One of the integers is zero'</span>)</span>
+<span id="cb16-17"><a href="#cb16-17" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb16-18"><a href="#cb16-18" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="st">'Neither integer is zero'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>2. Add the Rankine temperature scale to the available scales in the Temperature Scale Conversion Program. Remember to check that the temperature submitted by the user is greater than or equal to absolute zero.</p>
+</section>
+<section id="ch03-references" class="level2">
+<h2 class="anchored" data-anchor-id="ch03-references">References</h2>
+<div class="flushleft">
+<p>Rossum, G. van, Warsaw, B., &amp; Coghlan, N. (2022). <em>PEP 8 – Style Guide for Python Code peps.python.org</em>. https://peps.python.org/pep-0008/</p>
+<p>Unicode Consortium. (2021). <em>Unicode</em>. Unicode. https://home.unicode.org/</p>
+</div>
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" data-line-spacing="2" role="list" style="display: none">
+<div id="ref-RossumEtAl_PEP8Style_2022" class="csl-entry" role="listitem">
+Rossum, G. van, Warsaw, B., &amp; Coghlan, N. (2022). <em><span>PEP</span> 8 – <span>Style Guide</span> for <span>Python Code</span> | peps.python.org</em>. <a href="https://peps.python.org/pep-0008/">https://peps.python.org/pep-0008/</a>
+</div>
+<div id="ref-UnicodeConsortium_Unicode_2021" class="csl-entry" role="listitem">
+Unicode Consortium. (2021). <em>Unicode</em>. Unicode. <a href="https://home.unicode.org/">https://home.unicode.org/</a>
+</div>
+</div>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const onCopySuccess = function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
+  });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../chapters/Ch02/Ch02_ComputationalThinking.html" class="pagination-link" aria-label="Computational Thinking and Problem Solving">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Computational Thinking and Problem Solving</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../chapters/Ch04/Ch04_Lists.html" class="pagination-link" aria-label="Lists">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Lists</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

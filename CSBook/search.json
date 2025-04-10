@@ -10,8 +10,8 @@
     ]
   },
   {
-    "objectID": "acknowledgements.html",
-    "href": "acknowledgements.html",
+    "objectID": "Front_Matter/acknowledgements.html",
+    "href": "Front_Matter/acknowledgements.html",
     "title": "Acknowledgements",
     "section": "",
     "text": "In the many years I have taught computational science there are many people to whom I am indebted. I will list a few here.\nMost important are the many students who experienced me as their instructor. They asked the critical questions and provided valuable feedback about explanations and assignments that proved helpful to them. I have been privileged to hear back from several of these students as they progressed in their careers letting me know about the challenges and successes in applying computational science concepts in their work. All of these communications with students were central to how I wrote this book.\nColleagues at Doane University who helped develop an interest in computational science and offered significant advice on how it should be structured include Tessa Durham Brooks, Susan Enders, Alec Engebretson, Peg Hart, and Mark Meysenburg. Lavi Zamstein proofread several of the chapters and caught mistakes. Remaining errors are, of course, my responsibility.\nI greatly benefited from resources provided by The Shodor Education Foundation, in particular, conversations with Robert Panoff, President and Executive Director of the foundation.\nFinally, I want to thank my wife, Sally, for her patience and encouragement throughout the writing process, particularly while I was being treated for leukemia.",
@@ -20,8 +20,8 @@
     ]
   },
   {
-    "objectID": "preface.html",
-    "href": "preface.html",
+    "objectID": "Front_Matter/preface.html",
+    "href": "Front_Matter/preface.html",
     "title": "Preface",
     "section": "",
     "text": "Computational science involves using mathematics, computer science, and domain knowledge to solve complex problems in the domain of interest. The ability to represent real-world systems with mathematical models and use computers to simulate and analyze the behavior of these models is now an essential part of research in the natural, social, and engineering sciences and in design work performed by engineers. The goal of this book is to introduce new students in science and engineering to fundamental concepts and tools of computational science and apply these ideas to example problems in several areas of science and engineering.\nWe will begin our study of computational science with an introduction to computational thinking, which is concerned with mental skills and practices that facilitate using computation to solve problems. Computational thinking is then applied to developing a strategy to create mathematical models that can be studied using computer simulation. Next, basic programming concepts are introduced within the context of a science or engineering problem. We introduce the Numpy package, which is critical for performing numerical computations in Python. Principles of scientific visualization are developed with examples created using Python visualization packages. We introduce the concept of a dynamical system and how to develop a model of such a system. We develop techniques for the numerical simulation of dynamical system models. Next, we investigate several kinds of stochastic models and using Monte Carlo methods to study such models. The book concludes with several project suggestions that require practicing the modeling and programming tools developed in the rest of the book.\nMany books on computational science or computational methods in science and engineering assume that the student has a well-developed mathematical background, including courses in calculus and differential equations. Since the goal of this book is to expose first-year students to computational science techniques, and these students have typically not taken calculus in high school, we assume the student is ready to take calculus but has not yet done so. Some calculus concepts are introduced in the book, but mainly through geometrical interpretation rather than through rigorous mathematical definitions. Dynamical systems models, defined using differential equations, are introduced, but their properties are explored primarily through computer simulation rather than through analytical techniques.\nNo programming experience is assumed by the book. The necessary techniques are developed simultaneously with computational science ideas. Students will gain programming experience in the context of using programming to solve science and engineering problems.\nTwo kinds of programming exercises are provided at the end of each chapter: program modification problems and program development problems. The modification problems require adapting a code developed in the chapter to a new but related problem. The development problems ask students to solve a non-trivial problem not yet addressed in the text, including developing all code required for the solution. These development problems will often require integrating ideas from previous chapters in addition to ideas developed in the chapter posing the problem.\nStudents who master the concepts developed in this book and complete the program modification and program development problems should be ready to use computation in many advanced courses required by science and engineering majors. Students should also be ready to increase their knowledge of computational science through the independent study of many library and online resources.",
@@ -904,7 +904,7 @@
     "href": "chapters/Ch10/Ch10_Least-squaresMethodsForData-fitting.html",
     "title": "Fitting Models to Data: The Method of Least Squares",
     "section": "",
-    "text": "Motivating Problem: Damped Spring {\n@ shows the setup for a physics experiment involving a mass m (= 0.550 [kg]) attached to a spring. The spring is stretched from rest and released. Position data collected by a motion detector is shown in Figure 2. Since the data shows significant damping, the situation will require more than simply the ideal force law (Hooke’s Law: \\(F=-ky\\)) to understand. By adding a drag force proportional to velocity, \\(-bv_y\\), an appropriate model can be constructed. The solution to Newton’s 2nd Law is discussed in most general physics textbooks and yields (Knight, 2016)\n\\[\\begin{array}{l} y\\left(t\\right) = Ae^{- bt/ 2m}\\cos \\left(\\omega t + \\phi_0\\right) \\\\ \\\\ \\omega  = \\sqrt{\\omega_0^2- \\frac{b^2}{4m^2}}\\text{ , }\\omega_0 = \\sqrt{\\frac{k}{m}} \\\\  \\end{array} \\tag{1}\\]\nIn Equation Equation 1, \\(y(t)\\) is the position measured with respect to the mass’s equilibrium position.\nOur computational problem will be to choose the best-fit values for the model parameters, A, b, and k, so that the model equation fits the provided data.",
+    "text": "Motivating Problem: Damped Spring {\nFigure 1 shows the setup for a physics experiment involving a mass m (= 0.550 [kg]) attached to a spring. The spring is stretched from rest and released. Position data collected by a motion detector is shown in Figure 2. Since the data shows significant damping, the situation will require more than simply the ideal force law (Hooke’s Law: \\(F=-ky\\)) to understand. By adding a drag force proportional to velocity, \\(-bv_y\\), an appropriate model can be constructed. The solution to Newton’s 2nd Law is discussed in most general physics textbooks and yields (Knight, 2016)\n\\[\\begin{array}{l} y\\left(t\\right) = Ae^{- bt/ 2m}\\cos \\left(\\omega t + \\phi_0\\right) \\\\ \\\\ \\omega  = \\sqrt{\\omega_0^2- \\frac{b^2}{4m^2}}\\text{ , }\\omega_0 = \\sqrt{\\frac{k}{m}} \\\\  \\end{array} \\tag{1}\\]\nIn Equation Equation 1, \\(y(t)\\) is the position measured with respect to the mass’s equilibrium position.\nOur computational problem will be to choose the best-fit values for the model parameters, A, b, and k, so that the model equation fits the provided data.",
     "crumbs": [
       "<span class='chapter-number'>10</span>  <span class='chapter-title'>Fitting Models to Data: The Method of Least Squares</span>"
     ]
@@ -1217,6 +1217,17 @@
     "crumbs": [
       "Appendices",
       "<span class='chapter-number'>B</span>  <span class='chapter-title'>Advanced Plotting with Matplotlib</span>"
+    ]
+  },
+  {
+    "objectID": "Back_Matter/author.html",
+    "href": "Back_Matter/author.html",
+    "title": "Author Information",
+    "section": "",
+    "text": "Christopher D. Wentworth is Professor Emeritus of Physics at Doane University, where he taught physics, computational science, and engineering courses for over 34 years. He earned a Bachelor of Science in Physics from Duke University and a Ph.D. in Theoretical Physics from Florida State University. His research interests while in graduate school and during post-doctoral work at Florida State University and at the University of Leiden involved developing models of magnetic materials using the tools of quantum statistical mechanics. This research was heavily computational in nature involving computational symbolic mathematics and Monte Carlo simulations. After moving to Doane University (then called Doane College), his major interest became physics education research. Developing interest and expertise in computational science was an important part of this work and continues to be a significant teaching interest. More recently, his research includes developing mathematical and computational models of biofilm growth and other topics in condensed matter physics and biological physics.",
+    "crumbs": [
+      "Appendices",
+      "Author Information"
     ]
   }
 ]
